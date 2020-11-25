@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:alice/helper/alice_save_helper.dart';
-import 'package:alice/model/alice_http_error.dart';
 import 'package:alice/model/alice_http_call.dart';
+import 'package:alice/model/alice_http_error.dart';
 import 'package:alice/model/alice_http_response.dart';
 import 'package:alice/ui/page/alice_calls_list_screen.dart';
 import 'package:flutter/material.dart';
@@ -132,24 +132,24 @@ class AliceCore {
     int successCalls = calls
         .where((call) =>
             call.response != null &&
-            call.response.status >= 200 &&
-            call.response.status < 300)
+            (call.response.status ?? 0) >= 200 &&
+            (call.response.status ?? 0) < 300)
         .toList()
         .length;
 
     int redirectCalls = calls
         .where((call) =>
             call.response != null &&
-            call.response.status >= 300 &&
-            call.response.status < 400)
+            (call.response.status ?? 0) >= 300 &&
+            (call.response.status ?? 0) < 400)
         .toList()
         .length;
 
     int errorCalls = calls
         .where((call) =>
             call.response != null &&
-            call.response.status >= 400 &&
-            call.response.status < 600)
+            (call.response.status ?? 0) >= 400 &&
+            (call.response.status ?? 0) < 600)
         .toList()
         .length;
 

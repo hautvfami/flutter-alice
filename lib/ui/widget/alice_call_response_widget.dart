@@ -1,7 +1,6 @@
 import 'package:alice/model/alice_http_call.dart';
 import 'package:alice/ui/utils/alice_constants.dart';
 import 'package:alice/ui/widget/alice_base_call_details_widget.dart';
-import 'package:better_player/better_player.dart';
 import 'package:flutter/material.dart';
 
 class AliceCallResponseWidget extends StatefulWidget {
@@ -25,7 +24,6 @@ class _AliceCallResponseWidgetState
   static const _textContentType = "text";
 
   static const _kLargeOutputSize = 100000;
-  BetterPlayerController _betterPlayerController;
   bool _showLargeBody = false;
   bool _showUnsupportedBody = false;
 
@@ -58,7 +56,7 @@ class _AliceCallResponseWidgetState
 
   @override
   void dispose() {
-    _betterPlayerController?.dispose();
+    //_betterPlayerController?.dispose();
     super.dispose();
   }
 
@@ -98,7 +96,7 @@ class _AliceCallResponseWidgetState
     if (_isImageResponse()) {
       rows.addAll(_buildImageBodyRows());
     } else if (_isVideoResponse()) {
-      rows.addAll(_buildVideoBodyRows());
+      // rows.addAll(_buildVideoBodyRows());
     } else if (_isTextResponse()) {
       if (_isLargeResponseBody()) {
         rows.addAll(_buildLargeBodyTextRows());
@@ -180,34 +178,6 @@ class _AliceCallResponseWidgetState
     var headers = _call.response.headers;
     var bodyContent = formatBody(_call.response.body, getContentType(headers));
     rows.add(getListRow("Body:", bodyContent));
-    return rows;
-  }
-
-  List<Widget> _buildVideoBodyRows() {
-    _betterPlayerController = BetterPlayerController(
-      BetterPlayerConfiguration(aspectRatio: 16 / 9, fit: BoxFit.cover),
-      betterPlayerDataSource: BetterPlayerDataSource(
-        BetterPlayerDataSourceType.NETWORK,
-        _call.uri,
-      ),
-    );
-
-    List<Widget> rows = List();
-    rows.add(
-      Row(
-        children: [
-          Text(
-            "Body: Video",
-            style: TextStyle(fontWeight: FontWeight.bold),
-          )
-        ],
-      ),
-    );
-    rows.add(const SizedBox(height: 8));
-    rows.add(
-      BetterPlayer(controller: _betterPlayerController),
-    );
-    rows.add(const SizedBox(height: 8));
     return rows;
   }
 
