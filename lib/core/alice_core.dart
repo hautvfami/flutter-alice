@@ -1,14 +1,14 @@
 import 'dart:async';
-
+import 'package:alice/core/debug_pop_up.dart';
 import 'package:alice/helper/alice_save_helper.dart';
 import 'package:alice/model/alice_http_call.dart';
 import 'package:alice/model/alice_http_error.dart';
 import 'package:alice/model/alice_http_response.dart';
 import 'package:alice/ui/page/alice_calls_list_screen.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:overlay_support/overlay_support.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:shake/shake.dart';
 
 class AliceCore {
   /// Should user be notified with notification if there's new request catched
@@ -29,11 +29,9 @@ class AliceCore {
   /// Icon url for notification
   final String notificationIcon;
 
-  FlutterLocalNotificationsPlugin _flutterLocalNotificationsPlugin;
   GlobalKey<NavigatorState> _navigatorKey;
   Brightness _brightness = Brightness.light;
   bool _isInspectorOpened = false;
-  ShakeDetector _shakeDetector;
   StreamSubscription _callsSubscription;
   String _notificationMessage;
   String _notificationMessageShown;
@@ -48,14 +46,7 @@ class AliceCore {
         assert(darkTheme != null, "darkTheme can't be null"),
         assert(notificationIcon != null, "notificationIcon can't be null") {
     if (showNotification) {
-      _initializeNotificationsPlugin();
       _callsSubscription = callsSubject.listen((_) => _onCallsChanged());
-    }
-    if (showInspectorOnShake) {
-      _shakeDetector = ShakeDetector.autoStart(
-        onPhoneShake: () => navigateToCallListScreen(),
-        shakeThresholdGravity: 5,
-      );
     }
     _brightness = darkTheme ? Brightness.dark : Brightness.light;
   }
@@ -63,23 +54,16 @@ class AliceCore {
   /// Dispose subjects and subscriptions
   void dispose() {
     callsSubject.close();
-    _shakeDetector?.stopListening();
+    //_shakeDetector?.stopListening();
     _callsSubscription?.cancel();
   }
 
   /// Get currently used brightness
   Brightness get brightness => _brightness;
 
-  void _initializeNotificationsPlugin() {
-    _flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
-    var initializationSettingsAndroid =
-        new AndroidInitializationSettings(notificationIcon);
-    var initializationSettingsIOS = IOSInitializationSettings();
-    var initializationSettings = InitializationSettings(
-        initializationSettingsAndroid, initializationSettingsIOS);
-    _flutterLocalNotificationsPlugin.initialize(initializationSettings,
-        onSelectNotification: _onSelectedNotification);
-  }
+
+
+
 
   void _onCallsChanged() async {
     if (callsSubject.value.length > 0) {
@@ -96,12 +80,6 @@ class AliceCore {
   void setNavigatorKey(GlobalKey<NavigatorState> navigatorKey) {
     assert(navigatorKey != null, "navigatorKey can't be null");
     this._navigatorKey = navigatorKey;
-  }
-
-  Future _onSelectedNotification(String payload) {
-    assert(payload != null, "payload can't be null");
-    navigateToCallListScreen();
-    return Future.sync(() {});
   }
 
   /// Opens Http calls inspector. This will navigate user to the new fullscreen
@@ -176,27 +154,8 @@ class AliceCore {
 
   Future _showLocalNotification() async {
     _notificationProcessing = true;
-    var channelId = "Alice";
-    var channelName = "Alice";
-    var channelDescription = "Alice";
-    var androidPlatformChannelSpecifics = new AndroidNotificationDetails(
-        channelId, channelName, channelDescription,
-        enableVibration: false,
-        playSound: false,
-        largeIcon: DrawableResourceAndroidBitmap(notificationIcon),
-        importance: Importance.Default,
-        priority: Priority.Default);
-    var iOSPlatformChannelSpecifics =
-        new IOSNotificationDetails(presentSound: false);
-    var platformChannelSpecifics = new NotificationDetails(
-        androidPlatformChannelSpecifics, iOSPlatformChannelSpecifics);
     String message = _notificationMessage;
-    await _flutterLocalNotificationsPlugin.show(
-        0,
-        "Alice (total: ${callsSubject.value.length} requests)",
-        message,
-        platformChannelSpecifics,
-        payload: "");
+    showDebugAnimNotification();
     _notificationMessageShown = message;
     _notificationProcessing = false;
     return;
@@ -264,5 +223,28 @@ class AliceCore {
   void saveHttpRequests(BuildContext context) {
     assert(context != null, "context can't be null");
     AliceSaveHelper.saveCalls(context, callsSubject.value, _brightness);
+  }
+
+  bool isShowedBubble = false;
+
+  void showDebugAnimNotification() {
+    if (isShowedBubble) {
+      return;
+    }
+    var context = getContext();
+    if (context == null) {
+      return;
+    }
+    isShowedBubble = true;
+    showOverlay((context, t) {
+      return Opacity(
+          opacity: t,
+          child: DebugPopUp(
+            callsSubscription: callsSubject.stream,
+            onClicked: () {
+              navigateToCallListScreen();
+            },
+          ));
+    }, duration: Duration.zero);
   }
 }
