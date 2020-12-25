@@ -9,6 +9,8 @@ import 'package:alice/core/alice_http_extensions.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:overlay_support/overlay_support.dart';
+
 
 void main() => runApp(MyApp());
 
@@ -41,47 +43,49 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeData(
-          primaryColor: Color(0xffff5e57), accentColor: Color(0xffff3f34)),
-      navigatorKey: _alice.getNavigatorKey(),
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Alice HTTP Inspector - Example'),
-        ),
-        body: Container(
-          padding: EdgeInsets.all(16),
-          child: ListView(
-            children: [
-              const SizedBox(height: 8),
-              _getTextWidget(
-                  "Welcome to example of Alice Http Inspector. Click buttons below to generate sample data."),
-              RaisedButton(
-                child: Text("Run Dio HTTP Requests"),
-                onPressed: _runDioRequests,
-              ),
-              RaisedButton(
-                child: Text("Run http/http HTTP Requests"),
-                onPressed: _runHttpHttpRequests,
-              ),
-              RaisedButton(
-                child: Text("Run HttpClient Requests"),
-                onPressed: _runHttpHttpClientRequests,
-              ),
-              RaisedButton(
-                child: Text("Run Chopper HTTP Requests"),
-                onPressed: _runChopperHttpRequests,
-              ),
-              const SizedBox(height: 24),
-              _getTextWidget(
-                  "After clicking on buttons above, you should receive notification."
-                  " Click on it to show inspector. You can also shake your device or click button below."),
-              RaisedButton(
-                child: Text("Run HTTP Insepctor"),
-                onPressed: _runHttpInspector,
-              )
-            ],
+    return OverlaySupport(
+      child: MaterialApp(
+        theme: ThemeData(
+            primaryColor: Color(0xffff5e57), accentColor: Color(0xffff3f34)),
+        navigatorKey: _alice.getNavigatorKey(),
+        debugShowCheckedModeBanner: false,
+        home: Scaffold(
+          appBar: AppBar(
+            title: const Text('Alice HTTP Inspector - Example'),
+          ),
+          body: Container(
+            padding: EdgeInsets.all(16),
+            child: ListView(
+              children: [
+                const SizedBox(height: 8),
+                _getTextWidget(
+                    "Welcome to example of Alice Http Inspector. Click buttons below to generate sample data."),
+                RaisedButton(
+                  child: Text("Run Dio HTTP Requests"),
+                  onPressed: _runDioRequests,
+                ),
+                RaisedButton(
+                  child: Text("Run http/http HTTP Requests"),
+                  onPressed: _runHttpHttpRequests,
+                ),
+                RaisedButton(
+                  child: Text("Run HttpClient Requests"),
+                  onPressed: _runHttpHttpClientRequests,
+                ),
+                RaisedButton(
+                  child: Text("Run Chopper HTTP Requests"),
+                  onPressed: _runChopperHttpRequests,
+                ),
+                const SizedBox(height: 24),
+                _getTextWidget(
+                    "After clicking on buttons above, you should receive notification."
+                    " Click on it to show inspector. You can also shake your device or click button below."),
+                RaisedButton(
+                  child: Text("Run HTTP Insepctor"),
+                  onPressed: _runHttpInspector,
+                )
+              ],
+            ),
           ),
         ),
       ),
