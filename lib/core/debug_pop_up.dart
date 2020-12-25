@@ -17,8 +17,7 @@ class DebugPopUp extends StatefulWidget {
   final VoidCallback onClicked;
   final Stream<List<AliceHttpCall>> callsSubscription;
 
-  ///class widget to show overlay on app to show number request count and
-  ///is a place to native to alice inspector
+  ///class widget to show overlay bubble describes the number request count and is a place to navigate to alice inspector.
   ///[onClicked] call back when user clicked in debug point
   ///[callsSubscription] the stream to listen how many request in app
   const DebugPopUp({
@@ -32,7 +31,10 @@ class DebugPopUp extends StatefulWidget {
 }
 
 class _DebugPopUpState extends State<DebugPopUp> {
-  MPosition currentPosition = MPosition.topRight;
+  ///current position bubble edit this field to change position at start up or after dragging
+  MPosition currentPosition = MPosition.middleLeft;
+
+  ///show hint box, if [isShowHint] = true all the hint box should be visible else  -> hide
   bool isShowHint = false;
   StreamController<bool> _hintTargetController = StreamController.broadcast();
 
@@ -48,15 +50,18 @@ class _DebugPopUpState extends State<DebugPopUp> {
   Widget build(BuildContext context) {
     var dragWidget =
         _buildDraggyWidget(widget.onClicked, widget.callsSubscription);
-    return Stack(
-      children: [
-        _targetTopLeft(dragWidget),
-        _targetTopRight(dragWidget),
-        _targetMiddleRight(dragWidget),
-        _targetMiddleLeft(dragWidget),
-        _targetBottomLeft(dragWidget),
-        _targetBottomRight(dragWidget),
-      ],
+    //wrap with SafeArea to support edge screen
+    return SafeArea(
+      child: Stack(
+        children: [
+          _targetTopLeft(dragWidget),
+          _targetTopRight(dragWidget),
+          _targetMiddleRight(dragWidget),
+          _targetMiddleLeft(dragWidget),
+          _targetBottomLeft(dragWidget),
+          _targetBottomRight(dragWidget),
+        ],
+      ),
     );
   }
 
@@ -72,7 +77,10 @@ class _DebugPopUpState extends State<DebugPopUp> {
           stream: stream,
           builder: (context, snapshot) => Text(
             "${min(snapshot.data?.length ?? 0, 99)}",
-            style: Theme.of(context).textTheme.caption.copyWith(color: Colors.white),
+            style: Theme.of(context)
+                .textTheme
+                .caption
+                .copyWith(color: Colors.white),
           ),
         ),
         onPressed: onClicked,
