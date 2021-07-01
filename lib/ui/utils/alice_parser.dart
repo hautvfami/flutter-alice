@@ -10,7 +10,7 @@ class AliceParser {
   static const String _parseFailedText = "Failed to parse ";
   static final JsonEncoder encoder = new JsonEncoder.withIndent('  ');
 
-  static String _parseJson(dynamic json) {
+  static String? _parseJson(dynamic json) {
     try {
       return encoder.convert(json);
     } catch (exception) {
@@ -26,19 +26,19 @@ class AliceParser {
     }
   }
 
-  static String formatBody(dynamic body, String contentType) {
+  static String? formatBody(dynamic body, String? contentType) {
     try {
       if (body == null) {
         return _emptyBody;
       }
 
-      var bodyContent = _emptyBody;
+      String? bodyContent = _emptyBody;
 
       if (contentType == null ||
           !contentType.toLowerCase().contains(_applicationJson)) {
         var bodyTemp = body.toString();
 
-        if (bodyTemp != null && bodyTemp.length > 0) {
+        if (bodyTemp.length > 0) {
           bodyContent = bodyTemp;
         }
       } else {
@@ -64,7 +64,7 @@ class AliceParser {
     }
   }
 
-  static String getContentType(Map<String, dynamic> headers) {
+  static String? getContentType(Map<String, dynamic>? headers) {
     if (headers != null) {
       if (headers.containsKey(_jsonContentTypeSmall)) {
         return headers[_jsonContentTypeSmall];

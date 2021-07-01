@@ -20,11 +20,11 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  Alice _alice;
-  Dio _dio;
-  HttpClient _httpClient;
-  ChopperClient _chopper;
-  PostsService _postsService;
+  late Alice _alice;
+  late Dio _dio;
+  late HttpClient _httpClient;
+  ChopperClient? _chopper;
+  late PostsService _postsService;
 
   @override
   void initState() {
@@ -157,58 +157,58 @@ class _MyAppState extends State<MyApp> {
   void _runHttpHttpRequests() async {
     Map<String, dynamic> body = {"title": "foo", "body": "bar", "userId": "1"};
     http
-        .post('https://jsonplaceholder.typicode.com/posts', body: body)
+        .post(Uri.parse('https://jsonplaceholder.typicode.com/posts'), body: body)
         .interceptWithAlice(_alice, body: body);
 
     http
-        .get('https://jsonplaceholder.typicode.com/posts')
+        .get(Uri.parse('https://jsonplaceholder.typicode.com/posts'))
         .interceptWithAlice(_alice);
 
     http
-        .put('https://jsonplaceholder.typicode.com/posts/1', body: body)
+        .put(Uri.parse('https://jsonplaceholder.typicode.com/posts/1'), body: body)
         .interceptWithAlice(_alice, body: body);
 
     http
-        .patch('https://jsonplaceholder.typicode.com/posts/1', body: body)
+        .patch(Uri.parse('https://jsonplaceholder.typicode.com/posts/1'), body: body)
         .interceptWithAlice(_alice, body: body);
 
     http
-        .delete('https://jsonplaceholder.typicode.com/posts/1')
+        .delete(Uri.parse('https://jsonplaceholder.typicode.com/posts/1'))
         .interceptWithAlice(_alice, body: body);
 
     http
-        .get('https://jsonplaceholder.typicode.com/test/test')
+        .get(Uri.parse('https://jsonplaceholder.typicode.com/test/test'))
         .interceptWithAlice(_alice);
 
     http
-        .post('https://jsonplaceholder.typicode.com/posts', body: body)
+        .post(Uri.parse('https://jsonplaceholder.typicode.com/posts'), body: body)
         .then((response) {
       _alice.onHttpResponse(response, body: body);
     });
 
-    http.get('https://jsonplaceholder.typicode.com/posts').then((response) {
+    http.get(Uri.parse('https://jsonplaceholder.typicode.com/posts')).then((response) {
       _alice.onHttpResponse(response);
     });
 
     http
-        .put('https://jsonplaceholder.typicode.com/posts/1', body: body)
+        .put(Uri.parse('https://jsonplaceholder.typicode.com/posts/1'), body: body)
         .then((response) {
       _alice.onHttpResponse(response, body: body);
     });
 
     http
-        .patch('https://jsonplaceholder.typicode.com/posts/1', body: body)
+        .patch(Uri.parse('https://jsonplaceholder.typicode.com/posts/1'), body: body)
         .then((response) {
       _alice.onHttpResponse(response, body: body);
     });
 
     http
-        .delete('https://jsonplaceholder.typicode.com/posts/1')
+        .delete(Uri.parse('https://jsonplaceholder.typicode.com/posts/1'))
         .then((response) {
       _alice.onHttpResponse(response);
     });
 
-    http.get('https://jsonplaceholder.typicode.com/test/test').then((response) {
+    http.get(Uri.parse('https://jsonplaceholder.typicode.com/test/test')).then((response) {
       _alice.onHttpResponse(response);
     });
   }

@@ -8,9 +8,9 @@ class AliceHttpRequest {
   DateTime time = DateTime.now();
   Map<String, dynamic> headers = Map();
   dynamic body = "";
-  String contentType = "";
-  List<Cookie> cookies = List();
+  String? contentType = "";
+  List<Cookie> cookies = [];
   Map<String, dynamic> queryParameters = Map();
-  List<AliceFormDataFile> formDataFiles;
-  List<AliceFormDataField> formDataFields;
+  List<AliceFormDataFile>? formDataFiles;
+  List<AliceFormDataField>? formDataFields;
 }

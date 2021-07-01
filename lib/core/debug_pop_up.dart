@@ -21,9 +21,9 @@ class DebugPopUp extends StatefulWidget {
   ///[onClicked] call back when user clicked in debug point
   ///[callsSubscription] the stream to listen how many request in app
   const DebugPopUp({
-    Key key,
-    @required this.onClicked,
-    @required this.callsSubscription,
+    Key? key,
+    required this.onClicked,
+    required this.callsSubscription,
   }) : super(key: key);
 
   @override
@@ -79,7 +79,7 @@ class _DebugPopUpState extends State<DebugPopUp> {
             "${min(snapshot.data?.length ?? 0, 99)}",
             style: Theme.of(context)
                 .textTheme
-                .caption
+                .caption!
                 .copyWith(color: Colors.white),
           ),
         ),
@@ -121,7 +121,7 @@ class _DebugPopUpState extends State<DebugPopUp> {
         child: _buildTartGetBox(
           child: DragTarget<int>(
             onWillAccept: (_) => handleOnWillAccept(MPosition.middleLeft),
-            builder: (context, List<int> candidateData, rejectedData) {
+            builder: (context, List<int?> candidateData, rejectedData) {
               if (currentPosition == MPosition.middleLeft) {
                 return widget;
               }
@@ -143,7 +143,7 @@ class _DebugPopUpState extends State<DebugPopUp> {
           child: DragTarget<int>(
             onWillAccept: (_) => handleOnWillAccept(MPosition.middleRight),
             onAccept: (_) => handleOnAccept(MPosition.middleRight),
-            builder: (context, List<int> candidateData, rejectedData) {
+            builder: (context, List<int?> candidateData, rejectedData) {
               if (currentPosition == MPosition.middleRight) {
                 return widget;
               }
@@ -164,7 +164,7 @@ class _DebugPopUpState extends State<DebugPopUp> {
         child: DragTarget<int>(
           onWillAccept: (_) => handleOnWillAccept(MPosition.bottomRight),
           onAccept: (_) => handleOnAccept(MPosition.bottomRight),
-          builder: (context, List<int> candidateData, rejectedData) {
+          builder: (context, List<int?> candidateData, rejectedData) {
             if (currentPosition == MPosition.bottomRight) {
               return widget;
             }
@@ -183,7 +183,7 @@ class _DebugPopUpState extends State<DebugPopUp> {
         child: DragTarget<int>(
           onWillAccept: (_) => handleOnWillAccept(MPosition.bottomLeft),
           onAccept: (_) => handleOnAccept(MPosition.bottomLeft),
-          builder: (context, List<int> candidateData, rejectedData) {
+          builder: (context, List<int?> candidateData, rejectedData) {
             if (currentPosition == MPosition.bottomLeft) {
               return widget;
             }
@@ -202,7 +202,7 @@ class _DebugPopUpState extends State<DebugPopUp> {
         child: DragTarget<int>(
           onWillAccept: (_) => handleOnWillAccept(MPosition.topRight),
           onAccept: (_) => handleOnAccept(MPosition.topRight),
-          builder: (context, List<int> candidateData, rejectedData) {
+          builder: (context, List<int?> candidateData, rejectedData) {
             if (currentPosition == MPosition.topRight) {
               return widget;
             }
@@ -221,7 +221,7 @@ class _DebugPopUpState extends State<DebugPopUp> {
         child: DragTarget<int>(
           onWillAccept: (_) => handleOnWillAccept(MPosition.topLeft),
           onAccept: (_) => handleOnAccept(MPosition.topLeft),
-          builder: (context, List<int> candidateData, rejectedData) {
+          builder: (context, List<int?> candidateData, rejectedData) {
             if (currentPosition == MPosition.topLeft) {
               return widget;
             }
@@ -235,20 +235,20 @@ class _DebugPopUpState extends State<DebugPopUp> {
   }
 
   ///create widget wrap drag target and it wil stream the state form [showHintTarget]
-  Widget _buildTartGetBox({Widget child}) {
+  Widget _buildTartGetBox({Widget? child}) {
     return StreamBuilder<bool>(
       initialData: false,
       stream: showHintTarget,
       builder: (context, snapshot) {
-        if (snapshot.data != null && snapshot.data) {
+        if (snapshot.data != null && (snapshot.data ?? false)) {
           return Container(
             width: 32,
             height: 32,
             color: Colors.black38,
-            child: child,
+            child: child!,
           );
         }
-        return child;
+        return child!;
       },
     );
   }

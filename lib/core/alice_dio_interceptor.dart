@@ -14,19 +14,20 @@ class AliceDioInterceptor extends InterceptorsWrapper {
   final AliceCore aliceCore;
 
   /// Creates dio interceptor
-  AliceDioInterceptor(this.aliceCore)
-      : assert(aliceCore != null, "aliceCore can't be null");
+  AliceDioInterceptor(this.aliceCore);
 
   /// Handles dio request and creates alice http call based on it
   @override
-  Future onRequest(RequestOptions options) {
-    assert(options != null, "options can't be null");
+  void onRequest(
+    RequestOptions options,
+    RequestInterceptorHandler handler,
+  ) {
     AliceHttpCall call = new AliceHttpCall(options.hashCode);
 
     Uri uri = options.uri;
     call.method = options.method;
     var path = options.uri.path;
-    if (path == null || path.length == 0) {
+    if (path.length == 0) {
       path = "/";
     }
     call.endpoint = path;
@@ -48,17 +49,17 @@ class AliceDioInterceptor extends InterceptorsWrapper {
       if (data is FormData) {
         request.body += "Form data";
 
-        if (data.fields?.isNotEmpty == true) {
-          List<AliceFormDataField> fields = List();
+        if (data.fields.isNotEmpty == true) {
+          List<AliceFormDataField> fields = [];
           data.fields.forEach((entry) {
             fields.add(AliceFormDataField(entry.key, entry.value));
           });
           request.formDataFields = fields;
         }
-        if (data.files?.isNotEmpty == true) {
-          List<AliceFormDataFile> files = List();
+        if (data.files.isNotEmpty == true) {
+          List<AliceFormDataFile> files = [];
           data.files.forEach((entry) {
-            files.add(AliceFormDataFile(entry.value.filename,
+            files.add(AliceFormDataFile(entry.value.filename!,
                 entry.value.contentType.toString(), entry.value.length));
           });
 
@@ -79,15 +80,17 @@ class AliceDioInterceptor extends InterceptorsWrapper {
     call.response = AliceHttpResponse();
 
     aliceCore.addCall(call);
-    return super.onRequest(options);
+    handler.next(options);
   }
 
   /// Handles dio response and adds data to alice http call
   @override
-  Future onResponse(Response response) {
-    assert(response != null, "response can't be null");
+  void onResponse(
+    Response response,
+    ResponseInterceptorHandler handler,
+  ) {
     var httpResponse = AliceHttpResponse();
-    httpResponse.status = response.statusCode;
+    httpResponse.status = response.statusCode!;
 
     if (response.data == null) {
       httpResponse.body = "";
@@ -99,21 +102,21 @@ class AliceDioInterceptor extends InterceptorsWrapper {
 
     httpResponse.time = DateTime.now();
     Map<String, String> headers = Map();
-    if (response.headers != null) {
-      response.headers.forEach((header, values) {
-        headers[header] = values.toString();
-      });
-    }
+    response.headers.forEach((header, values) {
+      headers[header] = values.toString();
+    });
     httpResponse.headers = headers;
 
-    aliceCore.addResponse(httpResponse, response.request.hashCode);
-    return super.onResponse(response);
+    aliceCore.addResponse(httpResponse, response.requestOptions.hashCode);
+    handler.next(response);
   }
 
   /// Handles error and adds data to alice http call
   @override
-  Future onError(DioError error) {
-    assert(error != null, "error can't be null");
+  void onError(
+    DioError error,
+    ErrorInterceptorHandler handler,
+  ) {
     var httpError = AliceHttpError();
     httpError.error = error.toString();
     if (error is Error) {
@@ -121,32 +124,32 @@ class AliceDioInterceptor extends InterceptorsWrapper {
       httpError.stackTrace = basicError.stackTrace;
     }
 
-    aliceCore.addError(httpError, error.request.hashCode);
+    aliceCore.addError(httpError, error.requestOptions.hashCode);
     var httpResponse = AliceHttpResponse();
     httpResponse.time = DateTime.now();
     if (error.response == null) {
       httpResponse.status = -1;
-      aliceCore.addResponse(httpResponse, error.request.hashCode);
+      aliceCore.addResponse(httpResponse, error.requestOptions.hashCode);
     } else {
-      httpResponse.status = error.response.statusCode;
+      httpResponse.status = error.response!.statusCode!;
 
-      if (error.response.data == null) {
+      if (error.response!.data == null) {
         httpResponse.body = "";
         httpResponse.size = 0;
       } else {
-        httpResponse.body = error.response.data;
-        httpResponse.size = utf8.encode(error.response.data.toString()).length;
+        httpResponse.body = error.response!.data;
+        httpResponse.size = utf8.encode(error.response!.data.toString()).length;
       }
       Map<String, String> headers = Map();
-      if (error.response.headers != null) {
-        error.response.headers.forEach((header, values) {
+      if (error.response?.headers != null) {
+        error.response!.headers.forEach((header, values) {
           headers[header] = values.toString();
         });
       }
       httpResponse.headers = headers;
-      aliceCore.addResponse(httpResponse, error.response.request.hashCode);
+      aliceCore.addResponse(
+          httpResponse, error.response!.requestOptions.hashCode);
     }
-
-    return super.onError(error);
+    handler.next(error);
   }
 }

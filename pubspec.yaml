@@ -5,24 +5,24 @@ author: Jakub Homlala <jhomlala@gmail.com>
 homepage: https://github.com/jhomlala/alice
 
 environment:
-  sdk: ">=2.6.0 <3.0.0"
-  flutter: ">=1.12.0 <2.0.0"
+  sdk: '>=2.12.0 <3.0.0'
 
 dependencies:
   flutter:
     sdk: flutter
-  http: ^0.12.0+4
-  dio: ^3.0.9
-  overlay_support: 1.0.3
-  rxdart: ^0.23.1
+  http: ^0.13.3
+  dio: ^4.0.0
+  overlay_support: 1.2.1
+  rxdart: ^0.26.0
 
-  path_provider: ^1.6.5
-  permission_handler: ^5.0.0+hotfix.3
-  package_info: ^0.4.0+6
-  share: ^0.6.3+6
-  chopper: ^3.0.2
+  path_provider: ^2.0.2
+  permission_handler: ^8.1.2
+  package_info: ^2.0.2
+  share: ^2.0.4
+  chopper: ^4.0.1
 
 #Dummy classes
+  collection: ^1.15.0
 flutter:
   plugin:
     platforms:

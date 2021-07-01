@@ -13,9 +13,7 @@ class AliceCallDetailsScreen extends StatefulWidget {
   final AliceHttpCall call;
   final AliceCore core;
 
-  AliceCallDetailsScreen(this.call, this.core)
-      : assert(call != null, "call can't be null"),
-        assert(core != null, "core can't be null");
+  AliceCallDetailsScreen(this.call, this.core);
 
   @override
   _AliceCallDetailsScreenState createState() => _AliceCallDetailsScreenState();
@@ -41,7 +39,7 @@ class _AliceCallDetailsScreenState extends State<AliceCallDetailsScreen>
         initialData: [widget.call],
         builder: (context, callsSnapshot) {
           if (callsSnapshot.hasData) {
-            AliceHttpCall call = callsSnapshot.data.firstWhere(
+            AliceHttpCall? call = callsSnapshot.data?.firstWhere(
                 (snapshotCall) => snapshotCall.id == widget.call.id,
                 orElse: null);
             if (call != null) {
@@ -93,7 +91,7 @@ class _AliceCallDetailsScreenState extends State<AliceCallDetailsScreen>
   }
 
   List<Widget> _getTabBars() {
-    List<Widget> widgets = List();
+    List<Widget> widgets = [];
     widgets.add(Tab(icon: Icon(Icons.info_outline), text: "Overview"));
     widgets.add(Tab(icon: Icon(Icons.arrow_upward), text: "Request"));
     widgets.add(Tab(icon: Icon(Icons.arrow_downward), text: "Response"));
@@ -107,7 +105,7 @@ class _AliceCallDetailsScreenState extends State<AliceCallDetailsScreen>
   }
 
   List<Widget> _getTabBarViewList() {
-    List<Widget> widgets = List();
+    List<Widget> widgets = [];
     widgets.add(AliceCallOverviewWidget(widget.call));
     widgets.add(AliceCallRequestWidget(widget.call));
     widgets.add(AliceCallResponseWidget(widget.call));
