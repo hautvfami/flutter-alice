@@ -13,10 +13,10 @@ dependencies:
   http: ^0.13.3
   dio: ^4.0.0
   overlay_support: 1.2.1
-  rxdart: ^0.26.0
+  rxdart: ^0.27.1
 
   path_provider: ^2.0.2
-  permission_handler: ^8.1.2
+  permission_handler: ^8.1.4+2
   package_info: ^2.0.2
   share: ^2.0.4
   chopper: ^4.0.1
