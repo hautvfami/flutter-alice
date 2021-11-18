@@ -1,7 +1,7 @@
 #!/bin/sh
 # This is a generated file; do not edit or check into version control.
-export "FLUTTER_ROOT=/Users/buiquocviet/fvm/versions/2.5.2"
-export "FLUTTER_APPLICATION_PATH=/Users/buiquocviet/AndroidStudioProjects/alice/example"
+export "FLUTTER_ROOT=/Users/hautv3/fvm/versions/2.5.2"
+export "FLUTTER_APPLICATION_PATH=/Users/hautv3/Development/FlutterProjects/alice/example"
 export "COCOAPODS_PARALLEL_CODE_SIGN=true"
 export "FLUTTER_TARGET=lib/main.dart"
 export "FLUTTER_BUILD_DIR=build"

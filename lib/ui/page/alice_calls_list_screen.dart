@@ -1,8 +1,8 @@
-import 'package:alice/model/alice_menu_item.dart';
-import 'package:alice/helper/alice_alert_helper.dart';
-import 'package:alice/ui/page/alice_call_details_screen.dart';
 import 'package:alice/core/alice_core.dart';
+import 'package:alice/helper/alice_alert_helper.dart';
 import 'package:alice/model/alice_http_call.dart';
+import 'package:alice/model/alice_menu_item.dart';
+import 'package:alice/ui/page/alice_call_details_screen.dart';
 import 'package:alice/ui/utils/alice_constants.dart';
 import 'package:alice/ui/widget/alice_call_list_item_widget.dart';
 import 'package:flutter/material.dart';
@@ -35,8 +35,9 @@ class _AliceCallsListScreenState extends State<AliceCallsListScreen> {
   Widget build(BuildContext context) {
     return Theme(
       data: ThemeData(
-          brightness: widget._aliceCore.brightness,
-          accentColor: AliceConstants.lightRed),
+        brightness: widget._aliceCore.brightness,
+        primarySwatch: Colors.green,
+      ),
       child: Scaffold(
         appBar: AppBar(
           title: _searchEnabled ? _buildSearchField() : _buildTitleWidget(),
@@ -105,8 +106,11 @@ class _AliceCallsListScreenState extends State<AliceCallsListScreen> {
       autofocus: true,
       decoration: InputDecoration(
         hintText: "Search http request...",
-        hintStyle: TextStyle(fontSize: 16.0, color: AliceConstants.grey),
-        border: InputBorder.none,
+        hintStyle: TextStyle(
+          fontSize: 16.0,
+          color: Colors.white,
+        ),
+        // border: InputBorder,
       ),
       style: TextStyle(fontSize: 16.0),
       onChanged: _updateSearchQuery,

@@ -126,21 +126,8 @@ class AliceCallListItemWidget extends StatelessWidget {
   Widget _buildResponseColumn(BuildContext context) {
     List<Widget> widgets = [];
     if (call.loading) {
-      widgets.add(
-        SizedBox(
-          child: new CircularProgressIndicator(
-            valueColor:
-                new AlwaysStoppedAnimation<Color>(AliceConstants.lightRed),
-          ),
-          width: 20,
-          height: 20,
-        ),
-      );
-      widgets.add(
-        const SizedBox(
-          height: 4,
-        ),
-      );
+      widgets.add(Text('Loading..', style: TextStyle(fontSize: 12)));
+      widgets.add(const SizedBox(height: 4));
     }
     widgets.add(
       Text(

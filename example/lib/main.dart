@@ -1,16 +1,16 @@
 import 'dart:convert';
 import 'dart:io';
+
 import 'package:alice/alice.dart';
-import 'package:alice_example/posts_service.dart';
-import 'package:chopper/chopper.dart';
-import 'package:http/http.dart' as http;
 import 'package:alice/core/alice_http_client_extensions.dart';
 import 'package:alice/core/alice_http_extensions.dart';
+import 'package:alice_example/posts_service.dart';
+import 'package:chopper/chopper.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:path_provider/path_provider.dart';
+import 'package:http/http.dart' as http;
 import 'package:overlay_support/overlay_support.dart';
-
+import 'package:path_provider/path_provider.dart';
 
 void main() => runApp(MyApp());
 
@@ -83,6 +83,10 @@ class _MyAppState extends State<MyApp> {
                 RaisedButton(
                   child: Text("Run HTTP Insepctor"),
                   onPressed: _runHttpInspector,
+                ),
+                RaisedButton(
+                  child: Text("test"),
+                  onPressed: () {},
                 )
               ],
             ),
@@ -157,7 +161,8 @@ class _MyAppState extends State<MyApp> {
   void _runHttpHttpRequests() async {
     Map<String, dynamic> body = {"title": "foo", "body": "bar", "userId": "1"};
     http
-        .post(Uri.parse('https://jsonplaceholder.typicode.com/posts'), body: body)
+        .post(Uri.parse('https://jsonplaceholder.typicode.com/posts'),
+            body: body)
         .interceptWithAlice(_alice, body: body);
 
     http
@@ -165,11 +170,13 @@ class _MyAppState extends State<MyApp> {
         .interceptWithAlice(_alice);
 
     http
-        .put(Uri.parse('https://jsonplaceholder.typicode.com/posts/1'), body: body)
+        .put(Uri.parse('https://jsonplaceholder.typicode.com/posts/1'),
+            body: body)
         .interceptWithAlice(_alice, body: body);
 
     http
-        .patch(Uri.parse('https://jsonplaceholder.typicode.com/posts/1'), body: body)
+        .patch(Uri.parse('https://jsonplaceholder.typicode.com/posts/1'),
+            body: body)
         .interceptWithAlice(_alice, body: body);
 
     http
@@ -181,23 +188,28 @@ class _MyAppState extends State<MyApp> {
         .interceptWithAlice(_alice);
 
     http
-        .post(Uri.parse('https://jsonplaceholder.typicode.com/posts'), body: body)
+        .post(Uri.parse('https://jsonplaceholder.typicode.com/posts'),
+            body: body)
         .then((response) {
       _alice.onHttpResponse(response, body: body);
     });
 
-    http.get(Uri.parse('https://jsonplaceholder.typicode.com/posts')).then((response) {
+    http
+        .get(Uri.parse('https://jsonplaceholder.typicode.com/posts'))
+        .then((response) {
       _alice.onHttpResponse(response);
     });
 
     http
-        .put(Uri.parse('https://jsonplaceholder.typicode.com/posts/1'), body: body)
+        .put(Uri.parse('https://jsonplaceholder.typicode.com/posts/1'),
+            body: body)
         .then((response) {
       _alice.onHttpResponse(response, body: body);
     });
 
     http
-        .patch(Uri.parse('https://jsonplaceholder.typicode.com/posts/1'), body: body)
+        .patch(Uri.parse('https://jsonplaceholder.typicode.com/posts/1'),
+            body: body)
         .then((response) {
       _alice.onHttpResponse(response, body: body);
     });
@@ -208,7 +220,9 @@ class _MyAppState extends State<MyApp> {
       _alice.onHttpResponse(response);
     });
 
-    http.get(Uri.parse('https://jsonplaceholder.typicode.com/test/test')).then((response) {
+    http
+        .get(Uri.parse('https://jsonplaceholder.typicode.com/test/test'))
+        .then((response) {
       _alice.onHttpResponse(response);
     });
   }
