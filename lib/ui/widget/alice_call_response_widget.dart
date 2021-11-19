@@ -1,5 +1,4 @@
 import 'package:alice/model/alice_http_call.dart';
-import 'package:alice/ui/utils/alice_constants.dart';
 import 'package:alice/ui/widget/alice_base_call_details_widget.dart';
 import 'package:flutter/material.dart';
 
@@ -156,8 +155,7 @@ class _AliceCallResponseWidgetState
           "Too large to show (${_call.response!.body.toString().length} Bytes)"));
       rows.add(const SizedBox(height: 8));
       rows.add(
-        RaisedButton(
-          color: AliceConstants.lightRed,
+        ElevatedButton(
           child: Text("Show body"),
           onPressed: () {
             setState(() {
@@ -175,7 +173,8 @@ class _AliceCallResponseWidgetState
   List<Widget> _buildTextBodyRows() {
     List<Widget> rows = [];
     var headers = _call.response!.headers;
-    var bodyContent = formatBody(_call.response!.body, getContentType(headers))!;
+    var bodyContent =
+        formatBody(_call.response!.body, getContentType(headers))!;
     rows.add(getListRow("Body:", bodyContent));
     return rows;
   }
@@ -197,9 +196,8 @@ class _AliceCallResponseWidgetState
               "If you're feeling lucky you can try button below to try render body"
               " as text, but it may fail."));
       rows.add(
-        RaisedButton(
+        ElevatedButton(
           child: Text("Show unsupported body"),
-          color: AliceConstants.lightRed,
           onPressed: () {
             setState(() {
               _showUnsupportedBody = true;

@@ -1,7 +1,6 @@
 import 'package:alice/core/alice_core.dart';
 import 'package:alice/helper/alice_conversion_helper.dart';
 import 'package:alice/model/alice_http_call.dart';
-import 'package:alice/ui/utils/alice_constants.dart';
 import 'package:flutter/material.dart';
 
 class AliceStatsScreen extends StatelessWidget {
@@ -13,8 +12,9 @@ class AliceStatsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Theme(
       data: ThemeData(
-          brightness: aliceCore.brightness,
-          accentColor: AliceConstants.lightRed),
+        brightness: aliceCore.brightness,
+        primarySwatch: Colors.green,
+      ),
       child: Scaffold(
         appBar: AppBar(
           title: Text("Alice - HTTP Inspector - Stats"),

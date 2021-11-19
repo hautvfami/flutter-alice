@@ -13,22 +13,20 @@ class AliceAlertHelper {
     Brightness? brightness,
   }) {
     List<Widget> actions = [];
-    if (firstButtonTitle != null) {
-      actions.add(
-        FlatButton(
-          child: Text(firstButtonTitle),
-          onPressed: () {
-            if (firstButtonAction != null) {
-              firstButtonAction();
-            }
-            Navigator.of(context).pop();
-          },
-        ),
-      );
-    }
+    actions.add(
+      ElevatedButton(
+        child: Text(firstButtonTitle),
+        onPressed: () {
+          if (firstButtonAction != null) {
+            firstButtonAction();
+          }
+          Navigator.of(context).pop();
+        },
+      ),
+    );
     if (secondButtonTitle != null) {
       actions.add(
-        FlatButton(
+        ElevatedButton(
           child: Text(secondButtonTitle),
           onPressed: () {
             if (secondButtonAction != null) {

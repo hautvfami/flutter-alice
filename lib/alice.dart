@@ -39,8 +39,13 @@ class Alice {
       this.darkTheme = false,
       this.notificationIcon = "@mipmap/ic_launcher"}) {
     _navigatorKey = navigatorKey ?? GlobalKey<NavigatorState>();
-    _aliceCore = AliceCore(_navigatorKey, showNotification,
-        showInspectorOnShake, darkTheme, notificationIcon);
+    _aliceCore = AliceCore(
+      _navigatorKey,
+      showNotification,
+      showInspectorOnShake,
+      darkTheme,
+      notificationIcon,
+    );
     _httpClientAdapter = AliceHttpClientAdapter(_aliceCore);
     _httpAdapter = AliceHttpAdapter(_aliceCore);
   }

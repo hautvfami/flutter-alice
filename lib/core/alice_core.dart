@@ -1,4 +1,5 @@
 import 'dart:async';
+
 import 'package:alice/core/debug_pop_up.dart';
 import 'package:alice/helper/alice_save_helper.dart';
 import 'package:alice/model/alice_http_call.dart';
@@ -38,9 +39,33 @@ class AliceCore {
   String? _notificationMessageShown;
   bool _notificationProcessing = false;
 
+  static AliceCore? _singleton;
+
+  factory AliceCore(
+    _navigatorKey,
+    showNotification,
+    showInspectorOnShake,
+    darkTheme,
+    notificationIcon,
+  ) {
+    _singleton ??= AliceCore._(
+      _navigatorKey,
+      showNotification,
+      showInspectorOnShake,
+      darkTheme,
+      notificationIcon,
+    );
+    return _singleton!;
+  }
+
   /// Creates alice core instance
-  AliceCore(this._navigatorKey, this.showNotification,
-      this.showInspectorOnShake, this.darkTheme, this.notificationIcon) {
+  AliceCore._(
+    this._navigatorKey,
+    this.showNotification,
+    this.showInspectorOnShake,
+    this.darkTheme,
+    this.notificationIcon,
+  ) {
     if (showNotification) {
       _callsSubscription = callsSubject.listen((_) => _onCallsChanged());
     }
@@ -56,10 +81,6 @@ class AliceCore {
 
   /// Get currently used brightness
   Brightness get brightness => _brightness;
-
-
-
-
 
   void _onCallsChanged() async {
     if (callsSubject.value.length > 0) {
@@ -202,7 +223,8 @@ class AliceCore {
     callsSubject.add([]);
   }
 
-  AliceHttpCall? _selectCall(int requestId) => callsSubject.value.firstWhereOrNull((call) => call.id == requestId);
+  AliceHttpCall? _selectCall(int requestId) =>
+      callsSubject.value.firstWhereOrNull((call) => call.id == requestId);
 
   /// Save all calls to file
   void saveHttpRequests(BuildContext context) {
@@ -222,13 +244,15 @@ class AliceCore {
     isShowedBubble = true;
     showOverlay((context, t) {
       return Opacity(
-          opacity: t,
-          child: DebugPopUp(
-            callsSubscription: callsSubject.stream,
-            onClicked: () {
-              navigateToCallListScreen();
-            },
-          ));
+        opacity: t,
+        child: DebugPopUp(
+          callsSubscription: callsSubject.stream,
+          onClicked: () {
+            navigateToCallListScreen();
+          },
+          aliceCore: this,
+        ),
+      );
     }, duration: Duration.zero);
   }
 }

@@ -46,9 +46,13 @@ class AliceCallListItemWidget extends StatelessWidget {
   Widget _buildMethodAndEndpointRow(BuildContext context) {
     Color? textColor = _getEndpointTextColor(context);
     return Row(children: [
-      Text(
-        call.method,
-        style: TextStyle(fontSize: 16, color: textColor),
+      Flexible(
+        child: Text(
+          call.method,
+          style: TextStyle(fontSize: 16, color: textColor),
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+        ),
       ),
       Padding(
         padding: EdgeInsets.only(left: 10),
