@@ -3,11 +3,16 @@ import 'dart:math';
 import 'dart:ui';
 
 import 'package:alice/model/alice_http_call.dart';
+import 'package:alice/ui/page/alice_stats_screen.dart';
 import 'package:flutter/material.dart';
+
+import 'alice_core.dart';
+import 'expandable_fab.dart';
 
 class DebugPopUp extends StatefulWidget {
   final VoidCallback onClicked;
   final Stream<List<AliceHttpCall>> callsSubscription;
+  final AliceCore aliceCore;
 
   ///class widget to show overlay bubble describes the number request count and is a place to navigate to alice inspector.
   ///[onClicked] call back when user clicked in debug point
@@ -16,6 +21,7 @@ class DebugPopUp extends StatefulWidget {
     Key? key,
     required this.onClicked,
     required this.callsSubscription,
+    required this.aliceCore,
   }) : super(key: key);
 
   @override
@@ -61,22 +67,48 @@ class _DebugPopUpState extends State<DebugPopUp> {
     VoidCallback onClicked,
     Stream<List<AliceHttpCall>> stream,
   ) {
-    return Opacity(
-      opacity: 0.6,
-      child: FloatingActionButton(
-        child: StreamBuilder<List<AliceHttpCall>>(
-          initialData: [],
-          stream: stream,
-          builder: (_, snapshot) {
-            final counter = min(snapshot.data?.length ?? 0, 99);
-            return Text("$counter");
-          },
+    return ExpandableFab(
+      distance: 100,
+      bigButton: Opacity(
+        opacity: 0.6,
+        child: FloatingActionButton(
+          child: StreamBuilder<List<AliceHttpCall>>(
+            initialData: [],
+            stream: stream,
+            builder: (_, sns) {
+              final counter = min(sns.data?.length ?? 0, 99);
+              return Text("$counter");
+            },
+          ),
+          backgroundColor: Colors.green,
+          foregroundColor: Colors.white,
+          onPressed: onClicked,
+          mini: true,
+          enableFeedback: true,
         ),
-        backgroundColor: Colors.green,
-        foregroundColor: Colors.white,
-        onPressed: onClicked,
-        mini: true,
-        tooltip: 'I\'m Alice',
+      ),
+      children: [
+        ActionButton(
+          onPressed: () => widget.aliceCore.removeCalls(),
+          icon: Icon(Icons.delete, color: Colors.white),
+        ),
+        ActionButton(
+          onPressed: _showStatsScreen,
+          icon: Icon(Icons.insert_chart, color: Colors.white),
+        ),
+        ActionButton(
+          onPressed: () => widget.aliceCore.saveHttpRequests(context),
+          icon: Icon(Icons.save, color: Colors.white),
+        ),
+      ],
+    );
+  }
+
+  void _showStatsScreen() {
+    Navigator.push(
+      widget.aliceCore.getContext()!,
+      MaterialPageRoute(
+        builder: (context) => AliceStatsScreen(widget.aliceCore),
       ),
     );
   }

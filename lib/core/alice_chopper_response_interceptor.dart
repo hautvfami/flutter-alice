@@ -6,6 +6,7 @@ import 'package:alice/model/alice_http_request.dart';
 import 'package:alice/model/alice_http_response.dart';
 import 'package:chopper/chopper.dart' as chopper;
 import 'package:http/http.dart';
+
 import 'alice_core.dart';
 
 class AliceChopperInterceptor extends chopper.ResponseInterceptor
@@ -20,9 +21,7 @@ class AliceChopperInterceptor extends chopper.ResponseInterceptor
   int getRequestHashCode(BaseRequest baseRequest) {
     int hashCodeSum = 0;
     hashCodeSum += baseRequest.url.hashCode;
-    if (baseRequest.method != null) {
-      hashCodeSum += baseRequest.method.hashCode;
-    }
+    hashCodeSum += baseRequest.method.hashCode;
     if (baseRequest.headers.isNotEmpty) {
       baseRequest.headers.forEach((key, value) {
         hashCodeSum += key.hashCode;

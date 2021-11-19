@@ -29,7 +29,10 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     _alice = Alice(
-        showNotification: true, showInspectorOnShake: true, darkTheme: false);
+      showNotification: true,
+      showInspectorOnShake: true,
+      darkTheme: false,
+    );
     _dio = Dio(BaseOptions(followRedirects: false));
     _dio.interceptors.add(_alice.getDioInterceptor());
     _httpClient = HttpClient();
@@ -45,8 +48,7 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return OverlaySupport(
       child: MaterialApp(
-        theme: ThemeData(
-            primaryColor: Color(0xffff5e57), accentColor: Color(0xffff3f34)),
+        theme: ThemeData(primaryColor: Color(0xffff5e57)),
         navigatorKey: _alice.getNavigatorKey(),
         debugShowCheckedModeBanner: false,
         home: Scaffold(
@@ -60,19 +62,19 @@ class _MyAppState extends State<MyApp> {
                 const SizedBox(height: 8),
                 _getTextWidget(
                     "Welcome to example of Alice Http Inspector. Click buttons below to generate sample data."),
-                RaisedButton(
+                ElevatedButton(
                   child: Text("Run Dio HTTP Requests"),
                   onPressed: _runDioRequests,
                 ),
-                RaisedButton(
+                ElevatedButton(
                   child: Text("Run http/http HTTP Requests"),
                   onPressed: _runHttpHttpRequests,
                 ),
-                RaisedButton(
+                ElevatedButton(
                   child: Text("Run HttpClient Requests"),
                   onPressed: _runHttpHttpClientRequests,
                 ),
-                RaisedButton(
+                ElevatedButton(
                   child: Text("Run Chopper HTTP Requests"),
                   onPressed: _runChopperHttpRequests,
                 ),
@@ -80,13 +82,15 @@ class _MyAppState extends State<MyApp> {
                 _getTextWidget(
                     "After clicking on buttons above, you should receive notification."
                     " Click on it to show inspector. You can also shake your device or click button below."),
-                RaisedButton(
+                ElevatedButton(
                   child: Text("Run HTTP Insepctor"),
                   onPressed: _runHttpInspector,
                 ),
-                RaisedButton(
+                ElevatedButton(
                   child: Text("test"),
-                  onPressed: () {},
+                  onPressed: () {
+                    _dio.interceptors.add(_alice.getDioInterceptor());
+                  },
                 )
               ],
             ),
