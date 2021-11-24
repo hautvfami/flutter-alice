@@ -1,10 +1,10 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:alice/helper/alice_conversion_helper.dart';
-import 'package:alice/model/alice_http_call.dart';
-import 'package:alice/ui/utils/alice_parser.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_alice/helper/alice_conversion_helper.dart';
+import 'package:flutter_alice/model/alice_http_call.dart';
+import 'package:flutter_alice/ui/utils/alice_parser.dart';
 import 'package:package_info/package_info.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';

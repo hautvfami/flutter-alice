@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:alice/alice.dart';
+import 'package:flutter_alice/alice.dart';
 
 extension AliceHttpClientExtensions on Future<HttpClientRequest> {
   /// Intercept http client with alice. This extension method provides additional

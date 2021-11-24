@@ -1,9 +1,9 @@
 import 'dart:convert';
 
-import 'package:alice/core/alice_core.dart';
-import 'package:alice/model/alice_http_call.dart';
-import 'package:alice/model/alice_http_request.dart';
-import 'package:alice/model/alice_http_response.dart';
+import 'package:flutter_alice/core/alice_core.dart';
+import 'package:flutter_alice/model/alice_http_call.dart';
+import 'package:flutter_alice/model/alice_http_request.dart';
+import 'package:flutter_alice/model/alice_http_response.dart';
 import 'package:http/http.dart' as http;
 
 class AliceHttpAdapter {
@@ -15,7 +15,6 @@ class AliceHttpAdapter {
 
   /// Handles http response. It creates both request and response from http call
   void onResponse(http.Response response, {dynamic body}) {
-
     if (response.request == null) {
       return;
     }

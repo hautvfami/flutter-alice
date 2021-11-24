@@ -2,9 +2,9 @@ import 'dart:async';
 import 'dart:math';
 import 'dart:ui';
 
-import 'package:alice/model/alice_http_call.dart';
-import 'package:alice/ui/page/alice_stats_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_alice/model/alice_http_call.dart';
+import 'package:flutter_alice/ui/page/alice_stats_screen.dart';
 
 import 'alice_core.dart';
 import 'expandable_fab.dart';

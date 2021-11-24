@@ -1,14 +1,14 @@
 import 'dart:async';
 
-import 'package:alice/core/debug_pop_up.dart';
-import 'package:alice/helper/alice_save_helper.dart';
-import 'package:alice/model/alice_http_call.dart';
-import 'package:alice/model/alice_http_error.dart';
-import 'package:alice/model/alice_http_response.dart';
-import 'package:alice/ui/page/alice_calls_list_screen.dart';
 import 'package:collection/collection.dart' show IterableExtension;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_alice/core/debug_pop_up.dart';
+import 'package:flutter_alice/helper/alice_save_helper.dart';
+import 'package:flutter_alice/model/alice_http_call.dart';
+import 'package:flutter_alice/model/alice_http_error.dart';
+import 'package:flutter_alice/model/alice_http_response.dart';
+import 'package:flutter_alice/ui/page/alice_calls_list_screen.dart';
 import 'package:overlay_support/overlay_support.dart';
 import 'package:rxdart/rxdart.dart';
 
