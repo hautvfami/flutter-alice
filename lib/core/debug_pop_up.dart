@@ -30,12 +30,17 @@ class DebugPopUp extends StatefulWidget {
 
 class _DebugPopUpState extends State<DebugPopUp> {
   Offset _offset = Offset.zero;
+  final _expandedDistance = 100.0;
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     final _size = MediaQuery.of(context).size;
-    _offset = Offset(_size.width - 50, _size.height / 2);
+    final _rightSide = _expandedDistance + kToolbarHeight + 20;
+    _offset = Offset(
+      _size.width - _rightSide,
+      _size.height / 2 - _expandedDistance,
+    );
   }
 
   @override
@@ -68,7 +73,7 @@ class _DebugPopUpState extends State<DebugPopUp> {
     Stream<List<AliceHttpCall>> stream,
   ) {
     return ExpandableFab(
-      distance: 100,
+      distance: _expandedDistance,
       bigButton: Opacity(
         opacity: 0.6,
         child: FloatingActionButton(
@@ -108,7 +113,7 @@ class _DebugPopUpState extends State<DebugPopUp> {
     Navigator.push(
       widget.aliceCore.getContext()!,
       MaterialPageRoute(
-        builder: (context) => AliceStatsScreen(widget.aliceCore),
+        builder: (_) => AliceStatsScreen(widget.aliceCore),
       ),
     );
   }

@@ -63,11 +63,12 @@ class _ExpandableFabState extends State<ExpandableFab>
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      color: Colors.transparent,
+    return Container(
+      width: widget.distance + 58,
+      height: widget.distance + 58,
       child: Stack(
-        alignment: Alignment.bottomRight,
         clipBehavior: Clip.none,
+        alignment: Alignment.bottomRight,
         children: [
           _buildTapToCloseFab(),
           ..._buildExpandingActionButtons(),
