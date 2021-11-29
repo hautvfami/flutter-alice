@@ -4,7 +4,6 @@ import 'package:collection/collection.dart' show IterableExtension;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_alice/core/debug_pop_up.dart';
-import 'package:flutter_alice/helper/alice_save_helper.dart';
 import 'package:flutter_alice/model/alice_http_call.dart';
 import 'package:flutter_alice/model/alice_http_error.dart';
 import 'package:flutter_alice/model/alice_http_response.dart';
@@ -225,11 +224,6 @@ class AliceCore {
 
   AliceHttpCall? _selectCall(int requestId) =>
       callsSubject.value.firstWhereOrNull((call) => call.id == requestId);
-
-  /// Save all calls to file
-  void saveHttpRequests(BuildContext context) {
-    AliceSaveHelper.saveCalls(context, callsSubject.value, _brightness);
-  }
 
   bool isShowedBubble = false;
 

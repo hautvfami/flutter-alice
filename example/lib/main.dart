@@ -10,7 +10,6 @@ import 'package:flutter_alice/core/alice_http_client_extensions.dart';
 import 'package:flutter_alice/core/alice_http_extensions.dart';
 import 'package:http/http.dart' as http;
 import 'package:overlay_support/overlay_support.dart';
-import 'package:path_provider/path_provider.dart';
 
 void main() => runApp(MyApp());
 
@@ -48,7 +47,7 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return OverlaySupport(
       child: MaterialApp(
-        theme: ThemeData(primaryColor: Color(0xffff5e57)),
+        theme: ThemeData(primarySwatch: Colors.blue),
         navigatorKey: _alice.getNavigatorKey(),
         debugShowCheckedModeBanner: false,
         home: Scaffold(
@@ -147,17 +146,6 @@ class _MyAppState extends State<MyApp> {
     _dio.get("http://techslides.com/demos/sample-videos/small.mp4");
 
     _dio.get("https://www.cse.wustl.edu/~jain/cis677-97/ftp/e_3dlc2.pdf");
-
-    final directory = await getApplicationDocumentsDirectory();
-    File file = File("${directory.path}/test.txt");
-    file.create();
-    file.writeAsStringSync("123456789");
-
-    String fileName = file.path.split('/').last;
-    FormData formData = FormData.fromMap({
-      "file": await MultipartFile.fromFile(file.path, filename: fileName),
-    });
-    _dio.post("https://jsonplaceholder.typicode.com/photos", data: formData);
 
     _dio.get("http://dummy.restapiexample.com/api/v1/employees");
   }

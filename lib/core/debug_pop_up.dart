@@ -101,10 +101,6 @@ class _DebugPopUpState extends State<DebugPopUp> {
           onPressed: _showStatsScreen,
           icon: Icon(Icons.insert_chart, color: Colors.white),
         ),
-        ActionButton(
-          onPressed: () => widget.aliceCore.saveHttpRequests(context),
-          icon: Icon(Icons.save, color: Colors.white),
-        ),
       ],
     );
   }
