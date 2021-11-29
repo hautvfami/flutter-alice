@@ -1,14 +1,14 @@
-<p align="center">
-<img src="https://raw.githubusercontent.com/hautvfami/flutter-alice/main/media/logo.png" width="250px">
-</p>
+# Alice <img src="https://raw.githubusercontent.com/hautvfami/flutter-alice/main/media/logo.png" width="25px">
 
-# Alice
+[![pub package](https://img.shields.io/pub/v/flutter_alice.svg)](https://pub.dev/packages/flutter_alice)
+[![pub package](https://img.shields.io/github/license/hautvfami/flutter-alice.svg?style=flat)](https://github.com/hautvfami/flutter-alice)
+[![pub package](https://img.shields.io/badge/platform-flutter-blue.svg)](https://github.com/hautvfami/flutter-alice)
 
-[![pub package](https://img.shields.io/pub/v/alice.svg)](https://pub.dartlang.org/packages/alice)
-[![pub package](https://img.shields.io/github/license/jhomlala/alice.svg?style=flat)](https://github.com/jhomlala/alice)
-[![pub package](https://img.shields.io/badge/platform-flutter-blue.svg)](https://github.com/jhomlala/alice)
+Alice is an HTTP Inspector tool for Flutter which helps debugging http requests. 
+It catches and stores http requests and responses, which can be viewed via simple UI. 
+It is inspired from Chuck (https://github.com/jgilfelt/chuck) and Chucker (https://github.com/ChuckerTeam/chucker).
 
-Alice is an HTTP Inspector tool for Flutter which helps debugging http requests. It catches and stores http requests and responses, which can be viewed via simple UI. It is inspired from Chuck (https://github.com/jgilfelt/chuck) and Chucker (https://github.com/ChuckerTeam/chucker).
+
 Overlay bubble version of Alice: https://github.com/jhomlala/alice
 
 <table>
@@ -66,13 +66,11 @@ Overlay bubble version of Alice: https://github.com/jhomlala/alice
 **Features:**  
 ✔️ Detailed logs for each HTTP calls (HTTP Request, HTTP Response)  
 ✔️ Inspector UI for viewing HTTP calls  
-✔️ Save HTTP calls to file  
 ✔️ Statistics  
-✔️ Notification on HTTP call  
 ✔️ Support for top used HTTP clients in Dart  
 ✔️ Error handling  
-✔️ Shake to open inspector  
 ✔️ HTTP calls search
+✔️ Bubble overlay entry
 
 ## Install
 
@@ -80,13 +78,13 @@ Overlay bubble version of Alice: https://github.com/jhomlala/alice
 
 ```yaml
 dependencies:
-  alice: ^0.1.5
+  flutter_alice: ^1.0.1
 ```
 
 2. Install it
 
 ```bash
-$ flutter packages get
+$ flutter pub get
 ```
 
 3. Import it
@@ -113,7 +111,7 @@ You need to add this navigator key in order to show inspector UI.
 You can use also your navigator key in Alice:
 
 ```dart
-Alice alice = Alice(showNotification: true, navigatorKey: yourNavigatorKeyHere);
+Alice alice = Alice(navigatorKey: yourNavigatorKeyHere);
 ```
 
 If you need to pass navigatorKey lazily, you can use:
@@ -123,27 +121,10 @@ alice.setNavigatorKey(yourNavigatorKeyHere);
 This is minimal configuration required to run Alice. Can set optional settings in Alice constructor, which are presented below. If you don't want to change anything, you can move to Http clients configuration.
 
 ### Additional settings
-
-You can set `showNotification` in Alice constructor to show notification. Clicking on this notification will open inspector.
-```dart
-Alice alice = Alice(..., showNotification: true);
-```
-
-You can set `showInspectorOnShake` in Alice constructor to open inspector by shaking your device (default disabled):
-
-```dart
-Alice alice = Alice(..., showInspectorOnShake: true);
-```
-
 If you want to use dark mode just add `darkTheme` flag:
 
 ```dart
 Alice alice = Alice(..., darkTheme: true);
-```
-
-If you want to pass another notification icon, you can use `notificationIcon` parameter. Default value is @mipmap/ic_launcher.
-```dart
-Alice alice = Alice(..., notificationIcon: "myNotificationIconResourceName");
 ```
 
 ### HTTP Client configuration
@@ -190,22 +171,6 @@ AliceHttpCall aliceHttpCall = AliceHttpCall(id);
 alice.addHttpCall(aliceHttpCall);
 ```
 
-## Show inspector manually
-
-You may need that if you won't use shake or notification:
-
-```dart
-alice.showInspector();
-```
-
-## Saving calls
-
-Alice supports saving logs to your mobile device storage. In order to make save feature works, you need to add in your Android application manifest:
-
-```xml
-<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-```
-
 ## Extensions
 You can use extensions to shorten your http and http client code. This is optional, but may improve your codebase.
 Example:
@@ -227,16 +192,3 @@ httpClient
     .postUrl(Uri.parse("https://jsonplaceholder.typicode.com/posts"))
     .interceptWithAlice(alice, body: body, headers: Map());
 ```
-
-
-## Example
-See complete example here: https://github.com/jhomlala/alice/blob/master/example/lib/main.dart
-To run project, you need to call this command in your terminal:
-```bash
-flutter pub run build_runner build --delete-conflicting-outputs
-```
-You need to run this command to build Chopper generated classes. You should run this command only once,
-you don't need to run this command each time before running project (unless you modify something in Chopper endpoints).
-<p align="center">
- <img width="250px" src="https://raw.githubusercontent.com/hautvfami/flutter-alice/main/media/13.png">
-<p align="center">
