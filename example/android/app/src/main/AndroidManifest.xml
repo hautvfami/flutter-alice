@@ -10,7 +10,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <application
         android:networkSecurityConfig="@xml/network_security_config"
-        android:name="io.flutter.app.FlutterApplication"
+         android:name="${applicationName}"
         android:label="Alice Example"
         android:icon="@mipmap/ic_launcher">
         <activity
@@ -27,6 +27,9 @@
             <meta-data
                 android:name="io.flutter.app.android.SplashScreenUntilFirstFrame"
                 android:value="true" />
+             <meta-data
+                android:name="flutterEmbedding"
+                android:value="2" />
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>

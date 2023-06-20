@@ -9,7 +9,7 @@ dependencies:
   flutter:
     sdk: flutter
   chopper: ^4.0.1
-  dio: ^4.0.0
+  dio: ^5.1.1
   overlay_support: ^1.2.1
   share: ^2.0.4
   rxdart: ^0.27.1
