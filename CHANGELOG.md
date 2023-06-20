@@ -1,3 +1,6 @@
+## 1.1.0
+* Upgrade Dio ^5.
+
 ## 0.1.5
 * Changed video_player and Chewie to Better Player. Better Player will be used to display videos.
 
