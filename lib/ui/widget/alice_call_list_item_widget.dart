@@ -152,7 +152,7 @@ class AliceCallListItemWidget extends StatelessWidget {
     if (status == -1) {
       return AliceConstants.red;
     } else if (status < 200) {
-      return Theme.of(context).textTheme.bodyText1!.color;
+      return Theme.of(context).textTheme.bodyLarge!.color;
     } else if (status >= 200 && status < 300) {
       return AliceConstants.green;
     } else if (status >= 300 && status < 400) {
@@ -160,7 +160,7 @@ class AliceCallListItemWidget extends StatelessWidget {
     } else if (status >= 400 && status < 600) {
       return AliceConstants.red;
     } else {
-      return Theme.of(context).textTheme.bodyText1!.color;
+      return Theme.of(context).textTheme.bodyLarge!.color;
     }
   }
 
