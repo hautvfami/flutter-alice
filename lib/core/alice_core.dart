@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_alice/core/debug_pop_up.dart';
 import 'package:flutter_alice/model/alice_http_call.dart';
