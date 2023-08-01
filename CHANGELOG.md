@@ -1,3 +1,7 @@
+## 1.1.1
+* Upgrade overlay_support: ^2.1.0
+* Replaced deprecated DioError with DioException
+* Fixed minor lint error
 ## 1.1.0
 * Upgrade Dio ^5.
 
