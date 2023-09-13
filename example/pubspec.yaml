@@ -14,7 +14,7 @@ dependencies:
   dio: ^5.1.1
   chopper: ^7.0.6
   overlay_support: ^2.1.0
-  share: ^2.0.4
+  share_plus: ^7.1.0
   rxdart: ^0.27.1
 
 dev_dependencies:
