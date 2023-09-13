@@ -10,9 +10,9 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  http: ^0.13.3
+  http: ^1.1.0
   dio: ^5.1.1
-  chopper: ^4.0.1
+  chopper: ^7.0.6
   overlay_support: ^2.1.0
   share: ^2.0.4
   rxdart: ^0.27.1

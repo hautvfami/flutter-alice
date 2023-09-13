@@ -10,15 +10,16 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  chopper: ^4.0.1
+  http: ^1.1.0
   dio: ^5.1.1
+  chopper: ^7.0.6
   overlay_support: ^2.1.0
   share: ^2.0.4
   rxdart: ^0.27.1
 
 dev_dependencies:
   build_runner: ^2.0.6
-  chopper_generator: 4.0.1
+  chopper_generator: 7.0.4
   flutter_alice:
     path: ../
 

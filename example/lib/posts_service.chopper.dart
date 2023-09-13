@@ -19,7 +19,7 @@ class _$PostsService extends PostsService {
   @override
   Future<Response<dynamic>> getPost(String id) {
     final $url = 'https://jsonplaceholder.typicode.com/posts/$id';
-    final $request = Request('GET', $url, client.baseUrl);
+    final $request = Request('GET', Uri.parse($url), client.baseUrl);
     return client.send<dynamic, dynamic>($request);
   }
 
@@ -27,7 +27,8 @@ class _$PostsService extends PostsService {
   Future<Response<dynamic>> postPost(Map<String, dynamic>? body) {
     final $url = 'https://jsonplaceholder.typicode.com/posts/';
     final $body = body;
-    final $request = Request('POST', $url, client.baseUrl, body: $body);
+    final $request =
+        Request('POST', Uri.parse($url), client.baseUrl, body: $body);
     return client.send<dynamic, dynamic>($request);
   }
 
@@ -35,7 +36,8 @@ class _$PostsService extends PostsService {
   Future<Response<dynamic>> putPost(String id, Map<String, dynamic>? body) {
     final $url = 'https://jsonplaceholder.typicode.com/posts/$id';
     final $body = body;
-    final $request = Request('PUT', $url, client.baseUrl, body: $body);
+    final $request =
+        Request('PUT', Uri.parse($url), client.baseUrl, body: $body);
     return client.send<dynamic, dynamic>($request);
   }
 }

@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:alice_example/posts_service.dart';
 import 'package:chopper/chopper.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +9,8 @@ import 'package:flutter_alice/core/alice_http_client_extensions.dart';
 import 'package:flutter_alice/core/alice_http_extensions.dart';
 import 'package:http/http.dart' as http;
 import 'package:overlay_support/overlay_support.dart';
+
+import 'posts_service.dart';
 
 void main() => runApp(MyApp());
 
