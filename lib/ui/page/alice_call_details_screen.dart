@@ -7,27 +7,20 @@ import 'package:flutter_alice/ui/widget/alice_call_error_widget.dart';
 import 'package:flutter_alice/ui/widget/alice_call_overview_widget.dart';
 import 'package:flutter_alice/ui/widget/alice_call_request_widget.dart';
 import 'package:flutter_alice/ui/widget/alice_call_response_widget.dart';
-import 'package:share/share.dart';
+import 'package:share_plus/share_plus.dart';
 
 class AliceCallDetailsScreen extends StatefulWidget {
   final AliceHttpCall call;
   final AliceCore core;
-
-  AliceCallDetailsScreen(this.call, this.core);
+  const AliceCallDetailsScreen(this.call, this.core, {super.key});
 
   @override
-  _AliceCallDetailsScreenState createState() => _AliceCallDetailsScreenState();
+  State<AliceCallDetailsScreen> createState() => _AliceCallDetailsScreenState();
 }
 
 class _AliceCallDetailsScreenState extends State<AliceCallDetailsScreen>
     with SingleTickerProviderStateMixin {
   AliceHttpCall get call => widget.call;
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Theme(
@@ -41,8 +34,8 @@ class _AliceCallDetailsScreenState extends State<AliceCallDetailsScreen>
         builder: (context, callsSnapshot) {
           if (callsSnapshot.hasData) {
             AliceHttpCall? call = callsSnapshot.data?.firstWhere(
-                (snapshotCall) => snapshotCall.id == widget.call.id,
-                orElse: null);
+              (snapshotCall) => snapshotCall.id == widget.call.id,
+            );
             if (call != null) {
               return _buildMainWidget();
             } else {
@@ -62,19 +55,19 @@ class _AliceCallDetailsScreenState extends State<AliceCallDetailsScreen>
       child: Scaffold(
         floatingActionButton: FloatingActionButton(
           backgroundColor: AliceConstants.lightRed,
-          key: Key('share_key'),
+          key: const Key('share_key'),
           onPressed: () async {
             Share.share(await _getSharableResponseString(),
                 subject: 'Request Details');
           },
-          child: Icon(Icons.share),
+          child: const Icon(Icons.share),
         ),
         appBar: AppBar(
           bottom: TabBar(
             indicatorColor: AliceConstants.lightRed,
             tabs: _getTabBars(),
           ),
-          title: Text('Alice - HTTP Call Details'),
+          title: const Text('Alice - HTTP Call Details'),
         ),
         body: TabBarView(
           children: _getTabBarViewList(),
@@ -84,7 +77,7 @@ class _AliceCallDetailsScreenState extends State<AliceCallDetailsScreen>
   }
 
   Widget _buildErrorWidget() {
-    return Center(child: Text("Failed to load data"));
+    return const Center(child: Text("Failed to load data"));
   }
 
   Future<String> _getSharableResponseString() async {
@@ -93,11 +86,11 @@ class _AliceCallDetailsScreenState extends State<AliceCallDetailsScreen>
 
   List<Widget> _getTabBars() {
     List<Widget> widgets = [];
-    widgets.add(Tab(icon: Icon(Icons.info_outline), text: "Overview"));
-    widgets.add(Tab(icon: Icon(Icons.arrow_upward), text: "Request"));
-    widgets.add(Tab(icon: Icon(Icons.arrow_downward), text: "Response"));
+    widgets.add(const Tab(icon: Icon(Icons.info_outline), text: "Overview"));
+    widgets.add(const Tab(icon: Icon(Icons.arrow_upward), text: "Request"));
+    widgets.add(const Tab(icon: Icon(Icons.arrow_downward), text: "Response"));
     widgets.add(
-      Tab(
+      const Tab(
         icon: Icon(Icons.warning),
         text: "Error",
       ),

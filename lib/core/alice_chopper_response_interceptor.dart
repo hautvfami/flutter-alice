@@ -9,8 +9,7 @@ import 'package:http/http.dart';
 
 import 'alice_core.dart';
 
-class AliceChopperInterceptor extends chopper.ResponseInterceptor
-    with chopper.RequestInterceptor {
+class AliceChopperInterceptor implements chopper.ResponseInterceptor {
   /// AliceCore instance
   final AliceCore aliceCore;
 
@@ -36,34 +35,34 @@ class AliceChopperInterceptor extends chopper.ResponseInterceptor
   }
 
   /// Handles chopper request and creates alice http call
-  @override
   FutureOr<chopper.Request> onRequest(chopper.Request request) async {
     var baseRequest = await request.toBaseRequest();
     AliceHttpCall call = AliceHttpCall(getRequestHashCode(baseRequest));
     String endpoint = "";
     String server = "";
-    if (request.baseUrl.isEmpty) {
-      List<String> split = request.url.split("/");
+    if (request.baseUri.hasEmptyPath) {
+      List<String> split = Uri.parse("${request.url}").toString().split("/");
       if (split.length > 2) {
         server = split[1] + split[2];
       }
       if (split.length > 4) {
         endpoint = "/";
         for (int splitIndex = 3; splitIndex < split.length; splitIndex++) {
-          endpoint += split[splitIndex] + "/";
+          endpoint += "${split[splitIndex]}/";
         }
         endpoint = endpoint.substring(0, endpoint.length - 1);
       }
     } else {
-      endpoint = request.url;
-      server = request.baseUrl;
+      endpoint = Uri.parse("${request.url}").toString();
+      server = Uri.parse("${request.baseUri}").toString();
     }
 
     call.method = request.method;
     call.endpoint = endpoint;
     call.server = server;
     call.client = "Chopper";
-    if (request.baseUrl.contains("https") || request.url.contains("https")) {
+    if (Uri.parse("${request.baseUri}").toString().contains("https") ||
+        Uri.parse("${request.url}").toString().contains("https")) {
       call.secure = true;
     }
 
@@ -94,6 +93,7 @@ class AliceChopperInterceptor extends chopper.ResponseInterceptor
   }
 
   /// Handles chopper response and adds data to existing alice http call
+  @override
   FutureOr<chopper.Response> onResponse(chopper.Response response) {
     var httpResponse = AliceHttpResponse();
     httpResponse.status = response.statusCode;
@@ -106,7 +106,7 @@ class AliceChopperInterceptor extends chopper.ResponseInterceptor
     }
 
     httpResponse.time = DateTime.now();
-    Map<String, String> headers = Map();
+    Map<String, String> headers = {};
     response.headers.forEach((header, values) {
       headers[header] = values.toString();
     });
