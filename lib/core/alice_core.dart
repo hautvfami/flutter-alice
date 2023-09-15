@@ -176,7 +176,7 @@ class AliceCore {
 
   /// Add alice http call to calls subject
   void addCall(AliceHttpCall call) {
-    callsSubject.add([...callsSubject.value, call]);
+    callsSubject.add([call, ...callsSubject.value]);
   }
 
   /// Add error to exisng alice http call

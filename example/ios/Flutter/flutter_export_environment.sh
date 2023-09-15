@@ -1,6 +1,6 @@
 #!/bin/sh
 # This is a generated file; do not edit or check into version control.
-export "FLUTTER_ROOT=/Users/tungakanui/development/flutter"
+export "FLUTTER_ROOT=/Users/tungakanui/fvm/versions/3.13.4"
 export "FLUTTER_APPLICATION_PATH=/Users/tungakanui/development/flutter-alice/example"
 export "COCOAPODS_PARALLEL_CODE_SIGN=true"
 export "FLUTTER_TARGET=lib/main.dart"
