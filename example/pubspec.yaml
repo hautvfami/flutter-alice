@@ -1,25 +1,25 @@
 name: alice_example
 description: Demonstrates how to use the Alice plugin.
-publish_to: 'none'
+publish_to: "none"
 
 version: 1.0.0+1
 
 environment:
-  sdk: '>=2.12.0 <3.0.0'
+  sdk: ">=2.12.0 <3.0.0"
 
 dependencies:
   flutter:
     sdk: flutter
   http: ^1.1.0
-  dio: ^5.1.1
-  chopper: ^7.0.6
+  dio: ^4.0.6
+  chopper: ^6.1.4
   overlay_support: ^2.1.0
-  share_plus: ^7.1.0
+  share_plus: ^4.5.3
   rxdart: ^0.27.1
 
 dev_dependencies:
   build_runner: ^2.0.6
-  chopper_generator: 7.0.4
+  chopper_generator:
   flutter_alice:
     path: ../
 
@@ -28,7 +28,6 @@ dev_dependencies:
 
 # The following section is specific to Flutter.
 flutter:
-
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.

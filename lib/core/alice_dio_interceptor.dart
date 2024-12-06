@@ -114,7 +114,7 @@ class AliceDioInterceptor extends InterceptorsWrapper {
   /// Handles error and adds data to alice http call
   @override
   void onError(
-    DioException error,
+    DioError error,
     ErrorInterceptorHandler handler,
   ) {
     var httpError = AliceHttpError();
