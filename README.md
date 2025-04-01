@@ -1,3 +1,5 @@
+# A ⭐ from you is the greatest motivation for me
+# to keep improving this project! 💖
 # Alice <img src="https://raw.githubusercontent.com/hautvfami/flutter-alice/main/media/logo.png" width="25px">
 
 [![pub package](https://img.shields.io/pub/v/flutter_alice.svg)](https://pub.dev/packages/flutter_alice)
