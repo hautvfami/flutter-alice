@@ -1,4 +1,4 @@
-# A ⭐ from you is the greatest motivation for me
+# A ⭐ star on [GitHub repo](https://github.com/hautvfami/flutter-alice) is the greatest motivation for me
 # to keep improving this project! 💖
 # Alice <img src="https://raw.githubusercontent.com/hautvfami/flutter-alice/main/media/logo.png" width="25px">
 
@@ -100,97 +100,128 @@ import 'package:flutter_alice/alice.dart';
 1. Create Alice instance:
 
 ```dart
-Alice alice = Alice();
+// Define a navigator key
+final navigatorKey = GlobalKey<NavigatorState>();
+
+// Create Alice with the navigator key
+final alice = Alice(navigatorKey: navigatorKey);
 ```
 
 2. Add navigator key to your application:
 
 ```dart
-MaterialApp( navigatorKey: alice.getNavigatorKey(), home: ...)
+MaterialApp(
+  navigatorKey: navigatorKey,
+  home: YourHomeWidget(),
+)
 ```
 
 You need to add this navigator key in order to show inspector UI.
-You can use also your navigator key in Alice:
+
+3. Optional: To use bubble overlay, wrap your app with OverlaySupport:
 
 ```dart
-Alice alice = Alice(navigatorKey: yourNavigatorKeyHere);
-```
+// Don't forget to import overlay_support package
+import 'package:overlay_support/overlay_support.dart';
 
-If you need to pass navigatorKey lazily, you can use:
-```dart
-alice.setNavigatorKey(yourNavigatorKeyHere);
-```
-This is minimal configuration required to run Alice. Can set optional settings in Alice constructor, which are presented below. If you don't want to change anything, you can move to Http clients configuration.
-
-### Additional settings
-If you want to use dark mode just add `darkTheme` flag:
-
-```dart
-Alice alice = Alice(..., darkTheme: true);
+OverlaySupport(
+  child: MaterialApp(
+    navigatorKey: navigatorKey,
+    home: YourHomeWidget(),
+  ),
+)
 ```
 
 ### HTTP Client configuration
-If you're using Dio, you just need to add interceptor.
+#### For Dio
+Add interceptor to your Dio instance:
 
 ```dart
-Dio dio = Dio();
+final dio = Dio();
 dio.interceptors.add(alice.getDioInterceptor());
 ```
 
-
-If you're using HttpClient from dart:io package:
+#### For HTTP package
+You can use extension methods for cleaner code:
 
 ```dart
-httpClient
-	.getUrl(Uri.parse("https://jsonplaceholder.typicode.com/posts"))
-	.then((request) async {
-		alice.onHttpClientRequest(request);
-		var httpResponse = await request.close();
-		var responseBody = await httpResponse.transform(utf8.decoder).join();
-		alice.onHttpClientResponse(httpResponse, request, body: responseBody);
- });
+// Import extensions
+import 'package:flutter_alice/core/alice_http_extensions.dart';
+
+// Use extension methods
+http
+  .get(Uri.parse('https://jsonplaceholder.typicode.com/posts'))
+  .interceptWithAlice(alice);
+
+// For POST requests with body
+http
+  .post(Uri.parse('https://jsonplaceholder.typicode.com/posts'), body: body)
+  .interceptWithAlice(alice, body: body);
 ```
 
-If you're using http from http/http package:
+Or use the standard approach:
 
 ```dart
-http.get('https://jsonplaceholder.typicode.com/posts').then((response) {
-    alice.onHttpResponse(response);
+http.get(Uri.parse('https://jsonplaceholder.typicode.com/posts')).then((response) {
+  alice.onHttpResponse(response);
+});
+
+// For POST requests with body
+http.post(Uri.parse('https://jsonplaceholder.typicode.com/posts'), body: body).then((response) {
+  alice.onHttpResponse(response, body: body);
 });
 ```
 
-If you're using Chopper. you need to add interceptor:
+#### For HttpClient from dart:io
+You can use extension methods:
 
 ```dart
-chopper = ChopperClient(
-    interceptors: alice.getChopperInterceptor(),
-);
-```
-
-If you have other HTTP client you can use generic http call interface:
-```dart
-AliceHttpCall aliceHttpCall = AliceHttpCall(id);
-alice.addHttpCall(aliceHttpCall);
-```
-
-## Extensions
-You can use extensions to shorten your http and http client code. This is optional, but may improve your codebase.
-Example:
-1. Import:
-```dart
+// Import extensions
 import 'package:flutter_alice/core/alice_http_client_extensions.dart';
-import 'package:flutter_alice/core/alice_http_extensions.dart';
+
+// Use extension methods
+httpClient
+  .getUrl(Uri.parse("https://jsonplaceholder.typicode.com/posts"))
+  .interceptWithAlice(alice);
+
+// For POST requests with body
+httpClient
+  .postUrl(Uri.parse("https://jsonplaceholder.typicode.com/posts"))
+  .interceptWithAlice(alice, body: body, headers: Map());
 ```
 
-2. Use extensions:
-```dart
-http
-    .post('https://jsonplaceholder.typicode.com/posts', body: body)
-    .interceptWithAlice(alice, body: body);
-```
+Or use the standard approach:
 
 ```dart
 httpClient
-    .postUrl(Uri.parse("https://jsonplaceholder.typicode.com/posts"))
-    .interceptWithAlice(alice, body: body, headers: Map());
+  .getUrl(Uri.parse("https://jsonplaceholder.typicode.com/posts"))
+  .then((request) async {
+    alice.onHttpClientRequest(request);
+    var httpResponse = await request.close();
+    var responseBody = await utf8.decoder.bind(httpResponse).join();
+    alice.onHttpClientResponse(httpResponse, request, body: responseBody);
+  });
+```
+
+#### For Chopper
+Add interceptor to your ChopperClient:
+
+```dart
+final chopper = ChopperClient(
+  interceptors: alice.getChopperInterceptor(),
+);
+```
+
+### Opening the Inspector
+You can open the inspector UI in different ways:
+
+```dart
+// Open directly
+ElevatedButton(
+  child: Text("Open Inspector"),
+  onPressed: alice.showInspector,
+)
+
+// Or call from anywhere in your code
+alice.showInspector();
 ```

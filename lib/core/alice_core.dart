@@ -221,18 +221,18 @@ class AliceCore {
   }
 
   AliceHttpCall? _selectCall(int requestId) =>
-      callsSubject.value.firstWhereOrNull((call) => call.id == requestId);
+      callsSubject.value.firstWhereOrNull(
+        (call) => call.id == requestId,
+      );
 
   bool isShowedBubble = false;
 
   void showDebugAnimNotification() {
-    if (isShowedBubble) {
-      return;
-    }
-    var context = getContext();
-    if (context == null) {
-      return;
-    }
+    if (isShowedBubble) return;
+
+    final context = getContext();
+    if (context == null) return;
+
     isShowedBubble = true;
     showOverlay((context, t) {
       return Opacity(

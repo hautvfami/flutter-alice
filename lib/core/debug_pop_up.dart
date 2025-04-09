@@ -7,6 +7,7 @@ import 'package:flutter_alice/ui/page/alice_stats_screen.dart';
 
 import 'alice_core.dart';
 import 'expandable_fab.dart';
+// import 'flutter_expandable_fab/expandable_fab.dart';
 
 class DebugPopUp extends StatefulWidget {
   final VoidCallback onClicked;
@@ -28,18 +29,21 @@ class DebugPopUp extends StatefulWidget {
 }
 
 class _DebugPopUpState extends State<DebugPopUp> {
+  final _expandedDistance = 80.0;
+  late Size _size = MediaQuery.of(context).size;
+  late double _rightSide = _expandedDistance + kToolbarHeight + 20;
   Offset _offset = Offset.zero;
-  final _expandedDistance = 100.0;
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    final _size = MediaQuery.of(context).size;
-    final _rightSide = _expandedDistance + kToolbarHeight + 20;
-    _offset = Offset(
-      _size.width - _rightSide,
-      _size.height / 2 - _expandedDistance,
-    );
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _offset = Offset(
+        _size.width - _rightSide,
+        _size.height / 2 - _expandedDistance,
+      );
+    });
   }
 
   @override
@@ -53,8 +57,7 @@ class _DebugPopUpState extends State<DebugPopUp> {
             top: _offset.dy,
             child: GestureDetector(
               onPanUpdate: (details) {
-                _offset += details.delta;
-                setState(() {});
+                setState(() => _offset += details.delta);
               },
               child: _buildDraggyWidget(
                 widget.onClicked,
@@ -84,6 +87,9 @@ class _DebugPopUpState extends State<DebugPopUp> {
               return Text("$counter");
             },
           ),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(32),
+          ),
           backgroundColor: Colors.green,
           foregroundColor: Colors.white,
           onPressed: onClicked,
@@ -93,11 +99,15 @@ class _DebugPopUpState extends State<DebugPopUp> {
       ),
       children: [
         ActionButton(
-          onPressed: () => widget.aliceCore.removeCalls(),
+          onPressed: () {
+            widget.aliceCore.removeCalls();
+          },
           icon: Icon(Icons.delete, color: Colors.white),
         ),
         ActionButton(
-          onPressed: _showStatsScreen,
+          onPressed: () {
+            _showStatsScreen();
+          },
           icon: Icon(Icons.insert_chart, color: Colors.white),
         ),
       ],

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter_alice/model/alice_http_error.dart';
 import 'package:flutter_alice/model/alice_http_request.dart';
 import 'package:flutter_alice/model/alice_http_response.dart';
@@ -31,6 +33,7 @@ class AliceHttpCall {
     var curlCmd = "curl";
     curlCmd += " -X " + method;
     var headers = request!.headers;
+    headers..remove('content-length');
     headers.forEach((key, value) {
       if ("Accept-Encoding" == key && "gzip" == value) {
         compressed = true;
@@ -38,13 +41,45 @@ class AliceHttpCall {
       curlCmd += " -H \'$key: $value\'";
     });
 
-    String? requestBody = request?.body.toString();
-    if (requestBody != null && requestBody != '') {
+    if (request?.body != null && request?.body != '') {
+      String? requestBody = jsonEncode(request?.body);
       // try to keep to a single line and use a subshell to preserve any line breaks
       curlCmd += " --data \$'" + requestBody.replaceAll("\n", "\\n") + "'";
     }
+
+    if (request?.formDataFields != null) {
+      var formDataFields = request?.formDataFields;
+      if (formDataFields != null && formDataFields.isNotEmpty) {
+        formDataFields.forEach((field) {
+          curlCmd += " --form \'${field.name}=${field.value}\'";
+        });
+      }
+    }
+
+    if (request?.formDataFiles != null) {
+      var formDataFiles = request?.formDataFiles;
+      if (formDataFiles != null && formDataFiles.isNotEmpty) {
+        formDataFiles.forEach((field) {
+          curlCmd += " --form \'${field.fileName}=@${field.fileName}\'";
+        });
+      }
+    }
+
+    String query = '';
+    if (request?.queryParameters != null) {
+      var queryParams = request?.queryParameters;
+      if (queryParams != null && queryParams.isNotEmpty) {
+        query += "?";
+        query += queryParams.entries
+            .map((e) =>
+                '${Uri.encodeComponent(e.key)}=${Uri.encodeComponent(e.value)}')
+            .join('&');
+      }
+    }
+
     curlCmd += ((compressed) ? " --compressed " : " ") +
-        "\'${secure ? 'https://' : 'http://'}$server$endpoint\'";
+        "\'${secure ? 'https://' : 'http://'}$server$endpoint$query\'";
+
     return curlCmd;
   }
 }

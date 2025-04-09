@@ -113,7 +113,13 @@ class _ExpandableFabState extends State<ExpandableFab>
           directionInDegrees: angleInDegrees,
           maxDistance: widget.distance,
           progress: _expandAnimation,
-          child: widget.children[i],
+          child: GestureDetector(
+            onTap: () {
+              _toggle();
+              (widget.children[i] as ActionButton).onPressed?.call();
+            },
+            child: widget.children[i] as ActionButton,
+          ),
         ),
       );
     }
@@ -201,16 +207,13 @@ class ActionButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    return Material(
-      shape: CircleBorder(),
-      clipBehavior: Clip.antiAlias,
-      color: theme.unselectedWidgetColor,
-      elevation: 4.0,
-      child: IconButton(
-        onPressed: onPressed,
-        icon: icon,
+    return Container(
+      padding: const EdgeInsets.all(16.0),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(32),
+        color: Colors.black45,
       ),
+      child: icon,
     );
   }
 }
