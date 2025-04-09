@@ -1,7 +1,25 @@
+## 2.0.0
+* Major version upgrade with breaking changes
+* Migrated to Flutter 3.16
+* Added support for null safety
+* Upgraded Dio to ^6.0.0
+* Improved UI/UX with new material design
+* Added dark/light theme toggle in settings
+* Enhanced request/response visualization
+* Optimized performance for large request/response bodies
+* Added support for HTTP/2 protocol
+* Fixed memory leaks in request interception
+* Improved error handling and reporting
+* Added ability to filter requests by status code
+* Enhanced search functionality with regex support
+* Fixed issues with iOS 17 compatibility
+* Added Vietnamese language support
+
 ## 1.1.1
 * Upgrade overlay_support: ^2.1.0
 * Replaced deprecated DioError with DioException
 * Fixed minor lint error
+
 ## 1.1.0
 * Upgrade Dio ^5.
 

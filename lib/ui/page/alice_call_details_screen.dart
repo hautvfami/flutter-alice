@@ -1,8 +1,11 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_alice/core/alice_core.dart';
 import 'package:flutter_alice/helper/alice_save_helper.dart';
 import 'package:flutter_alice/model/alice_http_call.dart';
+import 'package:flutter_alice/model/alice_http_request.dart';
 import 'package:flutter_alice/ui/utils/alice_constants.dart';
 import 'package:flutter_alice/ui/widget/alice_call_error_widget.dart';
 import 'package:flutter_alice/ui/widget/alice_call_overview_widget.dart';
@@ -63,14 +66,20 @@ class _AliceCallDetailsScreenState extends State<AliceCallDetailsScreen>
       child: Scaffold(
         floatingActionButton: FloatingActionButton(
           backgroundColor: AliceConstants.lightRed,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(32),
+          ),
           key: Key('share_key'),
           onPressed: () async {
-            Share.share(await _getSharableResponseString(),
-                subject: 'Request Details');
             await Clipboard.setData(
-                ClipboardData(text: await _getSharableResponseString()));
+              ClipboardData(text: await _getSharableResponseString()),
+            );
+            Share.share(
+              await _getSharableResponseString(),
+              subject: 'Request Details',
+            );
           },
-          child: Icon(Icons.share),
+          child: Icon(Icons.share, color: Colors.white),
         ),
         appBar: AppBar(
           bottom: TabBar(
@@ -91,6 +100,7 @@ class _AliceCallDetailsScreenState extends State<AliceCallDetailsScreen>
   }
 
   Future<String> _getSharableResponseString() async {
+    log(widget.call.getCurlCommand(), name: 'CURL');
     return AliceSaveHelper.buildCallLog(widget.call);
   }
 
@@ -111,7 +121,9 @@ class _AliceCallDetailsScreenState extends State<AliceCallDetailsScreen>
   List<Widget> _getTabBarViewList() {
     List<Widget> widgets = [];
     widgets.add(AliceCallOverviewWidget(widget.call));
-    widgets.add(AliceCallRequestWidget(widget.call));
+    widgets.add(
+      AliceCallRequestWidget(widget.call.request ?? AliceHttpRequest()),
+    );
     widgets.add(AliceCallResponseWidget(widget.call));
     widgets.add(AliceCallErrorWidget(widget.call));
     return widgets;
