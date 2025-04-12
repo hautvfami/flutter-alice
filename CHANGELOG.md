@@ -14,6 +14,7 @@
 * Enhanced search functionality with regex support
 * Fixed issues with iOS 17 compatibility
 * Added Vietnamese language support
+* Remove Chopper support
 
 ## 1.1.1
 * Upgrade overlay_support: ^2.1.0

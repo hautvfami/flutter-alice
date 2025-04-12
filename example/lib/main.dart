@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:chopper/chopper.dart' hide Options;
+// import 'package:chopper/chopper.dart' hide Options;
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -11,7 +11,7 @@ import 'package:flutter_alice/core/alice_http_extensions.dart';
 import 'package:http/http.dart' as http;
 import 'package:overlay_support/overlay_support.dart';
 
-import 'posts_service.dart';
+// import 'posts_service.dart';
 
 // Navigator key
 final navigatorKey = GlobalKey<NavigatorState>();
@@ -19,8 +19,8 @@ final navigatorKey = GlobalKey<NavigatorState>();
 final alice = Alice(navigatorKey: navigatorKey);
 final dio = Dio(BaseOptions(followRedirects: false));
 final httpClient = HttpClient();
-late final PostsService _postsService;
-late final ChopperClient? _chopper;
+// late final PostsService _postsService;
+// late final ChopperClient? _chopper;
 
 void main() {
   // Set up Alice to use the navigator key
@@ -28,10 +28,12 @@ void main() {
   // Alice Capture all HTTP requests and responses in debug mode
   // Attach alice into Dio (only onetime)
   if (kDebugMode) dio.interceptors.add(alice.getDioInterceptor());
-
-  // Capture for chopper
-  _chopper = ChopperClient(interceptors: alice.getChopperInterceptor());
-  _postsService = PostsService.create(_chopper);
+  //
+  // // Capture for chopper
+  // _chopper = ChopperClient(
+  //   interceptors: alice.getChopperInterceptor(),
+  // );
+  // _postsService = PostsService.create(_chopper);
 
   runApp(MyApp());
 }
@@ -91,10 +93,10 @@ class _MyAppState extends State<MyApp> {
                   child: Text("Run HttpClient Requests"),
                   onPressed: _runHttpHttpClientRequests,
                 ),
-                ElevatedButton(
-                  child: Text("Run Chopper HTTP Requests"),
-                  onPressed: _runChopperHttpRequests,
-                ),
+                // ElevatedButton(
+                //   child: Text("Run Chopper HTTP Requests"),
+                //   onPressed: _runChopperHttpRequests,
+                // ),
               ],
             ),
           ),
@@ -111,16 +113,16 @@ class _MyAppState extends State<MyApp> {
     );
   }
 
-  void _runChopperHttpRequests() async {
-    Map<String, dynamic> body = {"title": "foo", "body": "bar", "userId": "1"};
-    _postsService.getPost("1");
-    _postsService.postPost(body);
-    _postsService.putPost("1", body);
-    _postsService.putPost("1231923", body);
-    _postsService.putPost("1", null);
-    _postsService.postPost(null);
-    _postsService.getPost("123456");
-  }
+  // void _runChopperHttpRequests() async {
+  //   Map<String, dynamic> body = {"title": "foo", "body": "bar", "userId": "1"};
+  //   _postsService.getPost("1");
+  //   _postsService.postPost(body);
+  //   _postsService.putPost("1", body);
+  //   _postsService.putPost("1231923", body);
+  //   _postsService.putPost("1", null);
+  //   _postsService.postPost(null);
+  //   _postsService.getPost("123456");
+  // }
 
   void _runDioRequests() async {
     Map<String, dynamic> body = {"title": "foo", "body": "bar", "userId": "1"};
