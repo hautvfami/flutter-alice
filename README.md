@@ -62,7 +62,8 @@ Overlay bubble version of Alice: https://github.com/jhomlala/alice
 - Dio
 - HttpClient from dart:io package
 - Http from http/http package
-- Chopper
+
+[//]: # (- Chopper)
 - Generic HTTP client
 
 **Features:**  
@@ -203,13 +204,18 @@ httpClient
   });
 ```
 
-#### For Chopper
-Add interceptor to your ChopperClient:
+[//]: # (#### For Chopper)
 
-```dart
-final chopper = ChopperClient(
-  interceptors: alice.getChopperInterceptor(),
-);
+[//]: # (Add interceptor to your ChopperClient:)
+
+[//]: # ()
+[//]: # (```dart)
+
+[//]: # (final chopper = ChopperClient&#40;)
+
+[//]: # (  interceptors: alice.getChopperInterceptor&#40;&#41;,)
+
+[//]: # (&#41;;)
 ```
 
 ### Opening the Inspector
