@@ -1,114 +1,125 @@
-# A ⭐ star on [GitHub repo](https://github.com/hautvfami/flutter-alice) is the greatest motivation for me
-# to keep improving this project! 💖
-# Alice <img src="https://raw.githubusercontent.com/hautvfami/flutter-alice/main/media/logo.png" width="25px">
+# Alice - HTTP Inspector for Flutter 🎁
 
 [![pub package](https://img.shields.io/pub/v/flutter_alice.svg)](https://pub.dev/packages/flutter_alice)
 [![pub package](https://img.shields.io/github/license/hautvfami/flutter-alice.svg?style=flat)](https://github.com/hautvfami/flutter-alice)
 [![pub package](https://img.shields.io/badge/platform-flutter-blue.svg)](https://github.com/hautvfami/flutter-alice)
 
-Alice is an HTTP Inspector tool for Flutter which helps debugging http requests. 
-It catches and stores http requests and responses, which can be viewed via simple UI. 
-It is inspired from Chuck (https://github.com/jgilfelt/chuck) and Chucker (https://github.com/ChuckerTeam/chucker).
+**Alice** is a powerful HTTP Inspector tool for Flutter developers. It captures, stores, and displays HTTP requests and responses in a user-friendly interface, making debugging network calls effortless. Alice supports popular Dart HTTP clients like Dio, HttpClient, and the http package.
 
+Perfect for Flutter app development, API debugging, network monitoring, and troubleshooting HTTP issues.
 
-Overlay bubble version of Alice: https://github.com/jhomlala/alice
+Friendly version of [Alice](https://github.com/jhomlala/alice) by [Jakub](https://github.com/jhomlala).
+Inspired from [Chuck](https://github.com/jgilfelt/chuck) and [Chucker](https://github.com/ChuckerTeam/chucker).
+
+## 🚀 Key Features
+
+- **Detailed HTTP Logs**: View complete request and response details
+- **Intuitive Inspector UI**: Easy-to-navigate interface for HTTP calls
+- **Statistics Dashboard**: Analyze network performance
+- **Multi-Client Support**: Works with Dio, HttpClient, and http package
+- **Error Handling**: Catch and inspect failed requests
+- **Search Functionality**: Quickly find specific HTTP calls
+- **Bubble Overlay**: Floating inspector access
+- **JSON Viewer**: Built-in JSON response viewer for easy parsing
+- **Alice Console**: Log messages for debugging in release environments where console access is limited
+
+## 📸 Demo Video & Screenshots
 
 <table>
   <tr>
-    <td>
-		<img width="250px" src="https://raw.githubusercontent.com/hautvfami/flutter-alice/main/media/1.png">
+    <td width="20%">
+      <video width="100%" controls>
+        <source src="https://raw.githubusercontent.com/hautvfami/flutter-alice/task/improve/media/ScreenRecording_11-22-2025%2015-55-39_1.webm" type="video/webm">
+        Your browser does not support the video tag.
+      </video>
     </td>
-    <td>
-       <img width="250px" src="https://raw.githubusercontent.com/hautvfami/flutter-alice/main/media/2.png">
-    </td>
-    <td>
-       <img width="250px" src="https://raw.githubusercontent.com/hautvfami/flutter-alice/main/media/3.png">
-    </td>
-    <td>
-       <img width="250px" src="https://raw.githubusercontent.com/hautvfami/flutter-alice/main/media/4.png">
-    </td>
-     <td>
-       <img width="250px" src="https://raw.githubusercontent.com/hautvfami/flutter-alice/main/media/5.png">
-    </td>
-    <td>
-       <img width="250px" src="https://raw.githubusercontent.com/hautvfami/flutter-alice/main/media/6.png">
-    </td>
+    <td width="20%"><img width="100%" src="https://raw.githubusercontent.com/hautvfami/flutter-alice/task/improve/media/IMG_7290.PNG"></td>
+    <td width="20%"><img width="100%" src="https://raw.githubusercontent.com/hautvfami/flutter-alice/task/improve/media/IMG_7289.PNG"></td>
+    <td width="20%"><img width="100%" src="https://raw.githubusercontent.com/hautvfami/flutter-alice/task/improve/media/IMG_7291.PNG"></td>
+    <td width="20%"><img width="100%" src="https://raw.githubusercontent.com/hautvfami/flutter-alice/task/improve/media/IMG_7292.PNG"></td>
   </tr>
-  <tr>
-    <td>
-	<img width="250px" src="https://raw.githubusercontent.com/hautvfami/flutter-alice/main/media/7.png">
-    </td>
-    <td>
-       <img width="250px" src="https://raw.githubusercontent.com/hautvfami/flutter-alice/main/media/8.png">
-    </td>
-    <td>
-       <img width="250px" src="https://raw.githubusercontent.com/hautvfami/flutter-alice/main/media/9.png">
-    </td>
-    <td>
-       <img width="250px" src="https://raw.githubusercontent.com/hautvfami/flutter-alice/main/media/10.png">
-    </td>
-    <td>
-       <img width="250px" src="https://raw.githubusercontent.com/hautvfami/flutter-alice/main/media/11.png">
-    </td>
-     <td>
-       <img width="250px" src="https://raw.githubusercontent.com/hautvfami/flutter-alice/main/media/12.png">
-    </td>
-  </tr>
-
 </table>
 
-**Supported Dart http client plugins:**
+[ >> VIDEO](https://raw.githubusercontent.com/hautvfami/flutter-alice/task/improve/media/ScreenRecording_11-22-2025%2015-55-39_1.webm)
 
-- Dio
-- HttpClient from dart:io package
-- Http from http/http package
+## 🛠️ Supported HTTP Clients
 
-[//]: # (- Chopper)
-- Generic HTTP client
+- **Dio**: Popular HTTP client for Flutter
+- **HttpClient** (dart:io): Built-in Dart HTTP client
+- **Http Package**: Standard http/http library
+- **Generic HTTP Client**: Flexible integration
 
-**Features:**  
-✔️ Detailed logs for each HTTP calls (HTTP Request, HTTP Response)  
-✔️ Inspector UI for viewing HTTP calls  
-✔️ Statistics  
-✔️ Support for top used HTTP clients in Dart  
-✔️ Error handling  
-✔️ HTTP calls search
-✔️ Bubble overlay entry
+## 📦 Installation
 
-## Install
-
-1. Add this to your **pubspec.yaml** file:
+1. Add Alice to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  flutter_alice: ^1.0.1
+  flutter_alice: ^2.1.0-beta.1
 ```
 
-2. Install it
+2. Run the following command:
 
 ```bash
-$ flutter pub get
+flutter pub get
 ```
 
-3. Import it
+3. Import Alice in your Dart code:
 
 ```dart
 import 'package:flutter_alice/alice.dart';
 ```
 
-## Usage
-### Alice configuration
-1. Create Alice instance:
+## 🚀 Quick Start
+
+### Recommended: Using AliceInspector Widget
+
+For the easiest setup, wrap your app with `AliceInspector`. This automatically configures Alice, adds Dio interceptors, and provides a floating inspector button.
+
+```dart
+import 'package:flutter_alice/alice.dart';
+
+final alice = Alice();
+final navigatorKey = GlobalKey<NavigatorState>();
+final dio = Dio();
+
+void main() {
+  alice.log("Alice is running!", color: Colors.yellow);
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return AliceInspector(
+      debug: true,  // Enable debug mode
+      dios: [dio],  // List of Dio instances to intercept
+      navigatorKey: navigatorKey,
+      child: MaterialApp(
+        navigatorKey: navigatorKey,
+        debugShowCheckedModeBanner: false,
+        home: HomePage(),
+      ),
+    );
+  }
+}
+```
+
+### Alternative: Manual Alice Setup
+
+If you prefer manual control, create an Alice instance and configure it step-by-step.
+
+#### 1. Configure Alice
 
 ```dart
 // Define a navigator key
 final navigatorKey = GlobalKey<NavigatorState>();
 
-// Create Alice with the navigator key
+// Create Alice instance
 final alice = Alice(navigatorKey: navigatorKey);
 ```
 
-2. Add navigator key to your application:
+#### 2. Set Up Your App
 
 ```dart
 MaterialApp(
@@ -117,81 +128,53 @@ MaterialApp(
 )
 ```
 
-You need to add this navigator key in order to show inspector UI.
+#### 3. Integrate HTTP Clients
 
-3. Optional: To use bubble overlay, wrap your app with OverlaySupport:
-
-```dart
-// Don't forget to import overlay_support package
-import 'package:overlay_support/overlay_support.dart';
-
-OverlaySupport(
-  child: MaterialApp(
-    navigatorKey: navigatorKey,
-    home: YourHomeWidget(),
-  ),
-)
-```
-
-### HTTP Client configuration
-#### For Dio
-Add interceptor to your Dio instance:
+##### Dio Integration
 
 ```dart
 final dio = Dio();
 dio.interceptors.add(alice.getDioInterceptor());
 ```
 
-#### For HTTP package
-You can use extension methods for cleaner code:
+##### Http Package Integration
+
+Using extensions for cleaner code:
 
 ```dart
-// Import extensions
 import 'package:flutter_alice/core/alice_http_extensions.dart';
 
-// Use extension methods
 http
   .get(Uri.parse('https://jsonplaceholder.typicode.com/posts'))
   .interceptWithAlice(alice);
 
-// For POST requests with body
+// For POST with body
 http
   .post(Uri.parse('https://jsonplaceholder.typicode.com/posts'), body: body)
   .interceptWithAlice(alice, body: body);
 ```
 
-Or use the standard approach:
+Or standard approach:
 
 ```dart
 http.get(Uri.parse('https://jsonplaceholder.typicode.com/posts')).then((response) {
   alice.onHttpResponse(response);
 });
-
-// For POST requests with body
-http.post(Uri.parse('https://jsonplaceholder.typicode.com/posts'), body: body).then((response) {
-  alice.onHttpResponse(response, body: body);
-});
 ```
 
-#### For HttpClient from dart:io
-You can use extension methods:
+##### HttpClient Integration
+
+Using extensions:
 
 ```dart
-// Import extensions
 import 'package:flutter_alice/core/alice_http_client_extensions.dart';
 
-// Use extension methods
 httpClient
   .getUrl(Uri.parse("https://jsonplaceholder.typicode.com/posts"))
   .interceptWithAlice(alice);
-
-// For POST requests with body
-httpClient
-  .postUrl(Uri.parse("https://jsonplaceholder.typicode.com/posts"))
-  .interceptWithAlice(alice, body: body, headers: Map());
 ```
 
-Or use the standard approach:
+Or standard approach:
 
 ```dart
 httpClient
@@ -204,30 +187,44 @@ httpClient
   });
 ```
 
-[//]: # (#### For Chopper)
-
-[//]: # (Add interceptor to your ChopperClient:)
-
-[//]: # ()
-[//]: # (```dart)
-
-[//]: # (final chopper = ChopperClient&#40;)
-
-[//]: # (  interceptors: alice.getChopperInterceptor&#40;&#41;,)
-
-[//]: # (&#41;;)
-```
-
-### Opening the Inspector
-You can open the inspector UI in different ways:
+#### 4. Open Inspector
 
 ```dart
-// Open directly
+// Button to open inspector
 ElevatedButton(
-  child: Text("Open Inspector"),
+  child: Text("Open HTTP Inspector"),
   onPressed: alice.showInspector,
 )
 
-// Or call from anywhere in your code
+// Or call from anywhere
 alice.showInspector();
 ```
+
+## 📝 Alice Console
+
+Alice provides a built-in console for logging messages, especially useful in release builds where console access is limited.
+
+```dart
+// Log a message with default color
+alice.log("This is a log message");
+
+// Log with custom color
+alice.log("Error occurred", color: Colors.red);
+
+// View logs in the inspector
+alice.showInspector(); // Logs are displayed in the Alice UI
+```
+
+## 🤝 Contributing
+
+We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) for details.
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## ⭐ Support
+
+If you find Alice helpful, please give it a ⭐ on [GitHub](https://github.com/hautvfami/flutter-alice)! Your support motivates us to keep improving.
+
+For issues or questions, open an issue on GitHub.

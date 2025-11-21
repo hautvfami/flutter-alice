@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_alice/helper/alice_conversion_helper.dart';
+import 'package:flutter_alice/helper/alice_convert_helper.dart';
 import 'package:flutter_alice/model/alice_http_call.dart';
 import 'package:flutter_alice/model/alice_http_response.dart';
 import 'package:flutter_alice/ui/utils/alice_constants.dart';
@@ -14,31 +14,26 @@ class AliceCallListItemWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () => itemClickAction(call),
-      child: Column(
-        children: [
-          Container(
-            padding: const EdgeInsets.all(8),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Flexible(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      _buildMethodAndEndpointRow(context),
-                      const SizedBox(height: 4),
-                      _buildServerRow(),
-                      const SizedBox(height: 4),
-                      _buildStatsRow()
-                    ],
-                  ),
-                ),
-                _buildResponseColumn(context)
-              ],
+      child: Container(
+        padding: const EdgeInsets.all(8),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Flexible(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _buildMethodAndEndpointRow(context),
+                  const SizedBox(height: 4),
+                  _buildServerRow(),
+                  const SizedBox(height: 4),
+                  _buildStatsRow()
+                ],
+              ),
             ),
-          ),
-          _buildDivider()
-        ],
+            _buildResponseColumn(context)
+          ],
+        ),
       ),
     );
   }
@@ -94,22 +89,18 @@ class AliceCallListItemWidget extends StatelessWidget {
                 style: TextStyle(fontSize: 12))),
         Flexible(
             flex: 1,
-            child: Text("${AliceConversionHelper.formatTime(call.duration)}",
+            child: Text("${AliceConvertHelper.formatTime(call.duration)}",
                 style: TextStyle(fontSize: 12))),
         Flexible(
           flex: 1,
           child: Text(
-            "${AliceConversionHelper.formatBytes(call.request!.size)} / "
-            "${AliceConversionHelper.formatBytes(call.response!.size)}",
+            "${AliceConvertHelper.formatBytes(call.request!.size)} / "
+            "${AliceConvertHelper.formatBytes(call.response!.size)}",
             style: TextStyle(fontSize: 12),
           ),
         )
       ],
     );
-  }
-
-  Widget _buildDivider() {
-    return Container(height: 1, color: AliceConstants.grey);
   }
 
   String _formatTime(DateTime time) {
@@ -132,10 +123,7 @@ class AliceCallListItemWidget extends StatelessWidget {
     widgets.add(
       Text(
         _getStatus(call.response!),
-        style: TextStyle(
-          fontSize: 16,
-          color: _getStatusTextColor(context),
-        ),
+        style: TextStyle(fontSize: 16, color: _getStatusTextColor(context)),
       ),
     );
     return Container(
@@ -194,11 +182,7 @@ class AliceCallListItemWidget extends StatelessWidget {
     }
     return Padding(
       padding: EdgeInsets.only(right: 3),
-      child: Icon(
-        iconData,
-        color: iconColor,
-        size: 12,
-      ),
+      child: Icon(iconData, color: iconColor, size: 12),
     );
   }
 }

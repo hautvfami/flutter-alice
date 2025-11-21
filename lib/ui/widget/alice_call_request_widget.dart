@@ -1,37 +1,27 @@
 import 'package:flutter/material.dart';
 // import 'package:flutter_alice/model/alice_http_call.dart';
 import 'package:flutter_alice/model/alice_http_request.dart';
-import 'package:flutter_alice/ui/widget/alice_base_call_details_widget.dart';
+import 'package:flutter_alice/ui/widget/alice_base_mixin.dart';
 
-class AliceCallRequestWidget extends StatefulWidget {
+class AliceCallRequestWidget extends StatelessWidget with AliceBaseMixin {
   final AliceHttpRequest request;
 
   AliceCallRequestWidget(this.request);
 
   @override
-  State<StatefulWidget> createState() {
-    return _AliceCallRequestWidget();
-  }
-}
-
-class _AliceCallRequestWidget
-    extends AliceBaseCallDetailsWidgetState<AliceCallRequestWidget> {
-  AliceHttpRequest get _request => widget.request;
-
-  @override
   Widget build(BuildContext context) {
     List<Widget> rows = [];
-    rows.add(getListRow("Started:", _request.time.toString()));
-    rows.add(getListRow("Bytes sent:", formatBytes(_request.size)));
-    rows.add(getListRow("Content type:", getContentType(_request.headers)!));
+    rows.add(getListRow("Started:", request.time.toString()));
+    rows.add(getListRow("Bytes sent:", formatBytes(request.size)));
+    rows.add(getListRow("Content type:", getContentType(request.headers)!));
 
-    var body = _request.body;
+    var body = request.body;
     String? bodyContent = "Body is empty";
     if (body != null) {
-      bodyContent = formatBody(body, getContentType(_request.headers));
+      bodyContent = formatBody(body, getContentType(request.headers));
     }
     rows.add(getListRow("Body:", bodyContent!));
-    var formDataFields = _request.formDataFields;
+    var formDataFields = request.formDataFields;
     if (formDataFields?.isNotEmpty == true) {
       rows.add(getListRow("Form data fields: ", ""));
       formDataFields!.forEach(
@@ -40,7 +30,7 @@ class _AliceCallRequestWidget
         },
       );
     }
-    var formDataFiles = _request.formDataFiles;
+    var formDataFiles = request.formDataFiles;
     if (formDataFiles?.isNotEmpty == true) {
       rows.add(getListRow("Form data files: ", ""));
       formDataFiles!.forEach(
@@ -51,24 +41,24 @@ class _AliceCallRequestWidget
       );
     }
 
-    var headers = _request.headers;
+    var headers = request.headers;
     var headersContent = "Headers are empty";
     if (headers.length > 0) {
       headersContent = "";
     }
     rows.add(getListRow("Headers: ", headersContent));
-    _request.headers.forEach((header, value) {
+    request.headers.forEach((header, value) {
       rows.add(getListRow("   • $header:", value.toString()));
     });
 
-    print("qr: ${_request.queryParameters}");
-    var queryParameters = _request.queryParameters;
+    print("qr: ${request.queryParameters}");
+    var queryParameters = request.queryParameters;
     var queryParametersContent = "Query parameters are empty";
     if (queryParameters.length > 0) {
       queryParametersContent = "";
     }
     rows.add(getListRow("Query Parameters: ", queryParametersContent));
-    _request.queryParameters.forEach((query, value) {
+    request.queryParameters.forEach((query, value) {
       rows.add(getListRow("   • $query:", value.toString()));
     });
 

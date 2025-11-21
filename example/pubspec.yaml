@@ -14,7 +14,7 @@ dependencies:
   dio: ^5.1.1
   chopper: ^7.0.6
   overlay_support: ^2.1.0
-  share_plus: ^9.0.0
+  share_plus: ^11.0.0
   rxdart: ^0.27.1
 
 dev_dependencies:
@@ -35,9 +35,8 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  # assets:
-  #  - images/a_dot_burr.jpeg
-  #  - images/a_dot_ham.jpeg
+  assets:
+    - assets/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.io/assets-and-images/#resolution-aware.

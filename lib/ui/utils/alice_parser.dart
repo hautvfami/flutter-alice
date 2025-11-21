@@ -28,19 +28,13 @@ class AliceParser {
 
   static String? formatBody(dynamic body, String? contentType) {
     try {
-      if (body == null) {
-        return _emptyBody;
-      }
-
+      if (body == null) return _emptyBody;
       String? bodyContent = _emptyBody;
 
       if (contentType == null ||
           !contentType.toLowerCase().contains(_applicationJson)) {
-        var bodyTemp = body.toString();
-
-        if (bodyTemp.length > 0) {
-          bodyContent = bodyTemp;
-        }
+        final bodyTemp = body.toString();
+        if (bodyTemp.length > 0) bodyContent = bodyTemp;
       } else {
         if (body is String && body.contains("\n")) {
           bodyContent = body;
@@ -74,5 +68,15 @@ class AliceParser {
       }
     }
     return _unknownContentType;
+  }
+
+  static ({int color, String message}) logParser(String data) {
+    if (data.startsWith('0X')) {
+      final colorString = data.substring(0, 10);
+      final message = data.substring(10);
+      final color = int.parse(colorString);
+      return (color: color, message: message);
+    }
+    return (color: 0XFFFFFFFF, message: data);
   }
 }

@@ -1,11 +1,25 @@
 name: flutter_alice
 description: Alice is an HTTP Inspector tool which helps debugging http requests. It catches and stores http requests and responses, which can be viewed via simple UI.
-version: 2.0.1
+version: 2.1.0-beta.1
 homepage: https://github.com/hautvfami/flutter-alice
+screenshots:
+  - description: The Alice.
+    path: example/assets/green.png
+funding:
+  - https://github.com/sponsors/hautvfami/
+topics:
+  - alice
+  - dio
+  - network inspector
+  - http
+  - http inspector
+  - http debugger
+  - http client
+  - network debugger
 
 environment:
-  sdk: '>=2.15.0 <3.0.0'
-  flutter: '>=2.0.0'
+  sdk: '>=3.0.0 <4.0.0'
+  flutter: '>=3.0.0'
 
 dependencies:
   flutter:
@@ -13,6 +27,18 @@ dependencies:
   http: '>=1.1.0'
   dio: '>=5.1.1'
 #  chopper: '>=7.0.6'
-  overlay_support: '>=2.1.0'
-  share_plus: '>=9.0.0'
+  # overlay_support: '>=2.1.0'
+  share_plus: '>=11.0.0'
   rxdart: '>=0.27.1'
+  cupertino_icons: '>=1.0.0'
+
+# # Font asset for the package
+# flutter:
+#   assets:
+#     - assets/
+#   fonts:
+#     - family: Mono
+#       package: flutter_alice
+#       fonts:
+#         - asset: assets/JetBrainsMono.ttf
+#           weight: 400
