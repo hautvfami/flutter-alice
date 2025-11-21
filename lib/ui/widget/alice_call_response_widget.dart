@@ -1,6 +1,10 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_alice/core/alice_core.dart';
+import 'package:flutter_alice/helper/alice_json_viewer.dart';
 import 'package:flutter_alice/model/alice_http_call.dart';
-import 'package:flutter_alice/ui/widget/alice_base_call_details_widget.dart';
+import 'package:flutter_alice/ui/widget/alice_base_mixin.dart';
 
 class AliceCallResponseWidget extends StatefulWidget {
   final AliceHttpCall call;
@@ -8,13 +12,11 @@ class AliceCallResponseWidget extends StatefulWidget {
   AliceCallResponseWidget(this.call);
 
   @override
-  State<StatefulWidget> createState() {
-    return _AliceCallResponseWidgetState();
-  }
+  State<StatefulWidget> createState() => _AliceCallResponseWidgetState();
 }
 
-class _AliceCallResponseWidgetState
-    extends AliceBaseCallDetailsWidgetState<AliceCallResponseWidget> {
+class _AliceCallResponseWidgetState extends State<AliceCallResponseWidget>
+    with AliceBaseMixin {
   static const _imageContentType = "image";
   static const _videoContentType = "video";
   static const _jsonContentType = "json";
@@ -172,9 +174,24 @@ class _AliceCallResponseWidgetState
 
   List<Widget> _buildTextBodyRows() {
     List<Widget> rows = [];
-    var headers = _call.response!.headers;
-    var bodyContent =
-        formatBody(_call.response!.body, getContentType(headers))!;
+    final headers = _call.response!.headers;
+    final bodyContent = formatBody(
+      _call.response!.body,
+      getContentType(headers),
+    )!;
+
+    if (_getContentTypeOfResponse()!.toLowerCase().contains(_jsonContentType)) {
+      final json = jsonDecode(bodyContent);
+      rows.add(
+        InkWell(
+          onTap: () => AliceCore.inst.push(
+            (_) => AliceJsonViewer(jsonObj: json),
+          ),
+          child: getListRow("Body:", bodyContent),
+        ),
+      );
+      return rows;
+    }
     rows.add(getListRow("Body:", bodyContent));
     return rows;
   }
@@ -184,25 +201,27 @@ class _AliceCallResponseWidgetState
     var headers = _call.response!.headers;
     var contentType = getContentType(headers) ?? "<unknown>";
 
-    if (_showUnsupportedBody) {
-      var bodyContent =
-          formatBody(_call.response!.body, getContentType(headers))!;
-      rows.add(getListRow("Body:", bodyContent));
+    if (_showUnsupportedBody || _call.response?.body == '') {
+      final bodyContent = formatBody(
+        _call.response!.body,
+        getContentType(headers),
+      )!;
+      final widget = getListRow("Body:", bodyContent);
+      rows.add(widget);
     } else {
-      rows.add(getListRow(
+      rows.add(
+        getListRow(
           "Body:",
           "Unsupported body. Alice can render video/image/text body. "
               "Response has Content-Type: $contentType which can't be handled. "
               "If you're feeling lucky you can try button below to try render body"
-              " as text, but it may fail."));
+              " as text, but it may fail.",
+        ),
+      );
       rows.add(
         ElevatedButton(
           child: Text("Show unsupported body"),
-          onPressed: () {
-            setState(() {
-              _showUnsupportedBody = true;
-            });
-          },
+          onPressed: () => setState(() => _showUnsupportedBody = true),
         ),
       );
     }
@@ -213,11 +232,7 @@ class _AliceCallResponseWidgetState
     Map<String, String> requestHeaders = Map();
     if (_call.request?.headers != null) {
       requestHeaders.addAll(
-        _call.request!.headers.map(
-          (String key, dynamic value) {
-            return MapEntry(key, value.toString());
-          },
-        ),
+        _call.request!.headers.map((k, v) => MapEntry(k, v.toString())),
       );
     }
     return requestHeaders;

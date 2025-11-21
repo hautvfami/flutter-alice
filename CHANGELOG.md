@@ -1,3 +1,17 @@
+## 2.1.0-beta.1
+* **Breaking Changes**: Major refactoring of setup process. Introduced `AliceInspector` widget for simplified integration, replacing manual navigator key setup. Removed dependency on `OverlaySupport` package.
+* **Implementation Changes**: Refactored core components for better modularity. Updated JSON viewer with performance optimizations and UI improvements. Enhanced floating inspector button with better positioning and animations.
+* **Improvements**: Added support for multiple Dio instances in `AliceInspector`. Improved error handling and logging. Updated dependencies for better compatibility. Enhanced documentation with video demo and clearer installation guides.
+
+## 2.1.0
+* Added JetBrains Mono font asset for improved code display
+* Improved iOS build configuration and project settings
+* Refactored core components: renamed debug_pop_up.dart to alice_inspector.dart, alice_conversion_helper.dart to alice_convert_helper.dart, alice_base_call_details_widget.dart to alice_base_mixin.dart
+* Added alice_theme.dart for centralized theme management
+* Enhanced UI widgets and pages for better user experience
+* Updated pubspec.yaml with new dependencies and configurations
+* Minor bug fixes and code optimizations
+
 ## 2.0.0
 * Major version upgrade with breaking changes
 * Migrated to Flutter 3.16

@@ -6,6 +6,7 @@
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 @immutable
 class ExpandableFab extends StatefulWidget {
@@ -15,12 +16,20 @@ class ExpandableFab extends StatefulWidget {
     required this.distance,
     required this.children,
     required this.bigButton,
+    this.animationDuration = const Duration(milliseconds: 250),
+    this.curve = Curves.fastOutSlowIn,
+    this.reverseCurve = Curves.easeOutQuad,
+    this.enableHapticFeedback = true,
   }) : super(key: key);
 
   final bool? initialOpen;
   final double distance;
   final List<Widget> children;
   final Widget bigButton;
+  final Duration animationDuration;
+  final Curve curve;
+  final Curve reverseCurve;
+  final bool enableHapticFeedback;
 
   @override
   _ExpandableFabState createState() => _ExpandableFabState();
@@ -38,12 +47,12 @@ class _ExpandableFabState extends State<ExpandableFab>
     _open = widget.initialOpen ?? false;
     _controller = AnimationController(
       value: _open ? 1.0 : 0.0,
-      duration: const Duration(milliseconds: 250),
+      duration: widget.animationDuration,
       vsync: this,
     );
     _expandAnimation = CurvedAnimation(
-      curve: Curves.fastOutSlowIn,
-      reverseCurve: Curves.easeOutQuad,
+      curve: widget.curve,
+      reverseCurve: widget.reverseCurve,
       parent: _controller,
     );
   }
@@ -58,7 +67,14 @@ class _ExpandableFabState extends State<ExpandableFab>
     setState(() {
       _open = !_open;
     });
-    _open ? _controller.forward() : _controller.reverse();
+    if (_open) {
+      _controller.forward();
+    } else {
+      _controller.reverse();
+    }
+    if (widget.enableHapticFeedback) {
+      HapticFeedback.lightImpact();
+    }
   }
 
   @override
@@ -104,6 +120,8 @@ class _ExpandableFabState extends State<ExpandableFab>
   List<Widget> _buildExpandingActionButtons() {
     final children = <Widget>[];
     final count = widget.children.length;
+    if (count == 0) return children;
+
     final step = 90.0 / (count - 1);
     for (var i = 0, angleInDegrees = 0.0;
         i < count;
@@ -116,9 +134,11 @@ class _ExpandableFabState extends State<ExpandableFab>
           child: GestureDetector(
             onTap: () {
               _toggle();
-              (widget.children[i] as ActionButton).onPressed?.call();
+              if (widget.children[i] is ActionButton) {
+                (widget.children[i] as ActionButton).onPressed?.call();
+              }
             },
-            child: widget.children[i] as ActionButton,
+            child: widget.children[i],
           ),
         ),
       );
@@ -136,12 +156,12 @@ class _ExpandableFabState extends State<ExpandableFab>
           _open ? 0.7 : 1.0,
           1.0,
         ),
-        duration: Duration(milliseconds: 250),
-        curve: Interval(0.0, 0.5, curve: Curves.easeOut),
+        duration: widget.animationDuration,
+        curve: Interval(0.0, 0.5, curve: widget.curve),
         child: AnimatedOpacity(
           opacity: _open ? 0.0 : 1.0,
           curve: const Interval(0.25, 1.0, curve: Curves.easeInOut),
-          duration: const Duration(milliseconds: 250),
+          duration: widget.animationDuration,
           child: GestureDetector(
             onLongPress: _toggle,
             child: SizedBox(
@@ -211,7 +231,7 @@ class ActionButton extends StatelessWidget {
       padding: const EdgeInsets.all(16.0),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(32),
-        color: Colors.black45,
+        color: Colors.green.withValues(alpha: 0.9),
       ),
       child: icon,
     );
