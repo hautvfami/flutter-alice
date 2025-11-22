@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_alice/ui/utils/alice_theme.dart';
 
 class AliceAlertHelper {
   ///Helper method used to open alarm with given title and description.
@@ -17,9 +18,7 @@ class AliceAlertHelper {
       ElevatedButton(
         child: Text(firstButtonTitle),
         onPressed: () {
-          if (firstButtonAction != null) {
-            firstButtonAction();
-          }
+          if (firstButtonAction != null) firstButtonAction();
           Navigator.of(context).pop();
         },
       ),
@@ -29,9 +28,7 @@ class AliceAlertHelper {
         ElevatedButton(
           child: Text(secondButtonTitle),
           onPressed: () {
-            if (secondButtonAction != null) {
-              secondButtonAction();
-            }
+            if (secondButtonAction != null) secondButtonAction();
             Navigator.of(context).pop();
           },
         ),
@@ -39,18 +36,14 @@ class AliceAlertHelper {
     }
     showDialog(
       context: context,
-      builder: (BuildContext buildContext) {
-        return Theme(
-          data: ThemeData(
-            brightness: brightness ?? Brightness.light,
-          ),
-          child: AlertDialog(
-            title: Text(title),
-            content: Text(description),
-            actions: actions,
-          ),
-        );
-      },
+      builder: (_) => Theme(
+        data: aliceTheme,
+        child: AlertDialog(
+          title: Text(title),
+          content: Text(description),
+          actions: actions,
+        ),
+      ),
     );
   }
 }

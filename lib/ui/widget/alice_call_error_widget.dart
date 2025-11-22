@@ -1,21 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_alice/model/alice_http_call.dart';
-import 'package:flutter_alice/ui/widget/alice_base_call_details_widget.dart';
+import 'package:flutter_alice/ui/widget/alice_base_mixin.dart';
 
-class AliceCallErrorWidget extends StatefulWidget {
+class AliceCallErrorWidget extends StatelessWidget with AliceBaseMixin {
   final AliceHttpCall call;
 
   AliceCallErrorWidget(this.call);
 
-  @override
-  State<StatefulWidget> createState() {
-    return _AliceCallErrorWidgetState();
-  }
-}
-
-class _AliceCallErrorWidgetState
-    extends AliceBaseCallDetailsWidgetState<AliceCallErrorWidget> {
-  AliceHttpCall get _call => widget.call;
+  AliceHttpCall get _call => call;
 
   @override
   Widget build(BuildContext context) {

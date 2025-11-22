@@ -1,177 +1,83 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_alice/core/debug_pop_up.dart';
+import 'package:flutter_alice/core/alice_dio_interceptor.dart';
 import 'package:flutter_alice/model/alice_http_call.dart';
 import 'package:flutter_alice/model/alice_http_error.dart';
 import 'package:flutter_alice/model/alice_http_response.dart';
 import 'package:flutter_alice/ui/page/alice_calls_list_screen.dart';
-import 'package:overlay_support/overlay_support.dart';
 import 'package:rxdart/rxdart.dart';
+// import 'package:collection/collection.dart';
 
+/// This class not exported outside package. It contains core logic
+/// for alice inspector.
 class AliceCore {
-  /// Should user be notified with notification if there's new request catched
-  /// by Alice
-  final bool showNotification;
+  static AliceCore inst = AliceCore._();
 
-  /// Should inspector be opened on device shake (works only with physical
-  /// with sensors)
-  final bool showInspectorOnShake;
-
-  /// Should inspector use dark theme
-  final bool darkTheme;
-
-  /// Rx subject which contains all intercepted http calls
-  final BehaviorSubject<List<AliceHttpCall>> callsSubject =
-      BehaviorSubject.seeded([]);
-
-  /// Icon url for notification
-  final String notificationIcon;
-
-  GlobalKey<NavigatorState>? _navigatorKey;
-  Brightness _brightness = Brightness.light;
-  bool _isInspectorOpened = false;
-  StreamSubscription? _callsSubscription;
-  String? _notificationMessage;
-  String? _notificationMessageShown;
-  bool _notificationProcessing = false;
-
-  static AliceCore? _singleton;
-
-  factory AliceCore(
-    _navigatorKey,
-    showNotification,
-    showInspectorOnShake,
-    darkTheme,
-    notificationIcon,
-  ) {
-    _singleton ??= AliceCore._(
-      _navigatorKey,
-      showNotification,
-      showInspectorOnShake,
-      darkTheme,
-      notificationIcon,
-    );
-    return _singleton!;
+  factory AliceCore({GlobalKey<NavigatorState>? navigatorKey}) {
+    if (navigatorKey != null) inst.setNavigatorKey(navigatorKey);
+    return inst;
   }
 
   /// Creates alice core instance
-  AliceCore._(
-    this._navigatorKey,
-    this.showNotification,
-    this.showInspectorOnShake,
-    this.darkTheme,
-    this.notificationIcon,
-  ) {
-    if (showNotification) {
-      _callsSubscription = callsSubject.listen((_) => _onCallsChanged());
-    }
-    _brightness = darkTheme ? Brightness.dark : Brightness.light;
+  AliceCore._() {
+    _callsSubscription = callsSubject.listen(_onCallsChanged);
   }
 
-  /// Dispose subjects and subscriptions
-  void dispose() {
-    callsSubject.close();
-    //_shakeDetector?.stopListening();
-    _callsSubscription?.cancel();
-  }
+  /// Rx subject which contains all intercepted http calls
+  final callsSubject = BehaviorSubject.seeded(<AliceHttpCall>[]);
 
-  /// Get currently used brightness
-  Brightness get brightness => _brightness;
+  GlobalKey<NavigatorState>? _navigatorKey;
+  bool _isInspectorOpened = false;
+  StreamSubscription? _callsSubscription;
+  bool isShowedBubble = false;
 
-  void _onCallsChanged() async {
-    if (callsSubject.value.length > 0) {
-      _notificationMessage = _getNotificationMessage();
-      if (_notificationMessage != _notificationMessageShown &&
-          !_notificationProcessing) {
-        await _showLocalNotification();
-        _onCallsChanged();
-      }
-    }
-  }
+  final logsSubject = BehaviorSubject<List<String>>.seeded([]);
+  List<String> _logs = ['hautv.fami@gmail.com'];
+  List<String> get logs => _logs;
+  int limitLogs = 1000;
+
+  // Thêm getter cho stream:
+  Stream<List<String>> get logsStream => logsSubject.stream;
+
+  /// Get context from navigator key. Used to open inspector route.
+  BuildContext? get context => _navigatorKey?.currentState?.overlay?.context;
+
+  /// Get Dio interceptor which should be applied to Dio instance.
+  AliceDioInterceptor getDioInterceptor() => AliceDioInterceptor(this);
 
   /// Set custom navigation key. This will help if there's route library.
   void setNavigatorKey(GlobalKey<NavigatorState> navigatorKey) {
     this._navigatorKey = navigatorKey;
   }
 
+  GlobalKey<NavigatorState>? get navigatorKey => _navigatorKey;
+
+  /// Dispose subjects and subscriptions
+  void dispose() {
+    callsSubject.close();
+    _callsSubscription?.cancel();
+  }
+
+  void _onCallsChanged(List<AliceHttpCall> _) {
+    if (callsSubject.value.isNotEmpty && !isShowedBubble) {
+      showDebugAnimNotification();
+    }
+  }
+
   /// Opens Http calls inspector. This will navigate user to the new fullscreen
   /// page where all listened http calls can be viewed.
   void navigateToCallListScreen() {
-    var context = getContext();
     if (context == null) {
-      print(
-          "Cant start Alice HTTP Inspector. Please add NavigatorKey to your application");
+      print("Cant start Alice HTTP Inspector. Please add NavigatorKey");
       return;
     }
     if (!_isInspectorOpened) {
       _isInspectorOpened = true;
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => AliceCallsListScreen(this),
-        ),
+      push(
+        (context) => AliceCallsListScreen(this),
       ).then((onValue) => _isInspectorOpened = false);
     }
-  }
-
-  /// Get context from navigator key. Used to open inspector route.
-  BuildContext? getContext() => _navigatorKey?.currentState?.overlay?.context;
-
-  String _getNotificationMessage() {
-    List<AliceHttpCall>? calls = callsSubject.value;
-    int successCalls = calls
-        .where((call) =>
-            call.response != null &&
-            (call.response?.status ?? 0) >= 200 &&
-            (call.response?.status ?? 0) < 300)
-        .toList()
-        .length;
-
-    int redirectCalls = calls
-        .where((call) =>
-            call.response != null &&
-            (call.response?.status ?? 0) >= 300 &&
-            (call.response?.status ?? 0) < 400)
-        .toList()
-        .length;
-
-    int errorCalls = calls
-        .where((call) =>
-            call.response != null &&
-            (call.response?.status ?? 0) >= 400 &&
-            (call.response?.status ?? 0) < 600)
-        .toList()
-        .length;
-
-    int loadingCalls = calls.where((call) => call.loading).toList().length;
-
-    StringBuffer notificationsMessage = StringBuffer();
-    if (loadingCalls > 0) {
-      notificationsMessage.write("Loading: $loadingCalls");
-      notificationsMessage.write(" | ");
-    }
-    if (successCalls > 0) {
-      notificationsMessage.write("Success: $successCalls");
-      notificationsMessage.write(" | ");
-    }
-    if (redirectCalls > 0) {
-      notificationsMessage.write("Redirect: $redirectCalls");
-      notificationsMessage.write(" | ");
-    }
-    if (errorCalls > 0) {
-      notificationsMessage.write("Error: $errorCalls");
-    }
-    return notificationsMessage.toString();
-  }
-
-  Future _showLocalNotification() async {
-    _notificationProcessing = true;
-    String? message = _notificationMessage;
-    showDebugAnimNotification();
-    _notificationMessageShown = message;
-    _notificationProcessing = false;
-    return;
   }
 
   /// Add alice http call to calls subject
@@ -181,8 +87,7 @@ class AliceCore {
 
   /// Add error to exisng alice http call
   void addError(AliceHttpError error, int requestId) {
-    AliceHttpCall? selectedCall = _selectCall(requestId);
-
+    final selectedCall = _selectCall(requestId);
     if (selectedCall == null) {
       print("Selected call is null");
       return;
@@ -194,8 +99,7 @@ class AliceCore {
 
   /// Add response to existing alice http call
   void addResponse(AliceHttpResponse response, int requestId) {
-    AliceHttpCall? selectedCall = _selectCall(requestId);
-
+    final selectedCall = _selectCall(requestId);
     if (selectedCall == null) {
       print("Selected call is null");
       return;
@@ -216,41 +120,58 @@ class AliceCore {
   }
 
   /// Remove all calls from calls subject
-  void removeCalls() {
-    callsSubject.add([]);
+  void clears() => callsSubject.add([]);
+
+  AliceHttpCall? _selectCall(int requestId) {
+    return callsSubject.value.firstWhereOrNull(
+      (call) => call.id == requestId,
+    );
   }
 
-  AliceHttpCall? _selectCall(int requestId) =>
-      callsSubject.value.firstWhereOrNull(
-        (call) => call.id == requestId,
-      );
-
-  bool isShowedBubble = false;
+  @optionalTypeArgs
+  Future<T?> push<T extends Object?>(Widget Function(BuildContext) builder) {
+    if (context == null) {
+      print("Cant start Alice HTTP Inspector. Please add NavigatorKey");
+      return Future.value(null);
+    }
+    return Navigator.push(context!, MaterialPageRoute(builder: builder));
+  }
 
   void showDebugAnimNotification() {
     if (isShowedBubble) return;
-
-    final context = getContext();
     if (context == null) return;
 
     isShowedBubble = true;
-    showOverlay((context, t) {
-      return Opacity(
-        opacity: t,
-        child: DebugPopUp(
-          callsSubscription: callsSubject.stream,
-          onClicked: () {
-            navigateToCallListScreen();
-          },
-          aliceCore: this,
-        ),
-      );
-    }, duration: Duration.zero);
+    // showOverlay((context, t) {
+    //   return Opacity(
+    //     opacity: t,
+    //     child: AliceInspector(
+    //       // onClicked: navigateToCallListScreen,
+    //       aliceCore: this,
+    //       limitLogs: limitLogs,
+    //     ),
+    //   );
+    // }, duration: Duration.zero);
+  }
+
+  void log(String message, {Color color = Colors.white}) {
+    if (_logs.length > limitLogs) _logs.removeLast();
+    final colorString = '0x${color.toARGB32().toRadixString(16)}'.toUpperCase();
+
+    print("$message");
+
+    _logs.insert(0, '$colorString$message');
+    logsSubject.add(List.from(_logs));
+  }
+
+  void clearLogs() {
+    _logs.clear();
+    logsSubject.add([]);
   }
 }
 
-extension IterableExtension<T> on Iterable<T> {
-  T? firstWhereOrNull(bool Function(T element) test) {
+extension ListExtension<T> on List<T> {
+  T? firstWhereOrNull(bool Function(T) test) {
     for (var element in this) {
       if (test(element)) return element;
     }
