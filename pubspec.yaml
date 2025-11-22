@@ -10,12 +10,9 @@ funding:
 topics:
   - alice
   - dio
-  - network inspector
+  - inspector
+  - network 
   - http
-  - http inspector
-  - http debugger
-  - http client
-  - network debugger
 
 environment:
   sdk: '>=3.0.0 <4.0.0'
@@ -24,7 +21,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  http: '>=1.1.0'
+  http: '>=1.1.0 <2.0.0'
   dio: '>=5.1.1'
 #  chopper: '>=7.0.6'
   # overlay_support: '>=2.1.0'

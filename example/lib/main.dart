@@ -1,6 +1,4 @@
-import 'dart:async';
 import 'dart:io';
-import 'dart:math';
 
 // import 'package:chopper/chopper.dart' hide Options;
 import 'package:alice_example/home_page.dart';
@@ -8,16 +6,12 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_alice/alice.dart';
 
-// import 'posts_service.dart';
-
 // Navigator key
 final navigatorKey = GlobalKey<NavigatorState>();
 
 final alice = Alice();
 final dio = Dio(BaseOptions(followRedirects: false));
 final httpClient = HttpClient();
-// late final PostsService _postsService;
-// late final ChopperClient? _chopper;
 
 void main() {
   // Set up Alice to use the navigator key

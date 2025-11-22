@@ -7,7 +7,7 @@ import 'package:flutter_alice/model/alice_http_error.dart';
 import 'package:flutter_alice/model/alice_http_response.dart';
 import 'package:flutter_alice/ui/page/alice_calls_list_screen.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:collection/collection.dart';
+// import 'package:collection/collection.dart';
 
 /// This class not exported outside package. It contains core logic
 /// for alice inspector.
@@ -167,5 +167,14 @@ class AliceCore {
   void clearLogs() {
     _logs.clear();
     logsSubject.add([]);
+  }
+}
+
+extension ListExtension<T> on List<T> {
+  T? firstWhereOrNull(bool Function(T) test) {
+    for (var element in this) {
+      if (test(element)) return element;
+    }
+    return null;
   }
 }
