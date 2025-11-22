@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_alice/core/alice_core.dart';
-import 'package:flutter_alice/helper/alice_alert_helper.dart';
+// import 'package:flutter_alice/helper/alice_alert_helper.dart';
 import 'package:flutter_alice/model/alice_http_call.dart';
-import 'package:flutter_alice/model/alice_menu_item.dart';
+// import 'package:flutter_alice/model/alice_menu_item.dart';
 import 'package:flutter_alice/ui/page/alice_about.dart';
 import 'package:flutter_alice/ui/page/alice_call_details_screen.dart';
 import 'package:flutter_alice/ui/page/alice_logs_screen.dart';
@@ -11,9 +11,9 @@ import 'package:flutter_alice/ui/utils/alice_constants.dart';
 import 'package:flutter_alice/ui/utils/alice_theme.dart';
 import 'package:flutter_alice/ui/widget/alice_call_list_item_widget.dart';
 import 'package:flutter_alice/ui/widget/alice_logs_widget.dart';
-import 'package:flutter_alice/ui/widget/alice_menu_dialog.dart';
+// import 'package:flutter_alice/ui/widget/alice_menu_dialog.dart';
 
-import 'alice_stats_screen.dart';
+// import 'alice_stats_screen.dart';
 
 class AliceCallsListScreen extends StatefulWidget {
   final AliceCore _aliceCore;
@@ -135,15 +135,15 @@ class _AliceCallsListScreenState extends State<AliceCallsListScreen> {
     );
   }
 
-  void _onMenuItemSelected(AliceMenuItem menuItem) {
-    if (menuItem.title == "Delete") _showRemoveDialog();
-    if (menuItem.title == "Stats") {
-      aliceCore.push((context) => AliceStatsScreen(aliceCore));
-    }
-    if (menuItem.title == "About") {
-      aliceCore.push((context) => AliceAbout());
-    }
-  }
+  // void _onMenuItemSelected(AliceMenuItem menuItem) {
+  //   if (menuItem.title == "Delete") _showRemoveDialog();
+  //   if (menuItem.title == "Stats") {
+  //     aliceCore.push((context) => AliceStatsScreen(aliceCore));
+  //   }
+  //   if (menuItem.title == "About") {
+  //     aliceCore.push((context) => AliceAbout());
+  //   }
+  // }
 
   Widget _buildCallsListWrapper() {
     return StreamBuilder<List<AliceHttpCall>>(
@@ -218,15 +218,15 @@ class _AliceCallsListScreenState extends State<AliceCallsListScreen> {
     );
   }
 
-  void _showRemoveDialog() {
-    AliceAlertHelper.showAlert(
-      context,
-      "Delete calls",
-      "Do you want to delete http calls?",
-      firstButtonTitle: "No",
-      firstButtonAction: () => {},
-      secondButtonTitle: "Yes",
-      secondButtonAction: aliceCore.clears,
-    );
-  }
+  // void _showRemoveDialog() {
+  //   AliceAlertHelper.showAlert(
+  //     context,
+  //     "Delete calls",
+  //     "Do you want to delete http calls?",
+  //     firstButtonTitle: "No",
+  //     firstButtonAction: () => {},
+  //     secondButtonTitle: "Yes",
+  //     secondButtonAction: aliceCore.clears,
+  //   );
+  // }
 }

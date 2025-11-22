@@ -8,3 +8,7 @@ build/
 .idea/
 pubspec.lock
 **/.flutter-plugins-dependencies
+Flutter.podspec
+flutter_lldb_helper.py
+example/ios/Flutter/ephemeral/flutter_lldbinit
+flutter_export_environment.sh
