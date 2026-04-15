@@ -74,7 +74,14 @@ class AliceDioInterceptor extends InterceptorsWrapper {
     request.time = DateTime.now();
     request.headers = options.headers;
     request.contentType = options.contentType.toString();
-    request.queryParameters = options.uri.queryParameters;
+    // Use queryParametersAll to preserve repeated keys (e.g. ?key=a&key=b).
+    // Flatten single-element lists back to plain strings for cleaner display.
+    final allParams = options.uri.queryParametersAll;
+    final flatParams = <String, dynamic>{};
+    allParams.forEach((key, values) {
+      flatParams[key] = values.length == 1 ? values.first : values;
+    });
+    request.queryParameters = flatParams;
 
     call.request = request;
     call.response = AliceHttpResponse();

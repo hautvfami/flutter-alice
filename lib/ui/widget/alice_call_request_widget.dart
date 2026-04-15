@@ -61,7 +61,6 @@ class _AliceCallRequestWidget
       rows.add(getListRow("   • $header:", value.toString()));
     });
 
-    print("qr: ${_request.queryParameters}");
     var queryParameters = _request.queryParameters;
     var queryParametersContent = "Query parameters are empty";
     if (queryParameters.length > 0) {
@@ -69,7 +68,14 @@ class _AliceCallRequestWidget
     }
     rows.add(getListRow("Query Parameters: ", queryParametersContent));
     _request.queryParameters.forEach((query, value) {
-      rows.add(getListRow("   • $query:", value.toString()));
+      if (value is List) {
+        // Display each value on its own row for repeated keys
+        for (final item in value) {
+          rows.add(getListRow("   • $query:", item.toString()));
+        }
+      } else {
+        rows.add(getListRow("   • $query:", value.toString()));
+      }
     });
 
     return Container(

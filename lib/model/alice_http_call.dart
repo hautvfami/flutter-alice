@@ -70,10 +70,19 @@ class AliceHttpCall {
       var queryParams = request?.queryParameters;
       if (queryParams != null && queryParams.isNotEmpty) {
         query += "?";
-        query += queryParams.entries
-            .map((e) =>
-                '${Uri.encodeComponent(e.key)}=${Uri.encodeComponent(e.value)}')
-            .join('&');
+        final parts = <String>[];
+        queryParams.forEach((key, value) {
+          final encodedKey = Uri.encodeComponent(key);
+          if (value is List) {
+            // Expand list values into repeated keys: key=a&key=b
+            for (final item in value) {
+              parts.add('$encodedKey=${Uri.encodeComponent(item.toString())}');
+            }
+          } else {
+            parts.add('$encodedKey=${Uri.encodeComponent(value.toString())}');
+          }
+        });
+        query += parts.join('&');
       }
     }
 

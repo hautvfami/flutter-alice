@@ -10,6 +10,7 @@ class AliceHttpRequest {
   dynamic body = "";
   String? contentType = "";
   List<Cookie> cookies = [];
+  /// Query parameters — values can be [String] or [List<String>] for repeated keys.
   Map<String, dynamic> queryParameters = Map();
   List<AliceFormDataFile>? formDataFiles;
   List<AliceFormDataField>? formDataFields;
