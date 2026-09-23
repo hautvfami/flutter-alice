@@ -1,3 +1,7 @@
+## 3.0.0
+* Migrated from `package:flutter/material.dart` to the standalone `material_ui` package
+* Minimum Flutter version is now 3.47 and minimum Dart SDK is 3.12
+
 ## 2.0.0
 * Major version upgrade with breaking changes
 * Migrated to Flutter 3.16

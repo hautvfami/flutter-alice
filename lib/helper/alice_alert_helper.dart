@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 class AliceAlertHelper {
   ///Helper method used to open alarm with given title and description.
