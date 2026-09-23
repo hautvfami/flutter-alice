@@ -1,7 +1,7 @@
-import 'package:flutter/material.dart';
 // import 'package:flutter_alice/model/alice_http_call.dart';
 import 'package:flutter_alice/model/alice_http_request.dart';
 import 'package:flutter_alice/ui/widget/alice_base_call_details_widget.dart';
+import 'package:material_ui/material_ui.dart';
 
 class AliceCallRequestWidget extends StatefulWidget {
   final AliceHttpRequest request;
