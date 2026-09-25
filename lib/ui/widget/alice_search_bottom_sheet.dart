@@ -151,10 +151,10 @@ class _AliceSearchBottomSheetState extends State<AliceSearchBottomSheet> {
                         enableSuggestions: false,
                         keyboardType: TextInputType.url,
                         textInputAction: TextInputAction.search,
-                        style: AliceTextStyles.body.copyWith(fontSize: 13),
+                        style: AliceStyles.body.copyWith(fontSize: 13),
                         decoration: InputDecoration(
                           hintText: "Search calls, url, status...",
-                          hintStyle: AliceTextStyles.caption.copyWith(
+                          hintStyle: AliceStyles.caption.copyWith(
                             color: AliceColors.textSecondary,
                           ),
                           prefixIcon: const Icon(
@@ -231,10 +231,7 @@ class _AliceSearchBottomSheetState extends State<AliceSearchBottomSheet> {
                           ),
                           child: Text(
                             "$count/${widget.totalCount}",
-                            style: AliceTextStyles.captionBold.copyWith(
-                              fontSize: 11,
-                              color: AliceColors.primaryDark,
-                            ),
+                            style: AliceStyles.captionBold.s11.primaryDark,
                           ),
                         );
                       },
@@ -271,28 +268,10 @@ class _AliceSearchBottomSheetState extends State<AliceSearchBottomSheet> {
                   children: [
                     ..._statusFilters.map((status) {
                       final isSelected = _currentFilter.status == status;
-                      Color chipColor;
-                      switch (status) {
-                        case '2xx':
-                          chipColor = AliceColors.success;
-                          break;
-                        case '3xx':
-                          chipColor = AliceColors.info;
-                          break;
-                        case '4xx':
-                          chipColor = AliceColors.warning;
-                          break;
-                        case '5xx':
-                        case 'Error':
-                          chipColor = AliceColors.error;
-                          break;
-                        default:
-                          chipColor = AliceColors.primary;
-                      }
                       return _buildChip(
                         label: status,
                         isSelected: isSelected,
-                        color: chipColor,
+                        color: _mapStatusColor(status),
                         onTap: () => _onStatusSelected(status),
                       );
                     }),
@@ -304,27 +283,11 @@ class _AliceSearchBottomSheetState extends State<AliceSearchBottomSheet> {
                     ),
                     ..._methodFilters.map((method) {
                       final isSelected = _currentFilter.method == method;
-                      Color chipColor;
-                      switch (method) {
-                        case 'GET':
-                          chipColor = AliceColors.info;
-                          break;
-                        case 'POST':
-                          chipColor = AliceColors.success;
-                          break;
-                        case 'PUT':
-                          chipColor = AliceColors.warning;
-                          break;
-                        case 'DELETE':
-                          chipColor = AliceColors.error;
-                          break;
-                        default:
-                          chipColor = AliceColors.primary;
-                      }
+
                       return _buildChip(
                         label: method,
                         isSelected: isSelected,
-                        color: chipColor,
+                        color: _mapMethodColor(method),
                         onTap: () => _onMethodSelected(method),
                       );
                     }),
@@ -371,5 +334,36 @@ class _AliceSearchBottomSheetState extends State<AliceSearchBottomSheet> {
         ),
       ),
     );
+  }
+
+  Color _mapMethodColor(String method) {
+    switch (method) {
+      case 'GET':
+        return AliceColors.info;
+      case 'POST':
+        return AliceColors.success;
+      case 'PUT':
+        return AliceColors.warning;
+      case 'DELETE':
+        return AliceColors.error;
+      default:
+        return AliceColors.primary;
+    }
+  }
+
+  Color _mapStatusColor(String status) {
+    switch (status) {
+      case '2xx':
+        return AliceColors.success;
+      case '3xx':
+        return AliceColors.info;
+      case '4xx':
+        return AliceColors.warning;
+      case '5xx':
+      case 'Error':
+        return AliceColors.error;
+      default:
+        return AliceColors.primary;
+    }
   }
 }

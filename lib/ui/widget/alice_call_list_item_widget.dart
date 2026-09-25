@@ -45,10 +45,7 @@ class AliceCallListItemWidget extends StatelessWidget {
       children: [
         Text(
           call.method,
-          style: AliceTextStyles.titleMedium.copyWith(
-            color: textColor,
-            fontWeight: FontWeight.w500,
-          ),
+          style: AliceStyles.titleMedium.w500.copyWith(color: textColor),
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
         ),
@@ -58,10 +55,7 @@ class AliceCallListItemWidget extends StatelessWidget {
             call.endpoint,
             overflow: TextOverflow.ellipsis,
             softWrap: true,
-            style: AliceTextStyles.titleMedium.copyWith(
-              color: textColor,
-              fontWeight: FontWeight.w500,
-            ),
+            style: AliceStyles.titleMedium.w500.copyWith(color: textColor),
             maxLines: 1,
           ),
         )
@@ -77,7 +71,7 @@ class AliceCallListItemWidget extends StatelessWidget {
           call.server,
           overflow: TextOverflow.ellipsis,
           maxLines: 1,
-          style: AliceTextStyles.body,
+          style: AliceStyles.body,
         ),
       ),
     ]);
@@ -96,20 +90,20 @@ class AliceCallListItemWidget extends StatelessWidget {
       children: [
         Flexible(
           flex: 1,
-          child: Text(requestTime, style: AliceTextStyles.caption),
+          child: Text(requestTime, style: AliceStyles.caption),
         ),
         Flexible(
           flex: 1,
           child: Text(
             call.duration.toFormattedDuration,
-            style: AliceTextStyles.caption,
+            style: AliceStyles.caption,
           ),
         ),
         Flexible(
           flex: 1,
           child: Text(
             "$requestSize / $responseSize",
-            style: AliceTextStyles.caption,
+            style: AliceStyles.caption,
           ),
         )
       ],

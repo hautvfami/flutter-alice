@@ -145,11 +145,11 @@ class AliceListRow extends StatelessWidget {
         children: [
           TextSpan(
             text: name == 'Body:' ? '$name\n' : '$name\t\t\t',
-            style: AliceTextStyles.bodyBold,
+            style: AliceStyles.bodyBold,
           ),
           TextSpan(
             text: value,
-            style: AliceTextStyles.body,
+            style: AliceStyles.body,
           ),
         ],
       ),

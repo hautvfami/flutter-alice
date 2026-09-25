@@ -28,11 +28,15 @@ class AliceCore {
   bool _isInspectorOpened = false;
 
   final logsSubject = BehaviorSubject<List<String>>.seeded([]);
-  final List<String> _logs = ['hautv.fami@gmail.com'];
+  final List<String> _logs = [];
   List<String> get logs => List.unmodifiable(_logs);
   int limitLogs = 1000;
 
   Stream<List<String>> get logsStream => logsSubject.stream;
+  // Stream chỉ phát tín hiệu khi chuyển từ có log sang không có log và ngược lại
+  Stream<bool> get hasLogsStream =>
+      logsSubject.map((logs) => logs.isNotEmpty).distinct();
+
 
   /// Get context from navigator key. Used to open inspector route.
   BuildContext? get context => _navigatorKey?.currentState?.overlay?.context;
@@ -135,7 +139,7 @@ class AliceCore {
 
     debugPrint(message);
 
-    _logs.insert(0, '$colorString$message');
+    _logs.add('$colorString$message');
     logsSubject.add(List.from(_logs));
   }
 

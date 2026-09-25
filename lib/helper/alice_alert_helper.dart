@@ -41,8 +41,8 @@ class AliceAlertHelper {
       builder: (_) => Theme(
         data: aliceTheme,
         child: AlertDialog(
-          title: Text(title, style: AliceTextStyles.titleMedium),
-          content: Text(description, style: AliceTextStyles.body),
+          title: Text(title, style: AliceStyles.titleMedium),
+          content: Text(description, style: AliceStyles.body),
           actions: actions,
         ),
       ),

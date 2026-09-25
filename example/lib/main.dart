@@ -21,7 +21,7 @@ void main() {
 
   // alice.clearLogs();
   alice.log("Alice is running!", color: Colors.yellow);
-  alice.log(StackTrace.current.toString(), color: Colors.yellow);
+  // alice.log(StackTrace.current.toString(), color: Colors.yellow);
 
   runApp(const MyApp());
 }

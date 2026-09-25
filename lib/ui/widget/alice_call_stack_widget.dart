@@ -25,13 +25,13 @@ class AliceCallStackWidget extends StatelessWidget with AliceBaseMixin {
               SizedBox(height: 12),
               Text(
                 "No call stack available for this request",
-                style: AliceTextStyles.titleMedium,
+                style: AliceStyles.titleMedium,
                 textAlign: TextAlign.center,
               ),
               SizedBox(height: 6),
               Text(
                 "Call stack is recorded when request is dispatched via supported client adapters.",
-                style: AliceTextStyles.caption,
+                style: AliceStyles.caption,
                 textAlign: TextAlign.center,
               ),
             ],
@@ -53,7 +53,7 @@ class AliceCallStackWidget extends StatelessWidget with AliceBaseMixin {
                   SizedBox(width: 6),
                   Text(
                     "Request Call Stack:",
-                    style: AliceTextStyles.titleMedium,
+                    style: AliceStyles.titleMedium,
                   ),
                 ],
               ),
@@ -73,7 +73,7 @@ class AliceCallStackWidget extends StatelessWidget with AliceBaseMixin {
                       const SizedBox(width: 4),
                       Text(
                         "Copy",
-                        style: AliceTextStyles.captionBold.copyWith(
+                        style: AliceStyles.captionBold.copyWith(
                           color: AliceColors.primary,
                         ),
                       ),
@@ -94,11 +94,7 @@ class AliceCallStackWidget extends StatelessWidget with AliceBaseMixin {
             ),
             child: SelectableText(
               stackTraceStr,
-              style: AliceTextStyles.mono.copyWith(
-                fontSize: 12,
-                color: AliceColors.textPrimary,
-                height: 1.4,
-              ),
+              style: AliceStyles.mono.s12.textPrimary.copyWith(height: 1.4),
             ),
           ),
         ],

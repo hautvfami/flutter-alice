@@ -24,7 +24,8 @@ class StatsStatusBreakdown extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text("HTTP Status Distribution", style: AliceTextStyles.caption),
+              const Text("HTTP Status Distribution",
+                  style: AliceStyles.caption),
               const SizedBox(height: 12),
               _buildSegmentedProgressBar(),
               const SizedBox(height: 16),
@@ -120,7 +121,7 @@ class StatsStatusBreakdown extends StatelessWidget {
               children: [
                 Text(
                   title,
-                  style: AliceTextStyles.bodyBold.copyWith(
+                  style: AliceStyles.bodyBold.copyWith(
                     color: color,
                     fontSize: 13,
                   ),
@@ -128,7 +129,7 @@ class StatsStatusBreakdown extends StatelessWidget {
                 const SizedBox(height: 2),
                 Text(
                   description,
-                  style: AliceTextStyles.caption.copyWith(fontSize: 12),
+                  style: AliceStyles.caption.copyWith(fontSize: 12),
                 ),
               ],
             ),
@@ -186,7 +187,7 @@ class StatsStatusBreakdown extends StatelessWidget {
     if (stats.statusCodes.isEmpty) {
       return const Padding(
         padding: EdgeInsets.symmetric(vertical: 8),
-        child: Text("No status codes recorded", style: AliceTextStyles.caption),
+        child: Text("No status codes recorded", style: AliceStyles.caption),
       );
     }
 
@@ -211,20 +212,20 @@ class StatsStatusBreakdown extends StatelessWidget {
                 ),
                 child: Text(
                   "$code",
-                  style: AliceTextStyles.captionBold.copyWith(color: color),
+                  style: AliceStyles.captionBold.copyWith(color: color),
                 ),
               ),
               const SizedBox(width: 8),
               Expanded(
                 child: Text(
                   _getStatusName(code),
-                  style: AliceTextStyles.body.copyWith(fontSize: 13),
+                  style: AliceStyles.body.copyWith(fontSize: 13),
                   overflow: TextOverflow.ellipsis,
                 ),
               ),
               Text(
                 "$count (${percentage.toStringAsFixed(1)}%)",
-                style: AliceTextStyles.captionBold,
+                style: AliceStyles.captionBold,
               ),
             ],
           ),

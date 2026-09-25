@@ -25,14 +25,12 @@ class AliceAbout extends StatelessWidget {
                   children: [
                     Text(
                       'Alice - HTTP Inspector for Flutter',
-                      style: AliceTextStyles.titleLarge.copyWith(
-                        color: AliceColors.primaryDark,
-                      ),
+                      style: AliceStyles.titleLarge.primaryDark,
                     ),
                     const SizedBox(height: 8),
                     const Text(
                       'Alice is a powerful HTTP Inspector tool for Flutter developers. It captures, stores, and displays HTTP requests and responses in a user-friendly interface.',
-                      style: AliceTextStyles.body,
+                      style: AliceStyles.body,
                     ),
                   ],
                 ),
@@ -41,7 +39,7 @@ class AliceAbout extends StatelessWidget {
             const SizedBox(height: 20),
             const Text(
               'Contact Information',
-              style: AliceTextStyles.titleMedium,
+              style: AliceStyles.titleMedium,
             ),
           const SizedBox(height: 10),
           Card(
@@ -62,7 +60,7 @@ class AliceAbout extends StatelessWidget {
                   const SizedBox(height: 10),
                   Text(
                     'Feel free to contact us for support, guidance, or any questions about Alice.',
-                    style: TextStyle(fontSize: 14, color: Colors.grey[600]),
+                      style: AliceStyles.body.copyWith(fontSize: 14),
                   ),
                 ],
               ),
@@ -71,7 +69,7 @@ class AliceAbout extends StatelessWidget {
           const SizedBox(height: 20),
           const Text(
             'Support Us',
-              style: AliceTextStyles.titleMedium,
+              style: AliceStyles.titleMedium,
           ),
           const SizedBox(height: 10),
           Card(
@@ -88,12 +86,12 @@ class AliceAbout extends StatelessWidget {
                   const SizedBox(height: 10),
                     const Text(
                     'Support our development with a donation.',
-                      style: AliceTextStyles.caption,
+                      style: AliceStyles.caption,
                   ),
                   const Divider(height: 20),
                   const Text(
                     'Rate Our Apps on Google Play\n(5 stars appreciated!)',
-                      style: AliceTextStyles.bodyBold,
+                      style: AliceStyles.bodyBold,
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 10),
@@ -129,7 +127,7 @@ class AliceAbout extends StatelessWidget {
                   const SizedBox(height: 10),
                     const Text(
                     'Give us a star to show your support!',
-                      style: AliceTextStyles.caption,
+                      style: AliceStyles.caption,
                   ),
                 ],
               ),
@@ -140,7 +138,7 @@ class AliceAbout extends StatelessWidget {
             child: Center(
               child: Text(
                 'We appreciate any support! 🎉',
-                  style: AliceTextStyles.titleMedium.copyWith(
+                  style: AliceStyles.titleMedium.copyWith(
                     color: AliceColors.primaryDark,
                 ),
               ),

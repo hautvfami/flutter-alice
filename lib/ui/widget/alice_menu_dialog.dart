@@ -32,7 +32,7 @@ class AliceMenuDialog extends StatelessWidget {
                     color: AliceColors.primary,
                     size: 24,
                   ),
-                  title: Text(item.title, style: AliceTextStyles.bodyBold),
+                  title: Text(item.title, style: AliceStyles.bodyBold),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8),
                   ),

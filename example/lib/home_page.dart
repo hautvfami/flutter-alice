@@ -60,10 +60,11 @@ class HomePage extends StatelessWidget {
               style: _secondaryButtonStyle,
               onPressed: _runHttpHttpClientRequests,
             ),
-            // ElevatedButton(
-            //   child: Text("Run Chopper HTTP Requests"),
-            //   onPressed: _runChopperHttpRequests,
-            // ),
+            ElevatedButton(
+              child: Text("Test Log"),
+              style: _secondaryButtonStyle,
+              onPressed: _runTestLogs,
+            ),
           ].separatedBy(const SizedBox(height: 8)),
         ),
       ),
@@ -99,17 +100,6 @@ class HomePage extends StatelessWidget {
   RoundedRectangleBorder get _shape => RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16),
       );
-
-  // void _runChopperHttpRequests() async {
-  //   Map<String, dynamic> body = {"title": "foo", "body": "bar", "userId": "1"};
-  //   _postsService.getPost("1");
-  //   _postsService.postPost(body);
-  //   _postsService.putPost("1", body);
-  //   _postsService.putPost("1231923", body);
-  //   _postsService.putPost("1", null);
-  //   _postsService.postPost(null);
-  //   _postsService.getPost("123456");
-  // }
 
   void _runDioRequests() async {
     Map<String, dynamic> body = {"title": "foo", "body": "bar", "userId": "1"};
@@ -285,6 +275,12 @@ class HomePage extends StatelessWidget {
       var responseBody = await utf8.decoder.bind(httpResponse).join();
       alice.onHttpClientResponse(httpResponse, request, body: responseBody);
     });
+  }
+
+  void _runTestLogs() {
+    for (int i = 0; i < 10; i++) {
+      alice.log('Test log $i ${StackTrace.current}');
+    }
   }
 }
 

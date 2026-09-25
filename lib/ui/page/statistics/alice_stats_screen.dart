@@ -89,11 +89,11 @@ class _AliceStatsScreenState extends State<AliceStatsScreen>
           children: [
             Icon(Icons.bar_chart, size: 48, color: AliceColors.grey),
             SizedBox(height: 12),
-            Text("No network calls recorded", style: AliceTextStyles.bodyBold),
+            Text("No network calls recorded", style: AliceStyles.bodyBold),
             SizedBox(height: 4),
             Text(
               "Statistics will update automatically as calls occur",
-              style: AliceTextStyles.caption,
+              style: AliceStyles.caption,
             ),
           ],
         ),
