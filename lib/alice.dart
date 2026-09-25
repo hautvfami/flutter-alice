@@ -1,8 +1,6 @@
 import 'dart:io';
 
-// import 'package:chopper/chopper.dart';
 import 'package:flutter/material.dart';
-// import 'package:flutter_alice/core/alice_chopper_response_interceptor.dart';
 import 'package:flutter_alice/core/alice_core.dart';
 import 'package:flutter_alice/core/alice_dio_interceptor.dart';
 import 'package:flutter_alice/core/alice_http_adapter.dart';
@@ -10,17 +8,19 @@ import 'package:flutter_alice/core/alice_http_client_adapter.dart';
 import 'package:flutter_alice/model/alice_http_call.dart';
 import 'package:http/http.dart' as http;
 export 'package:flutter_alice/core/alice_inspector.dart';
+export 'package:flutter_alice/helper/alice_extensions.dart';
+export 'package:flutter_alice/theme/theme.dart';
 
 class Alice {
   final AliceCore _aliceCore = AliceCore();
-  late AliceHttpClientAdapter _httpClientAdapter;
-  late AliceHttpAdapter _httpAdapter;
+  final AliceHttpClientAdapter _httpClientAdapter;
+  final AliceHttpAdapter _httpAdapter;
 
   /// Creates alice instance.
-  Alice({GlobalKey<NavigatorState>? navigatorKey}) {
+  Alice({GlobalKey<NavigatorState>? navigatorKey})
+      : _httpClientAdapter = AliceHttpClientAdapter(AliceCore.inst),
+        _httpAdapter = AliceHttpAdapter(AliceCore.inst) {
     if (navigatorKey != null) _aliceCore.setNavigatorKey(navigatorKey);
-    _httpClientAdapter = AliceHttpClientAdapter(_aliceCore);
-    _httpAdapter = AliceHttpAdapter(_aliceCore);
   }
 
   /// Set custom navigation key. This will help if there's route library.
@@ -52,12 +52,7 @@ class Alice {
   /// page where all listened http calls can be viewed.
   void showInspector() => _aliceCore.navigateToCallListScreen();
 
-  // /// Get chopper interceptor. This should be added to Chopper instance.
-  // List<ResponseInterceptor> getChopperInterceptor() {
-  //   return [AliceChopperInterceptor(_aliceCore)];
-  // }
-
-  /// Handle generic http call. Can be used to any http client.R
+  /// Handle generic http call. Can be used for any http client.
   void addHttpCall(AliceHttpCall aliceHttpCall) {
     assert(aliceHttpCall.request != null, "Http call request can't be null");
     assert(aliceHttpCall.response != null, "Http call response can't be null");
@@ -68,5 +63,5 @@ class Alice {
     _aliceCore.log(message, color: color);
   }
 
-  void clearLogs() => _aliceCore.logs.clear();
+  void clearLogs() => _aliceCore.clearLogs();
 }

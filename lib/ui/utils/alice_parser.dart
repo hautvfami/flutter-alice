@@ -1,6 +1,8 @@
 import 'dart:convert';
 
 class AliceParser {
+  AliceParser._();
+
   static const String _emptyBody = "Body is empty";
   static const String _unknownContentType = "Unknown";
   static const String _jsonContentTypeSmall = "content-type";
@@ -8,19 +10,19 @@ class AliceParser {
   static const String _stream = "Stream";
   static const String _applicationJson = "application/json";
   static const String _parseFailedText = "Failed to parse ";
-  static final JsonEncoder encoder = new JsonEncoder.withIndent('  ');
+  static const JsonEncoder encoder = JsonEncoder.withIndent('  ');
 
   static String? _parseJson(dynamic json) {
     try {
       return encoder.convert(json);
     } catch (exception) {
-      return json;
+      return json?.toString();
     }
   }
 
   static dynamic _decodeJson(dynamic body) {
     try {
-      return json.decode(body);
+      return json.decode(body.toString());
     } catch (exception) {
       return body;
     }
@@ -34,14 +36,13 @@ class AliceParser {
       if (contentType == null ||
           !contentType.toLowerCase().contains(_applicationJson)) {
         final bodyTemp = body.toString();
-        if (bodyTemp.length > 0) bodyContent = bodyTemp;
+        if (bodyTemp.isNotEmpty) bodyContent = bodyTemp;
       } else {
         if (body is String && body.contains("\n")) {
           bodyContent = body;
         } else {
           if (body is String) {
-            if (body.length != 0) {
-              //body is minified json, so decode it to a map and let the encoder pretty print this map
+            if (body.isNotEmpty) {
               bodyContent = _parseJson(_decodeJson(body));
             }
           } else if (body is Stream) {
@@ -54,29 +55,29 @@ class AliceParser {
 
       return bodyContent;
     } catch (exception) {
-      return _parseFailedText + body.toString();
+      return "$_parseFailedText$body";
     }
   }
 
   static String? getContentType(Map<String, dynamic>? headers) {
     if (headers != null) {
       if (headers.containsKey(_jsonContentTypeSmall)) {
-        return headers[_jsonContentTypeSmall];
+        return headers[_jsonContentTypeSmall]?.toString();
       }
       if (headers.containsKey(_jsonContentTypeBig)) {
-        return headers[_jsonContentTypeBig];
+        return headers[_jsonContentTypeBig]?.toString();
       }
     }
     return _unknownContentType;
   }
 
   static ({int color, String message}) logParser(String data) {
-    if (data.startsWith('0X')) {
+    if (data.startsWith('0X') && data.length >= 10) {
       final colorString = data.substring(0, 10);
       final message = data.substring(10);
-      final color = int.parse(colorString);
+      final color = int.tryParse(colorString) ?? 0xFFFFFFFF;
       return (color: color, message: message);
     }
-    return (color: 0XFFFFFFFF, message: data);
+    return (color: 0xFFFFFFFF, message: data);
   }
 }

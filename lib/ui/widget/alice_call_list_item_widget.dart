@@ -1,21 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_alice/helper/alice_convert_helper.dart';
+import 'package:flutter_alice/helper/alice_extensions.dart';
 import 'package:flutter_alice/model/alice_http_call.dart';
-import 'package:flutter_alice/model/alice_http_response.dart';
-import 'package:flutter_alice/ui/utils/alice_constants.dart';
+import 'package:flutter_alice/theme/theme.dart';
 
 class AliceCallListItemWidget extends StatelessWidget {
   final AliceHttpCall call;
-  final Function itemClickAction;
+  final void Function(AliceHttpCall) itemClickAction;
 
-  const AliceCallListItemWidget(this.call, this.itemClickAction);
+  const AliceCallListItemWidget(this.call, this.itemClickAction, {super.key});
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () => itemClickAction(call),
       child: Container(
-        padding: const EdgeInsets.all(8),
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -31,6 +30,7 @@ class AliceCallListItemWidget extends StatelessWidget {
                 ],
               ),
             ),
+            const SizedBox(width: 8),
             _buildResponseColumn(context)
           ],
         ),
@@ -39,23 +39,29 @@ class AliceCallListItemWidget extends StatelessWidget {
   }
 
   Widget _buildMethodAndEndpointRow(BuildContext context) {
-    Color? textColor = _getEndpointTextColor(context);
+    final Color textColor = call.getEndpointTextColor(context);
     return Row(
       mainAxisSize: MainAxisSize.max,
       children: [
         Text(
           call.method,
-          style: TextStyle(fontSize: 16, color: textColor),
+          style: AliceTextStyles.titleMedium.copyWith(
+            color: textColor,
+            fontWeight: FontWeight.w500,
+          ),
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
         ),
-        Padding(padding: EdgeInsets.only(left: 10)),
+        const SizedBox(width: 10),
         Expanded(
           child: Text(
             call.endpoint,
             overflow: TextOverflow.ellipsis,
             softWrap: true,
-            style: TextStyle(fontSize: 16, color: textColor),
+            style: AliceTextStyles.titleMedium.copyWith(
+              color: textColor,
+              fontWeight: FontWeight.w500,
+            ),
             maxLines: 1,
           ),
         )
@@ -71,118 +77,67 @@ class AliceCallListItemWidget extends StatelessWidget {
           call.server,
           overflow: TextOverflow.ellipsis,
           maxLines: 1,
-          style: TextStyle(
-            fontSize: 14,
-          ),
+          style: AliceTextStyles.body,
         ),
       ),
     ]);
   }
 
   Widget _buildStatsRow() {
+    final requestTime =
+        call.request != null ? call.request!.time.formattedTime : "-";
+    final requestSize =
+        call.request != null ? call.request!.size.toFormattedBytes : "-";
+    final responseSize =
+        call.response != null ? call.response!.size.toFormattedBytes : "-";
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Flexible(
-            flex: 1,
-            child: Text(_formatTime(call.request!.time),
-                style: TextStyle(fontSize: 12))),
-        Flexible(
-            flex: 1,
-            child: Text("${AliceConvertHelper.formatTime(call.duration)}",
-                style: TextStyle(fontSize: 12))),
+          flex: 1,
+          child: Text(requestTime, style: AliceTextStyles.caption),
+        ),
         Flexible(
           flex: 1,
           child: Text(
-            "${AliceConvertHelper.formatBytes(call.request!.size)} / "
-            "${AliceConvertHelper.formatBytes(call.response!.size)}",
-            style: TextStyle(fontSize: 12),
+            call.duration.toFormattedDuration,
+            style: AliceTextStyles.caption,
+          ),
+        ),
+        Flexible(
+          flex: 1,
+          child: Text(
+            "$requestSize / $responseSize",
+            style: AliceTextStyles.caption,
           ),
         )
       ],
     );
   }
 
-  String _formatTime(DateTime time) {
-    return "${formatTimeUnit(time.hour)}:"
-        "${formatTimeUnit(time.minute)}:"
-        "${formatTimeUnit(time.second)}:"
-        "${formatTimeUnit(time.millisecond)}";
-  }
-
-  String formatTimeUnit(int timeUnit) {
-    return (timeUnit < 10) ? "0$timeUnit" : "$timeUnit";
-  }
-
   Widget _buildResponseColumn(BuildContext context) {
-    List<Widget> widgets = [];
-    if (call.loading) {
-      widgets.add(Text('Loading..', style: TextStyle(fontSize: 12)));
-      widgets.add(const SizedBox(height: 4));
-    }
-    widgets.add(
-      Text(
-        _getStatus(call.response!),
-        style: TextStyle(fontSize: 16, color: _getStatusTextColor(context)),
-      ),
+    return AliceStatusBadge(
+      text: call.statusText,
+      color: call.getStatusColor(context),
+      loading: call.loading,
     );
-    return Container(
-      width: 50,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: widgets,
-      ),
-    );
-  }
-
-  Color? _getStatusTextColor(BuildContext context) {
-    int status = call.response?.status ?? 0;
-    if (status == -1) {
-      return AliceConstants.red;
-    } else if (status < 200) {
-      return Theme.of(context).textTheme.bodyLarge!.color;
-    } else if (status >= 200 && status < 300) {
-      return AliceConstants.green;
-    } else if (status >= 300 && status < 400) {
-      return AliceConstants.orange;
-    } else if (status >= 400 && status < 600) {
-      return AliceConstants.red;
-    } else {
-      return Theme.of(context).textTheme.bodyLarge!.color;
-    }
-  }
-
-  Color? _getEndpointTextColor(BuildContext context) {
-    if (call.loading) {
-      return AliceConstants.grey;
-    } else {
-      return _getStatusTextColor(context);
-    }
-  }
-
-  String _getStatus(AliceHttpResponse response) {
-    if (response.status == -1) {
-      return "ERR";
-    } else if (response.status == 0) {
-      return "???";
-    } else {
-      return "${response.status}";
-    }
   }
 
   Widget _getSecuredConnectionIcon(bool secure) {
-    IconData iconData;
-    Color iconColor;
+    final IconData iconData;
+    final Color iconColor;
     if (secure) {
       iconData = Icons.lock_outline;
-      iconColor = AliceConstants.green;
+      iconColor = AliceColors.success;
     } else {
       iconData = Icons.lock_open;
-      iconColor = AliceConstants.red;
+      iconColor = AliceColors.error;
     }
     return Padding(
-      padding: EdgeInsets.only(right: 3),
+      padding: const EdgeInsets.only(right: 3),
       child: Icon(iconData, color: iconColor, size: 12),
     );
   }
 }
+

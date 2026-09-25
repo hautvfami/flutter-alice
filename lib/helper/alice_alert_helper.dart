@@ -1,46 +1,48 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_alice/ui/utils/alice_theme.dart';
+import 'package:flutter_alice/theme/theme.dart';
 
 class AliceAlertHelper {
-  ///Helper method used to open alarm with given title and description.
+  AliceAlertHelper._();
+
+  /// Helper method used to open dialog with given title and description.
   static void showAlert(
     BuildContext context,
     String title,
     String description, {
     String firstButtonTitle = "Accept",
     String? secondButtonTitle,
-    Function? firstButtonAction,
-    Function? secondButtonAction,
+    VoidCallback? firstButtonAction,
+    VoidCallback? secondButtonAction,
     Brightness? brightness,
   }) {
-    List<Widget> actions = [];
-    actions.add(
-      ElevatedButton(
-        child: Text(firstButtonTitle),
+    final List<Widget> actions = [
+      AliceButton(
+        text: firstButtonTitle,
+        isOutlined: secondButtonTitle != null,
         onPressed: () {
-          if (firstButtonAction != null) firstButtonAction();
+          firstButtonAction?.call();
           Navigator.of(context).pop();
         },
       ),
-    );
+    ];
     if (secondButtonTitle != null) {
       actions.add(
-        ElevatedButton(
-          child: Text(secondButtonTitle),
+        AliceButton(
+          text: secondButtonTitle,
           onPressed: () {
-            if (secondButtonAction != null) secondButtonAction();
+            secondButtonAction?.call();
             Navigator.of(context).pop();
           },
         ),
       );
     }
-    showDialog(
+    showDialog<void>(
       context: context,
       builder: (_) => Theme(
         data: aliceTheme,
         child: AlertDialog(
-          title: Text(title),
-          content: Text(description),
+          title: Text(title, style: AliceTextStyles.titleMedium),
+          content: Text(description, style: AliceTextStyles.body),
           actions: actions,
         ),
       ),

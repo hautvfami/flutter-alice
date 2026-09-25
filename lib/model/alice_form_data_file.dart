@@ -3,5 +3,5 @@ class AliceFormDataFile {
   final String contentType;
   final int length;
 
-  AliceFormDataFile(this.fileName, this.contentType, this.length);
+  const AliceFormDataFile(this.fileName, this.contentType, this.length);
 }

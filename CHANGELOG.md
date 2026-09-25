@@ -1,3 +1,19 @@
+## 2.2.0-beta.1
+* **Search & Filter Bottom Sheet**: Replaced the cluttered AppBar search with a streamlined, ultra-compact bottom sheet modal. Features 250ms debounced real-time search, method chips (`GET`, `POST`, etc.), HTTP status code chips (`2xx`, `3xx`, `4xx`, `5xx`, `Error`), and live match counter without blocking list view.
+* **cURL Command Support**: Added dedicated monospace cURL command box with direct "Copy to Clipboard" action in Call Overview tab.
+* **Call Stack Tracking for Success Requests**: Replaced the empty "Error" tab on successful HTTP calls with a dedicated "Call Stack" tab, allowing developers to inspect invocation traces with selectable monospace text and full-copy support.
+* **Urgent Indicator for Bubble Inspector**: Replaced the static error red dot on the floating bubble with an intelligent Urgent Warning indicator:
+  * Triggers when requests are made at abnormal high frequency (>= 5 requests within 3 seconds).
+  * Triggers when a request is excessively slow (>= 2000ms duration or hanging request).
+  * Configurable via `urgentSlowDurationMs`, `urgentFrequencyThreshold`, and `urgentFrequencyWindow` in `AliceInspector`.
+* **Statistics Screen Redesign**: Revamped statistics page with modular breakdown components: Status Breakdown, Summary Cards, and Endpoints analytics.
+* **Theme & UI Modernization**: Consolidated theme system under `lib/theme/` (`AliceColors`, `AliceTextStyles`, `AliceTheme`, `AliceWidgets`), modernizing color schemes and typography.
+* **Example Project Enhancements**:
+  * Migrated iOS project from CocoaPods to **Swift Package Manager (SPM)**.
+  * Added new app icon assets, `SceneDelegate.swift`, and updated Flutter project configurations.
+  * Cleaned up legacy web template assets in example.
+* **Quality & Linting**: Added repository-level `analysis_options.yaml` with `flutter_lints: ^5.0.0` and expanded unit tests (`alice_extensions_test`, `alice_inspector_test`, `alice_stats_test`, `theme_test`).
+
 ## 2.1.0-beta.1
 * **Breaking Changes**: Major refactoring of setup process. Introduced `AliceInspector` widget for simplified integration, replacing manual navigator key setup. Removed dependency on `OverlaySupport` package.
 * **Implementation Changes**: Refactored core components for better modularity. Updated JSON viewer with performance optimizations and UI improvements. Enhanced floating inspector button with better positioning and animations.

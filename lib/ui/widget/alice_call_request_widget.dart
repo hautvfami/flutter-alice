@@ -1,66 +1,46 @@
 import 'package:flutter/material.dart';
-// import 'package:flutter_alice/model/alice_http_call.dart';
+import 'package:flutter_alice/helper/alice_extensions.dart';
 import 'package:flutter_alice/model/alice_http_request.dart';
 import 'package:flutter_alice/ui/widget/alice_base_mixin.dart';
 
 class AliceCallRequestWidget extends StatelessWidget with AliceBaseMixin {
   final AliceHttpRequest request;
 
-  AliceCallRequestWidget(this.request);
+  const AliceCallRequestWidget(this.request, {super.key});
 
   @override
   Widget build(BuildContext context) {
-    List<Widget> rows = [];
-    rows.add(getListRow("Started:", request.time.toString()));
-    rows.add(getListRow("Bytes sent:", formatBytes(request.size)));
-    rows.add(getListRow("Content type:", getContentType(request.headers)!));
+    final List<Widget> rows = [];
+    rows.add(getListRow("Started:", request.time.formattedTime));
+    rows.add(getListRow("Bytes sent:", request.size.toFormattedBytes));
+    rows.add(getListRow("Content type:", getContentType(request.headers) ?? "Unknown"));
 
-    var body = request.body;
+    final body = request.body;
     String? bodyContent = "Body is empty";
     if (body != null) {
       bodyContent = formatBody(body, getContentType(request.headers));
     }
-    rows.add(getListRow("Body:", bodyContent!));
-    var formDataFields = request.formDataFields;
-    if (formDataFields?.isNotEmpty == true) {
+    rows.add(getListRow("Body:", bodyContent ?? "Body is empty"));
+
+    final formDataFields = request.formDataFields;
+    if (formDataFields != null && formDataFields.isNotEmpty) {
       rows.add(getListRow("Form data fields: ", ""));
-      formDataFields!.forEach(
-        (field) {
-          rows.add(getListRow("   • ${field.name}:", "${field.value}"));
-        },
-      );
+      for (final field in formDataFields) {
+        rows.add(getListRow("   • ${field.name}:", field.value));
+      }
     }
-    var formDataFiles = request.formDataFiles;
-    if (formDataFiles?.isNotEmpty == true) {
+
+    final formDataFiles = request.formDataFiles;
+    if (formDataFiles != null && formDataFiles.isNotEmpty) {
       rows.add(getListRow("Form data files: ", ""));
-      formDataFiles!.forEach(
-        (field) {
-          rows.add(getListRow("   • ${field.fileName}:",
-              "${field.contentType} / ${field.length} B"));
-        },
-      );
+      for (final field in formDataFiles) {
+        rows.add(getListRow("   • ${field.fileName}:",
+            "${field.contentType} / ${field.length} B"));
+      }
     }
 
-    var headers = request.headers;
-    var headersContent = "Headers are empty";
-    if (headers.length > 0) {
-      headersContent = "";
-    }
-    rows.add(getListRow("Headers: ", headersContent));
-    request.headers.forEach((header, value) {
-      rows.add(getListRow("   • $header:", value.toString()));
-    });
-
-    print("qr: ${request.queryParameters}");
-    var queryParameters = request.queryParameters;
-    var queryParametersContent = "Query parameters are empty";
-    if (queryParameters.length > 0) {
-      queryParametersContent = "";
-    }
-    rows.add(getListRow("Query Parameters: ", queryParametersContent));
-    request.queryParameters.forEach((query, value) {
-      rows.add(getListRow("   • $query:", value.toString()));
-    });
+    rows.addAll(buildMapRows("Headers", request.headers));
+    rows.addAll(buildMapRows("Query Parameters", request.queryParameters));
 
     return Container(
       padding: const EdgeInsets.all(6),

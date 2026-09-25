@@ -9,20 +9,22 @@ extension AliceHttpClientExtensions on Future<HttpClientRequest> {
   /// helpful method to intercept httpClientResponse.
   Future<HttpClientResponse> interceptWithAlice(Alice alice,
       {dynamic body, Map<String, dynamic>? headers}) async {
-    HttpClientRequest request = await this;
+    final HttpClientRequest request = await this;
     if (body != null) {
       request.write(body);
     }
     if (headers != null) {
       headers.forEach(
         (String key, dynamic value) {
-          request.headers.add(key, value);
+          if (value != null) {
+            request.headers.add(key, value as Object);
+          }
         },
       );
     }
     alice.onHttpClientRequest(request, body: body);
-    var httpResponse = await request.close();
-    var responseBody = await utf8.decoder.bind(httpResponse).join();
+    final httpResponse = await request.close();
+    final responseBody = await utf8.decoder.bind(httpResponse).join();
     alice.onHttpClientResponse(httpResponse, request, body: responseBody);
     return httpResponse;
   }

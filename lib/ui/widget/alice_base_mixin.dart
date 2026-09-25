@@ -1,26 +1,11 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_alice/helper/alice_convert_helper.dart';
+import 'package:flutter_alice/theme/alice_widgets.dart';
 import 'package:flutter_alice/ui/utils/alice_parser.dart';
 
 mixin AliceBaseMixin {
-  final JsonEncoder encoder = new JsonEncoder.withIndent('  ');
-
   Widget getListRow(String name, String value) {
-    return RichText(
-        text: TextSpan(
-      children: [
-        TextSpan(
-          text: name == 'Body:' ? '$name\n' : '$name\t\t\t',
-          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
-        ),
-        TextSpan(
-          text: '$value',
-          style: TextStyle(color: Colors.black),
-        ),
-      ],
-    ));
+    return AliceListRow(name: name, value: value);
   }
 
   String formatBytes(int bytes) => AliceConvertHelper.formatBytes(bytes);
@@ -33,4 +18,22 @@ mixin AliceBaseMixin {
 
   String? getContentType(Map<String, dynamic>? headers) =>
       AliceParser.getContentType(headers);
+
+  List<Widget> buildMapRows(
+    String title,
+    Map<String, dynamic>? map, {
+    String? emptyText,
+  }) {
+    final rows = <Widget>[];
+    final isEmpty = map == null || map.isEmpty;
+    rows.add(
+      getListRow("$title: ", isEmpty ? (emptyText ?? "$title are empty") : ""),
+    );
+    if (!isEmpty) {
+      map.forEach((key, value) {
+        rows.add(getListRow("   • $key:", value.toString()));
+      });
+    }
+    return rows;
+  }
 }
