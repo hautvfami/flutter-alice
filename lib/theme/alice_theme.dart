@@ -46,7 +46,7 @@ final ThemeData aliceTheme = ThemeData(
   dialogTheme: DialogThemeData(
     backgroundColor: AliceColors.surface,
     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-    titleTextStyle: AliceTextStyles.titleLarge,
+    titleTextStyle: AliceStyles.titleLarge,
   ),
   elevatedButtonTheme: ElevatedButtonThemeData(
     style: ElevatedButton.styleFrom(

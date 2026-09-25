@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_alice/core/alice_core.dart';
 import 'package:flutter_alice/helper/alice_alert_helper.dart';
 import 'package:flutter_alice/model/alice_calls_filter.dart';
@@ -27,7 +28,7 @@ class _AliceCallsListScreenState extends State<AliceCallsListScreen> {
   AliceCore get aliceCore => widget._aliceCore;
 
   AliceCallsFilter _filter = AliceCallsFilter.empty;
-  final ValueNotifier<int> _filteredCountNotifier = ValueNotifier<int>(0);
+  final _filteredCountNotifier = ValueNotifier<int>(0);
 
   @override
   void dispose() {
@@ -62,7 +63,6 @@ class _AliceCallsListScreenState extends State<AliceCallsListScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final height = MediaQuery.sizeOf(context).height;
     return Theme(
       data: aliceTheme,
       child: Scaffold(
@@ -74,46 +74,52 @@ class _AliceCallsListScreenState extends State<AliceCallsListScreen> {
             _buildSearchButton(),
             _buildMenuButton(),
           ],
+          systemOverlayStyle: SystemUiOverlayStyle.light,
         ),
         body: Column(
           children: [
             Expanded(child: _buildCallsListWrapper()),
-            if (aliceCore.logs.isNotEmpty)
-              _buildBottomConsolePreview(height),
+            _buildBottomConsolePreview(),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildBottomConsolePreview(double height) {
-    return GestureDetector(
-      onTap: () {
-        aliceCore.push((context) => AliceLogsScreen(aliceCore));
-      },
-      child: Container(
-        height: height * 0.15,
-        decoration: BoxDecoration(
-          color: AliceColors.primary,
-          borderRadius: BorderRadius.circular(8.0),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              margin: const EdgeInsets.only(left: 16.0, top: 4),
-              child: Text(
-                '> Console',
-                style: AliceTextStyles.titleMedium.copyWith(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
+  Widget _buildBottomConsolePreview() {
+    final height = MediaQuery.sizeOf(context).height;
+    return StreamBuilder<bool>(
+      stream: aliceCore.hasLogsStream,
+      initialData: aliceCore.logs.isNotEmpty,
+      builder: (c, snapshot) {
+        final hasLogs = snapshot.data ?? false;
+        if (!hasLogs) return const SizedBox.shrink();
+        return GestureDetector(
+          onTap: () async {
+            await aliceCore.push((context) => AliceLogsScreen(aliceCore));
+          },
+          child: Container(
+            height: height * 0.15,
+            decoration: BoxDecoration(
+              color: AliceColors.primary,
+              borderRadius: BorderRadius.circular(8.0),
             ),
-            Expanded(child: AliceLogsWidget(aliceCore: aliceCore)),
-          ],
-        ),
-      ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  margin: const EdgeInsets.only(left: 16.0, top: 4),
+                  child: Text(
+                    '> Console',
+                    style: AliceStyles.titleMedium.s16.white.bold,
+                  ),
+                ),
+                Expanded(child: AliceLogsWidget(stream: aliceCore.logsStream)),
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 
@@ -211,14 +217,13 @@ class _AliceCallsListScreenState extends State<AliceCallsListScreen> {
   Widget _buildCallsListWrapper() {
     return StreamBuilder<List<AliceHttpCall>>(
       stream: aliceCore.callsSubject,
-      builder: (context, snapshot) {
-        final List<AliceHttpCall> allCalls = snapshot.data ?? <AliceHttpCall>[];
+      builder: (_, snapshot) {
+        final allCalls = snapshot.data ?? <AliceHttpCall>[];
         if (allCalls.isEmpty) return _buildEmptyWidget();
 
         final filteredCalls =
             allCalls.where((call) => _matchesCall(call, _filter)).toList();
 
-        // Update the notifier asynchronously to avoid build-phase notifications
         WidgetsBinding.instance.addPostFrameCallback((_) {
           if (mounted && _filteredCountNotifier.value != filteredCalls.length) {
             _filteredCountNotifier.value = filteredCalls.length;
@@ -249,14 +254,14 @@ class _AliceCallsListScreenState extends State<AliceCallsListScreen> {
             const SizedBox(height: 12),
             const Text(
               "No matching calls found",
-              style: AliceTextStyles.titleLarge,
+              style: AliceStyles.titleLarge,
             ),
             const SizedBox(height: 8),
             Text(
               _filter.query.isNotEmpty
                   ? "No results for '${_filter.query}' with current filters"
                   : "No calls match the selected status/method filter",
-              style: AliceTextStyles.caption,
+              style: AliceStyles.caption,
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 16),
@@ -289,7 +294,7 @@ class _AliceCallsListScreenState extends State<AliceCallsListScreen> {
             SizedBox(height: 12),
             Text(
               "There are no calls to show",
-              style: AliceTextStyles.titleLarge,
+              style: AliceStyles.titleLarge,
             ),
             SizedBox(height: 12),
             Column(
@@ -297,19 +302,19 @@ class _AliceCallsListScreenState extends State<AliceCallsListScreen> {
               children: [
                 Text(
                   "• Check if you send any http request",
-                  style: AliceTextStyles.caption,
+                  style: AliceStyles.caption,
                   textAlign: TextAlign.center,
                 ),
                 SizedBox(height: 4),
                 Text(
                   "• Check your Alice configuration",
-                  style: AliceTextStyles.caption,
+                  style: AliceStyles.caption,
                   textAlign: TextAlign.center,
                 ),
                 SizedBox(height: 4),
                 Text(
                   "• Check search filters",
-                  style: AliceTextStyles.caption,
+                  style: AliceStyles.caption,
                   textAlign: TextAlign.center,
                 )
               ],
@@ -347,4 +352,3 @@ class _AliceCallsListScreenState extends State<AliceCallsListScreen> {
     );
   }
 }
-

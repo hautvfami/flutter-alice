@@ -91,7 +91,7 @@ class _AliceCallDetailsScreenState extends State<AliceCallDetailsScreen> {
           SizedBox(height: 16),
           Text(
             "Failed to load data",
-            style: AliceTextStyles.titleMedium,
+            style: AliceStyles.titleMedium,
           ),
         ],
       ),

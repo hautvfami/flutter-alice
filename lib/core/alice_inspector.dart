@@ -341,7 +341,7 @@ class _AliceInspectorState extends State<AliceInspector>
                   children: [
                     Text(
                       countText,
-                      style: AliceTextStyles.monoBold.copyWith(
+                      style: AliceStyles.monoBold.copyWith(
                         color: Colors.white,
                         fontSize: count > 99 ? smallFontSize : fontSize,
                       ),

@@ -56,11 +56,11 @@ class StatsSummaryCard extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text("Total Requests", style: AliceTextStyles.caption),
+                  const Text("Total Requests", style: AliceStyles.caption),
                   const SizedBox(height: 4),
                   Text(
                     "${stats.totalRequests}",
-                    style: AliceTextStyles.titleLarge.copyWith(fontSize: 28),
+                    style: AliceStyles.titleLarge.copyWith(fontSize: 28),
                   ),
                 ],
               ),
@@ -87,7 +87,7 @@ class StatsSummaryCard extends StatelessWidget {
                     const SizedBox(width: 6),
                     Text(
                       "${stats.errorRate.toStringAsFixed(1)}% Error",
-                      style: AliceTextStyles.captionBold.copyWith(
+                      style: AliceStyles.captionBold.copyWith(
                         color: errorColor,
                       ),
                     ),
@@ -142,13 +142,13 @@ class StatsSummaryCard extends StatelessWidget {
             children: [
               Icon(Icons.timer_outlined, size: 16, color: AliceColors.grey),
               SizedBox(width: 6),
-              Text("Latency", style: AliceTextStyles.caption),
+              Text("Latency", style: AliceStyles.caption),
             ],
           ),
           const SizedBox(height: 6),
           Text(
             stats.avgDuration.toFormattedDuration,
-            style: AliceTextStyles.titleMedium.copyWith(fontSize: 20),
+            style: AliceStyles.titleMedium.copyWith(fontSize: 20),
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
           ),
@@ -157,7 +157,7 @@ class StatsSummaryCard extends StatelessWidget {
             children: [
               Text(
                 "Min: ",
-                style: AliceTextStyles.caption.copyWith(
+                style: AliceStyles.caption.copyWith(
                   fontSize: 11,
                   color: AliceColors.grey,
                 ),
@@ -165,7 +165,7 @@ class StatsSummaryCard extends StatelessWidget {
               Expanded(
                 child: Text(
                   stats.minDuration.toFormattedDuration,
-                  style: AliceTextStyles.captionBold.copyWith(fontSize: 11),
+                  style: AliceStyles.captionBold.copyWith(fontSize: 11),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),
@@ -177,7 +177,7 @@ class StatsSummaryCard extends StatelessWidget {
             children: [
               Text(
                 "Max: ",
-                style: AliceTextStyles.caption.copyWith(
+                style: AliceStyles.caption.copyWith(
                   fontSize: 11,
                   color: AliceColors.grey,
                 ),
@@ -185,7 +185,7 @@ class StatsSummaryCard extends StatelessWidget {
               Expanded(
                 child: Text(
                   stats.maxDuration.toFormattedDuration,
-                  style: AliceTextStyles.captionBold.copyWith(fontSize: 11),
+                  style: AliceStyles.captionBold.copyWith(fontSize: 11),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),
@@ -212,13 +212,13 @@ class StatsSummaryCard extends StatelessWidget {
             children: [
               Icon(Icons.swap_vert, size: 16, color: AliceColors.grey),
               SizedBox(width: 6),
-              Text("Data Transfer", style: AliceTextStyles.caption),
+              Text("Data Transfer", style: AliceStyles.caption),
             ],
           ),
           const SizedBox(height: 6),
           Text(
             (stats.bytesSent + stats.bytesReceived).toFormattedBytes,
-            style: AliceTextStyles.titleMedium.copyWith(fontSize: 20),
+            style: AliceStyles.titleMedium.copyWith(fontSize: 20),
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
           ),
@@ -227,7 +227,7 @@ class StatsSummaryCard extends StatelessWidget {
             children: [
               Text(
                 "▲ ",
-                style: AliceTextStyles.caption.copyWith(
+                style: AliceStyles.caption.copyWith(
                   fontSize: 11,
                   color: AliceColors.info,
                 ),
@@ -235,7 +235,7 @@ class StatsSummaryCard extends StatelessWidget {
               Expanded(
                 child: Text(
                   stats.bytesSent.toFormattedBytes,
-                  style: AliceTextStyles.caption.copyWith(fontSize: 11),
+                  style: AliceStyles.caption.copyWith(fontSize: 11),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),
@@ -247,7 +247,7 @@ class StatsSummaryCard extends StatelessWidget {
             children: [
               Text(
                 "▼ ",
-                style: AliceTextStyles.caption.copyWith(
+                style: AliceStyles.caption.copyWith(
                   fontSize: 11,
                   color: AliceColors.success,
                 ),
@@ -255,7 +255,7 @@ class StatsSummaryCard extends StatelessWidget {
               Expanded(
                 child: Text(
                   stats.bytesReceived.toFormattedBytes,
-                  style: AliceTextStyles.caption.copyWith(fontSize: 11),
+                  style: AliceStyles.caption.copyWith(fontSize: 11),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),
@@ -286,7 +286,7 @@ class StatsSummaryCard extends StatelessWidget {
             runSpacing: 6,
             children: [
               const Text("HTTP Methods & Protocol",
-                  style: AliceTextStyles.caption),
+                  style: AliceStyles.caption),
               Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -304,7 +304,7 @@ class StatsSummaryCard extends StatelessWidget {
                     stats.hasUnsecuredRequests
                         ? "${stats.unsecuredCount} HTTP Unsecured"
                         : "${stats.securedCount} HTTPS",
-                    style: AliceTextStyles.caption.copyWith(
+                    style: AliceStyles.caption.copyWith(
                       color: stats.hasUnsecuredRequests
                           ? AliceColors.error
                           : AliceColors.success,
@@ -339,14 +339,14 @@ class StatsSummaryCard extends StatelessWidget {
         children: [
           Text(
             value,
-            style: AliceTextStyles.bodyBold.copyWith(color: color),
+            style: AliceStyles.bodyBold.copyWith(color: color),
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
           ),
           const SizedBox(height: 2),
           Text(
             label,
-            style: AliceTextStyles.caption,
+            style: AliceStyles.caption,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
           ),
@@ -365,7 +365,7 @@ class StatsSummaryCard extends StatelessWidget {
       ),
       child: Text(
         "$method: $count",
-        style: AliceTextStyles.captionBold.copyWith(color: color),
+        style: AliceStyles.captionBold.copyWith(color: color),
       ),
     );
   }

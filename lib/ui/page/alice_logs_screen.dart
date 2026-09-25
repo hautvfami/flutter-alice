@@ -26,13 +26,13 @@ class AliceLogsScreen extends StatelessWidget {
           scrolledUnderElevation: 0.0,
           actions: [
             IconButton(
-              icon: const Icon(Icons.delete_outline),
+              icon: const Icon(Icons.cleaning_services_rounded),
               tooltip: 'Clear logs',
               onPressed: aliceCore.clearLogs,
             ),
           ],
         ),
-        body: AliceLogsWidget(aliceCore: aliceCore),
+        body: AliceLogsWidget(stream: aliceCore.logsStream),
       ),
     );
   }

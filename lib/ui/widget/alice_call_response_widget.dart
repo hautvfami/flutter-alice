@@ -96,7 +96,7 @@ class _AliceCallResponseWidgetState extends State<AliceCallResponseWidget>
             children: [
               Text(
                 "Body: Image",
-                style: AliceTextStyles.bodyBold,
+                style: AliceStyles.bodyBold,
               )
             ],
           ),
@@ -146,7 +146,7 @@ class _AliceCallResponseWidgetState extends State<AliceCallResponseWidget>
       rows.add(
         Text(
           "Warning! It will take some time to render output.",
-          style: AliceTextStyles.caption.copyWith(color: AliceColors.warning),
+          style: AliceStyles.caption.copyWith(color: AliceColors.warning),
         ),
       );
     }

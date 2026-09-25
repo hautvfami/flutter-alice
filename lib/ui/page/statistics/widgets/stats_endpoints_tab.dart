@@ -54,7 +54,7 @@ class _StatsEndpointsTabState extends State<StatsEndpointsTab> {
           children: [
             Icon(Icons.api_outlined, size: 48, color: AliceColors.grey),
             SizedBox(height: 12),
-            Text("No endpoints recorded yet", style: AliceTextStyles.bodyBold),
+            Text("No endpoints recorded yet", style: AliceStyles.bodyBold),
           ],
         ),
       );
@@ -88,11 +88,11 @@ class _StatsEndpointsTabState extends State<StatsEndpointsTab> {
         children: [
           Text(
             "${widget.endpointStats.length} Unique Endpoints",
-            style: AliceTextStyles.captionBold,
+            style: AliceStyles.captionBold,
           ),
           Row(
             children: [
-              const Text("Sort: ", style: AliceTextStyles.caption),
+              const Text("Sort: ", style: AliceStyles.caption),
               const SizedBox(width: 4),
               _buildSortChip("Frequent", EndpointSortMode.mostFrequent),
               const SizedBox(width: 6),
@@ -128,7 +128,7 @@ class _StatsEndpointsTabState extends State<StatsEndpointsTab> {
         ),
         child: Text(
           label,
-          style: AliceTextStyles.caption.copyWith(
+          style: AliceStyles.caption.copyWith(
             color:
                 isSelected ? AliceColors.primaryDark : AliceColors.textPrimary,
             fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
@@ -179,7 +179,7 @@ class _StatsEndpointsTabState extends State<StatsEndpointsTab> {
                 children: [
                   Text(
                     ep.method.toUpperCase(),
-                    style: AliceTextStyles.captionBold.copyWith(
+                    style: AliceStyles.captionBold.copyWith(
                       color: _getMethodColor(ep.method),
                     ),
                   ),
@@ -189,7 +189,7 @@ class _StatsEndpointsTabState extends State<StatsEndpointsTab> {
                     const SizedBox(width: 8),
                     Text(
                       "•  ${ep.errorCount} err",
-                      style: AliceTextStyles.captionBold.copyWith(
+                      style: AliceStyles.captionBold.copyWith(
                         color: AliceColors.error,
                       ),
                     ),
@@ -201,7 +201,7 @@ class _StatsEndpointsTabState extends State<StatsEndpointsTab> {
                   ],
                   Text(
                     ep.avgDuration.toFormattedDuration,
-                    style: AliceTextStyles.monoBold.copyWith(
+                    style: AliceStyles.monoBold.copyWith(
                       color: severity != AliceSeverity.none &&
                               _sortMode == EndpointSortMode.slowest
                           ? severity.color
@@ -216,7 +216,7 @@ class _StatsEndpointsTabState extends State<StatsEndpointsTab> {
               // Row 2: Endpoint path
               Text(
                 ep.endpoint.isEmpty ? "/" : ep.endpoint,
-                style: AliceTextStyles.bodyBold.copyWith(fontSize: 14),
+                style: AliceStyles.bodyBold.copyWith(fontSize: 14),
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
               ),
@@ -228,13 +228,13 @@ class _StatsEndpointsTabState extends State<StatsEndpointsTab> {
                   Expanded(
                     child: Text(
                       "${ep.server}  •  Min: ${ep.minDuration.toFormattedDuration} / Max: ${ep.maxDuration.toFormattedDuration}",
-                      style: AliceTextStyles.caption.copyWith(fontSize: 11),
+                      style: AliceStyles.caption.copyWith(fontSize: 11),
                       overflow: TextOverflow.ellipsis,
                     ),
                   ),
                   Text(
                     ep.totalBytes.toFormattedBytes,
-                    style: AliceTextStyles.caption.copyWith(fontSize: 11),
+                    style: AliceStyles.caption.copyWith(fontSize: 11),
                   ),
                 ],
               ),
@@ -262,12 +262,12 @@ class _StatsEndpointsTabState extends State<StatsEndpointsTab> {
       };
       return Text(
         text,
-        style: AliceTextStyles.captionBold.copyWith(color: color),
+        style: AliceStyles.captionBold.copyWith(color: color),
       );
     } else {
       return Text(
         "${ep.count} call${ep.count > 1 ? 's' : ''}",
-        style: AliceTextStyles.captionBold.copyWith(
+        style: AliceStyles.captionBold.copyWith(
           color: ep.isDuplicateWarning ? AliceColors.warning : AliceColors.grey,
         ),
       );
@@ -283,7 +283,7 @@ class _StatsEndpointsTabState extends State<StatsEndpointsTab> {
       ),
       child: Text(
         severity.label,
-        style: AliceTextStyles.captionBold.copyWith(
+        style: AliceStyles.captionBold.copyWith(
           color: severity.color,
           fontSize: 9,
           letterSpacing: 0.5,

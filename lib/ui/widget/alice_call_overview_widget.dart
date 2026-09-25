@@ -43,10 +43,9 @@ class AliceCallOverviewWidget extends StatelessWidget with AliceBaseMixin {
             children: [
               const Text(
                 "cURL:",
-                style: AliceTextStyles.bodyBold,
+                style: AliceStyles.bodyBold,
               ),
-              InkWell(
-                borderRadius: BorderRadius.circular(6),
+              GestureDetector(
                 onTap: () => _copyCurl(context, curl),
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
@@ -61,9 +60,7 @@ class AliceCallOverviewWidget extends StatelessWidget with AliceBaseMixin {
                       const SizedBox(width: 4),
                       Text(
                         "Copy",
-                        style: AliceTextStyles.captionBold.copyWith(
-                          color: AliceColors.primary,
-                        ),
+                        style: AliceStyles.captionBold.primary,
                       ),
                     ],
                   ),
@@ -72,8 +69,7 @@ class AliceCallOverviewWidget extends StatelessWidget with AliceBaseMixin {
             ],
           ),
           const SizedBox(height: 6),
-          InkWell(
-            borderRadius: BorderRadius.circular(8),
+          GestureDetector(
             onTap: () => _copyCurl(context, curl),
             child: Container(
               width: double.infinity,
@@ -85,10 +81,8 @@ class AliceCallOverviewWidget extends StatelessWidget with AliceBaseMixin {
               ),
               child: SelectableText(
                 curl,
-                style: AliceTextStyles.mono.copyWith(
-                  fontSize: 12,
-                  color: AliceColors.textPrimary,
-                ),
+                style: AliceStyles.mono.s12
+                    .copyWith(color: AliceColors.textPrimary),
               ),
             ),
           ),

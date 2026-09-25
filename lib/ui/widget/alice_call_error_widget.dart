@@ -28,7 +28,7 @@ class AliceCallErrorWidget extends StatelessWidget with AliceBaseMixin {
       );
     } else {
       return const Center(
-        child: Text("Nothing to display here", style: AliceTextStyles.caption),
+        child: Text("Nothing to display here", style: AliceStyles.caption),
       );
     }
   }
