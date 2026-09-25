@@ -5,6 +5,7 @@ import 'package:flutter_alice/core/alice_core.dart';
 import 'package:flutter_alice/model/alice_http_call.dart';
 import 'package:flutter_alice/model/alice_http_request.dart';
 import 'package:flutter_alice/model/alice_http_response.dart';
+import 'package:flutter_alice/ui/utils/alice_parser.dart';
 
 class AliceHttpClientAdapter {
   /// AliceCore instance
@@ -15,23 +16,17 @@ class AliceHttpClientAdapter {
 
   /// Handles httpClientRequest and creates http alice call from it
   void onRequest(HttpClientRequest request, {dynamic body}) {
-    AliceHttpCall call = AliceHttpCall(request.hashCode);
+    final call = AliceHttpCall(request.hashCode);
     call.loading = true;
     call.client = "HttpClient (io package)";
     call.method = request.method;
     call.uri = request.uri.toString();
-
-    var path = request.uri.path;
-    if (path.length == 0) {
-      path = "/";
-    }
-
-    call.endpoint = path;
+    call.endpoint = request.uri.path.isEmpty ? "/" : request.uri.path;
     call.server = request.uri.host;
-    if (request.uri.scheme == "https") {
-      call.secure = true;
-    }
-    AliceHttpRequest httpRequest = AliceHttpRequest();
+    call.secure = request.uri.scheme == "https";
+
+    final httpRequest = AliceHttpRequest();
+    httpRequest.stackTrace = StackTrace.current;
     if (body == null) {
       httpRequest.size = 0;
       httpRequest.body = "";
@@ -40,18 +35,13 @@ class AliceHttpClientAdapter {
       httpRequest.body = body;
     }
     httpRequest.time = DateTime.now();
-    Map<String, dynamic> headers = Map();
-    httpRequest.headers.forEach((header, value) {
-      headers[header] = value;
+
+    final Map<String, dynamic> headers = {};
+    request.headers.forEach((header, values) {
+      headers[header] = values.join(', ');
     });
-
     httpRequest.headers = headers;
-    String? contentType = "unknown";
-    if (headers.containsKey("Content-Type")) {
-      contentType = headers["Content-Type"];
-    }
-
-    httpRequest.contentType = contentType;
+    httpRequest.contentType = AliceParser.getContentType(headers);
     httpRequest.cookies = request.cookies;
 
     call.request = httpRequest;
@@ -61,8 +51,8 @@ class AliceHttpClientAdapter {
 
   /// Handles httpClientRequest and adds response to http alice call
   void onResponse(HttpClientResponse response, HttpClientRequest request,
-      {dynamic body}) async {
-    AliceHttpResponse httpResponse = AliceHttpResponse();
+      {dynamic body}) {
+    final httpResponse = AliceHttpResponse();
     httpResponse.status = response.statusCode;
 
     if (body != null) {
@@ -73,9 +63,9 @@ class AliceHttpClientAdapter {
       httpResponse.size = 0;
     }
     httpResponse.time = DateTime.now();
-    Map<String, String> headers = Map();
+    final Map<String, String> headers = {};
     response.headers.forEach((header, values) {
-      headers[header] = values.toString();
+      headers[header] = values.join(', ');
     });
     httpResponse.headers = headers;
     aliceCore.addResponse(httpResponse, request.hashCode);

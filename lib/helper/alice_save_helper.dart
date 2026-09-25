@@ -1,83 +1,86 @@
 import 'dart:convert';
 
-import 'package:flutter_alice/helper/alice_convert_helper.dart';
+import 'package:flutter_alice/helper/alice_extensions.dart';
 import 'package:flutter_alice/model/alice_http_call.dart';
 import 'package:flutter_alice/ui/utils/alice_parser.dart';
 
 class AliceSaveHelper {
-  static JsonEncoder _encoder = new JsonEncoder.withIndent('  ');
+  AliceSaveHelper._();
 
-  static Future<String> _buildAliceLog() async {
-    StringBuffer stringBuffer = StringBuffer();
-    stringBuffer.write("Alice - HTTP Inspector\n");
-    stringBuffer.write("Generated: " + DateTime.now().toIso8601String() + "\n");
-    stringBuffer.write("\n");
+  static const _encoder = JsonEncoder.withIndent('  ');
+
+  static String _buildAliceLog() {
+    final stringBuffer = StringBuffer();
+    stringBuffer.writeln("Alice - HTTP Inspector");
+    stringBuffer.writeln("Generated: ${DateTime.now().toIso8601String()}");
+    stringBuffer.writeln();
     return stringBuffer.toString();
   }
 
   static String _buildCallLog(AliceHttpCall call) {
-    StringBuffer stringBuffer = StringBuffer();
-    stringBuffer.write("===========================================\n");
-    stringBuffer.write("Id: ${call.id}\n");
-    stringBuffer.write("============================================\n");
-    stringBuffer.write("--------------------------------------------\n");
-    stringBuffer.write("General data\n");
-    stringBuffer.write("--------------------------------------------\n");
-    stringBuffer.write("Server: ${call.server} \n");
-    stringBuffer.write("Method: ${call.method} \n");
-    stringBuffer.write("Endpoint: ${call.endpoint} \n");
-    stringBuffer.write("Client: ${call.client} \n");
-    stringBuffer
-        .write("Duration ${AliceConvertHelper.formatTime(call.duration)}\n");
-    stringBuffer.write("Secured connection: ${call.secure}\n");
-    stringBuffer.write("Completed: ${!call.loading} \n");
-    stringBuffer.write("--------------------------------------------\n");
-    stringBuffer.write("Request\n");
-    stringBuffer.write("--------------------------------------------\n");
-    stringBuffer.write("Request time: ${call.request!.time}\n");
-    stringBuffer.write("Request content type: ${call.request!.contentType}\n");
-    stringBuffer
-        .write("Request cookies: ${_encoder.convert(call.request!.cookies)}\n");
-    stringBuffer
-        .write("Request headers: ${_encoder.convert(call.request!.headers)}\n");
-    stringBuffer.write(
-        "Request size: ${AliceConvertHelper.formatBytes(call.request!.size)}\n");
-    stringBuffer.write(
-        "Request body: ${AliceParser.formatBody(call.request!.body, AliceParser.getContentType(call.request!.headers))}\n");
-    stringBuffer.write("--------------------------------------------\n");
-    stringBuffer.write("Response\n");
-    stringBuffer.write("--------------------------------------------\n");
-    stringBuffer.write("Response time: ${call.response!.time}\n");
-    stringBuffer.write("Response status: ${call.response!.status}\n");
-    stringBuffer.write(
-        "Response size: ${AliceConvertHelper.formatBytes(call.response!.size)}\n");
-    stringBuffer.write(
-        "Response headers: ${_encoder.convert(call.response!.headers)}\n");
-    stringBuffer.write(
-        "Response body: ${AliceParser.formatBody(call.response!.body, AliceParser.getContentType(call.response!.headers))}\n");
-    if (call.error != null) {
-      stringBuffer.write("--------------------------------------------\n");
-      stringBuffer.write("Error\n");
-      stringBuffer.write("--------------------------------------------\n");
-      stringBuffer.write("Error: ${call.error!.error}\n");
-      if (call.error!.stackTrace != null) {
-        stringBuffer.write("Error stacktrace: ${call.error!.stackTrace}\n");
+    final stringBuffer = StringBuffer();
+    stringBuffer.writeln("===========================================");
+    stringBuffer.writeln("Id: ${call.id}");
+    stringBuffer.writeln("============================================");
+    stringBuffer.writeln("--------------------------------------------");
+    stringBuffer.writeln("General data");
+    stringBuffer.writeln("--------------------------------------------");
+    stringBuffer.writeln("Server: ${call.server} ");
+    stringBuffer.writeln("Method: ${call.method} ");
+    stringBuffer.writeln("Endpoint: ${call.endpoint} ");
+    stringBuffer.writeln("Client: ${call.client} ");
+    stringBuffer.writeln("Duration: ${call.duration.toFormattedDuration}");
+    stringBuffer.writeln("Secured connection: ${call.secure}");
+    stringBuffer.writeln("Completed: ${!call.loading} ");
+    stringBuffer.writeln("--------------------------------------------");
+    stringBuffer.writeln("Request");
+    stringBuffer.writeln("--------------------------------------------");
+    if (call.request != null) {
+      stringBuffer.writeln("Request time: ${call.request!.time}");
+      stringBuffer.writeln("Request content type: ${call.request!.contentType}");
+      stringBuffer.writeln("Request cookies: ${_encoder.convert(call.request!.cookies)}");
+      stringBuffer.writeln("Request headers: ${_encoder.convert(call.request!.headers)}");
+      stringBuffer.writeln("Request size: ${call.request!.size.toFormattedBytes}");
+      stringBuffer.writeln(
+          "Request body: ${AliceParser.formatBody(call.request!.body, AliceParser.getContentType(call.request!.headers))}");
+      if (call.request!.initiator != null) {
+        stringBuffer.writeln("Initiator: ${call.request!.initiator}");
       }
     }
-    stringBuffer.write("--------------------------------------------\n");
-    stringBuffer.write("Curl\n");
-    stringBuffer.write("--------------------------------------------\n");
-    stringBuffer.write("${call.getCurlCommand()}");
-    stringBuffer.write("\n");
-    stringBuffer.write("==============================================\n");
-    stringBuffer.write("\n");
+    stringBuffer.writeln("--------------------------------------------");
+    stringBuffer.writeln("Response");
+    stringBuffer.writeln("--------------------------------------------");
+    if (call.response != null) {
+      stringBuffer.writeln("Response time: ${call.response!.time}");
+      stringBuffer.writeln("Response status: ${call.response!.status}");
+      stringBuffer.writeln("Response size: ${call.response!.size.toFormattedBytes}");
+      stringBuffer.writeln("Response headers: ${_encoder.convert(call.response!.headers)}");
+      stringBuffer.writeln(
+          "Response body: ${AliceParser.formatBody(call.response!.body, AliceParser.getContentType(call.response!.headers))}");
+    }
+    if (call.error != null) {
+      stringBuffer.writeln("--------------------------------------------");
+      stringBuffer.writeln("Error");
+      stringBuffer.writeln("--------------------------------------------");
+      stringBuffer.writeln("Error: ${call.error!.error}");
+      if (call.error!.stackTrace != null) {
+        stringBuffer.writeln("Error stacktrace: ${call.error!.stackTrace}");
+      }
+    }
+    stringBuffer.writeln("--------------------------------------------");
+    stringBuffer.writeln("Curl");
+    stringBuffer.writeln("--------------------------------------------");
+    stringBuffer.writeln(call.getCurlCommand());
+    stringBuffer.writeln();
+    stringBuffer.writeln("==============================================");
+    stringBuffer.writeln();
 
     return stringBuffer.toString();
   }
 
   static Future<String> buildCallLog(AliceHttpCall call) async {
     try {
-      return await _buildAliceLog() + _buildCallLog(call);
+      return _buildAliceLog() + _buildCallLog(call);
     } catch (exception) {
       return "Failed to generate call log";
     }

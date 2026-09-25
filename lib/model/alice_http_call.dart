@@ -19,67 +19,54 @@ class AliceHttpCall {
   AliceHttpResponse? response;
   AliceHttpError? error;
 
-  AliceHttpCall(this.id) {
-    loading = true;
-  }
+  AliceHttpCall(this.id);
 
-  setResponse(AliceHttpResponse response) {
+  void setResponse(AliceHttpResponse response) {
     this.response = response;
     loading = false;
   }
 
   String getCurlCommand() {
     var compressed = false;
-    var curlCmd = "curl";
-    curlCmd += " -X " + method;
-    var headers = request!.headers;
-    headers..remove('content-length');
+    final buffer = StringBuffer("curl -X $method");
+    final headers = Map<String, dynamic>.from(request?.headers ?? {});
+    headers.remove('content-length');
     headers.forEach((key, value) {
       if ("Accept-Encoding" == key && "gzip" == value) {
         compressed = true;
       }
-      curlCmd += " -H \'$key: $value\'";
+      buffer.write(" -H '$key: $value'");
     });
 
-    if (request?.body != null && request?.body != '') {
-      String? requestBody = jsonEncode(request?.body);
-      // try to keep to a single line and use a subshell to preserve any line breaks
-      curlCmd += " --data \$'" + requestBody.replaceAll("\n", "\\n") + "'";
+    final body = request?.body;
+    if (body != null && body != '') {
+      final String requestBody = jsonEncode(body);
+      buffer.write(" --data \$'${requestBody.replaceAll("\n", "\\n")}'");
     }
 
-    if (request?.formDataFields != null) {
-      var formDataFields = request?.formDataFields;
-      if (formDataFields != null && formDataFields.isNotEmpty) {
-        formDataFields.forEach((field) {
-          curlCmd += " --form \'${field.name}=${field.value}\'";
-        });
+    final formDataFields = request?.formDataFields;
+    if (formDataFields != null && formDataFields.isNotEmpty) {
+      for (final field in formDataFields) {
+        buffer.write(" --form '${field.name}=${field.value}'");
       }
     }
 
-    if (request?.formDataFiles != null) {
-      var formDataFiles = request?.formDataFiles;
-      if (formDataFiles != null && formDataFiles.isNotEmpty) {
-        formDataFiles.forEach((field) {
-          curlCmd += " --form \'${field.fileName}=@${field.fileName}\'";
-        });
+    final formDataFiles = request?.formDataFiles;
+    if (formDataFiles != null && formDataFiles.isNotEmpty) {
+      for (final field in formDataFiles) {
+        buffer.write(" --form '${field.fileName}=@${field.fileName}'");
       }
     }
 
-    String query = '';
-    if (request?.queryParameters != null) {
-      var queryParams = request?.queryParameters;
-      if (queryParams != null && queryParams.isNotEmpty) {
-        query += "?";
-        query += queryParams.entries
-            .map((e) =>
-                '${Uri.encodeComponent(e.key)}=${Uri.encodeComponent(e.value)}')
-            .join('&');
-      }
+    if (compressed) {
+      buffer.write(" --compressed");
     }
 
-    curlCmd += ((compressed) ? " --compressed " : " ") +
-        "\'${secure ? 'https://' : 'http://'}$server$endpoint$query\'";
+    final targetUrl = uri.isNotEmpty
+        ? uri
+        : '${secure ? "https://" : "http://"}$server$endpoint';
+    buffer.write(" '$targetUrl'");
 
-    return curlCmd;
+    return buffer.toString();
   }
 }

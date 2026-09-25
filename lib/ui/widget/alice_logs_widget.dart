@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_alice/core/alice_core.dart';
+import 'package:flutter_alice/theme/theme.dart';
 import 'package:flutter_alice/ui/utils/alice_parser.dart';
 
 class AliceLogsWidget extends StatelessWidget {
@@ -17,8 +18,9 @@ class AliceLogsWidget extends StatelessWidget {
       builder: (context, snapshot) {
         final logs = snapshot.data ?? [];
         return SafeArea(
+          bottom: false,
           child: ListView.separated(
-            padding: EdgeInsets.all(8),
+            padding: const EdgeInsets.all(8),
             reverse: true,
             itemBuilder: (_, i) {
               final log = AliceParser.logParser(logs[i]);
@@ -26,11 +28,14 @@ class AliceLogsWidget extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 8),
                 child: Text(
                   log.message,
-                  style: TextStyle(fontSize: 12, color: Color(log.color)),
+                  style: AliceTextStyles.mono.copyWith(
+                    fontSize: 12,
+                    color: Color(log.color),
+                  ),
                 ),
               );
             },
-            separatorBuilder: (_, i) => Divider(
+            separatorBuilder: (_, i) => const Divider(
               height: 1,
               color: Colors.white24,
             ),

@@ -7,10 +7,8 @@ import 'main.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_alice/core/alice_http_client_extensions.dart';
 import 'package:flutter_alice/core/alice_http_extensions.dart';
-// import 'package:overlay_support/overlay_support.dart';
-
 class HomePage extends StatelessWidget {
-  const HomePage({Key? key}) : super(key: key);
+  const HomePage({super.key});
 
   @override
   Widget build(BuildContext context) {

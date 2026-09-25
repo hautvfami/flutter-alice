@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 
+enum AliceMenuAction { clear, stats, about }
+
 class AliceMenuItem {
   final String title;
   final IconData iconData;
+  final AliceMenuAction action;
 
-  AliceMenuItem(this.title, this.iconData);
+  const AliceMenuItem(this.title, this.iconData, this.action);
 }
