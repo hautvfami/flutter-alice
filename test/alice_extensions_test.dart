@@ -16,9 +16,9 @@ void main() {
     });
 
     test('toFormattedDuration formats milliseconds correctly', () {
-      expect(0.toFormattedDuration, '0 ms');
-      expect(450.toFormattedDuration, '450 ms');
-      expect(1000.toFormattedDuration, '1000 ms');
+      expect(0.toFormattedDuration, '0ms');
+      expect(450.toFormattedDuration, '450ms');
+      expect(1000.toFormattedDuration, '1000ms');
     });
   });
 

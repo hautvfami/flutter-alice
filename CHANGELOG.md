@@ -1,32 +1,35 @@
-## 2.2.0-beta.1
-* **Search & Filter Bottom Sheet**: Replaced the cluttered AppBar search with a streamlined, ultra-compact bottom sheet modal. Features 250ms debounced real-time search, method chips (`GET`, `POST`, etc.), HTTP status code chips (`2xx`, `3xx`, `4xx`, `5xx`, `Error`), and live match counter without blocking list view.
-* **cURL Command Support**: Added dedicated monospace cURL command box with direct "Copy to Clipboard" action in Call Overview tab.
-* **Call Stack Tracking for Success Requests**: Replaced the empty "Error" tab on successful HTTP calls with a dedicated "Call Stack" tab, allowing developers to inspect invocation traces with selectable monospace text and full-copy support.
-* **Urgent Indicator for Bubble Inspector**: Replaced the static error red dot on the floating bubble with an intelligent Urgent Warning indicator:
-  * Triggers when requests are made at abnormal high frequency (>= 5 requests within 3 seconds).
-  * Triggers when a request is excessively slow (>= 2000ms duration or hanging request).
-  * Configurable via `urgentSlowDurationMs`, `urgentFrequencyThreshold`, and `urgentFrequencyWindow` in `AliceInspector`.
-* **Statistics Screen Redesign**: Revamped statistics page with modular breakdown components: Status Breakdown, Summary Cards, and Endpoints analytics.
-* **Theme & UI Modernization**: Consolidated theme system under `lib/theme/` (`AliceColors`, `AliceTextStyles`, `AliceTheme`, `AliceWidgets`), modernizing color schemes and typography.
-* **Example Project Enhancements**:
-  * Migrated iOS project from CocoaPods to **Swift Package Manager (SPM)**.
-  * Added new app icon assets, `SceneDelegate.swift`, and updated Flutter project configurations.
-  * Cleaned up legacy web template assets in example.
-* **Quality & Linting**: Added repository-level `analysis_options.yaml` with `flutter_lints: ^5.0.0` and expanded unit tests (`alice_extensions_test`, `alice_inspector_test`, `alice_stats_test`, `theme_test`).
+## 3.0.0
+* **Breaking Changes**:
+  * Major refactoring of setup process: introduced `AliceInspector` widget wrapper for simple declarative integration, eliminating manual navigator key and route wiring.
+  * Removed dependency on `overlay_support` and `flutter_expandable_fab` packages.
+  * Refactored core inspector architecture into modular components (`AliceInspectorBubble`, `AliceDraggableOverlay`, `AliceBubbleEvaluator`, `AliceDragBounds`).
+  * Removed deprecated Chopper support.
+* **New Features**:
+  * **Urgent & Anomaly Warning Indicator**: Intelligent real-time warning on the floating inspector bubble:
+    * Triggers when requests are made at abnormal high frequency (>= 5 requests within 3 seconds).
+    * Triggers when a request is excessively slow (>= 2000ms duration or hanging request).
+    * Fully configurable via `urgentSlowDurationMs`, `urgentFrequencyThreshold`, and `urgentFrequencyWindow` in `AliceInspector`.
+  * **Search & Filter Bottom Sheet**: Replaced cluttered AppBar search with a streamlined, 250ms debounced modal bottom sheet featuring HTTP method chips (`GET`, `POST`, `PUT`, `DELETE`, etc.), status code filters (`2xx`, `3xx`, `4xx`, `5xx`, `Error`), and live match counter.
+  * **cURL Command Integration**:
+    * Added dedicated monospace cURL command box with direct "Copy to Clipboard" action in Call Overview tab.
+    * Added `dart:developer` cURL console logging with `[CURL]` tag upon tapping the share button.
+  * **Call Stack Tracking for Successful Requests**: Replaced the empty "Error" tab on successful HTTP calls with a dedicated "Call Stack" tab, enabling inspection of invocation traces with selectable text and full copy support.
+  * **Redesigned Statistics Dashboard**: Revamped statistics page with modular breakdown components: Status Breakdown, Summary Cards, and Endpoints analytics.
+  * **In-App Logs Viewer**: Added dedicated `AliceLogsScreen` and `AliceLogsWidget` to inspect real-time debug logs captured by Alice.
+* **UI & Performance Improvements**:
+  * **Theme & Modernization**: Consolidated theme system under `lib/theme/` (`AliceColors`, `AliceStyles`, `AliceTheme`, `AliceWidgets`), modernizing color schemes, status badges, and typography with Material 3.
+  * **JetBrains Mono Typography**: Integrated `JetBrainsMono.ttf` font asset for crisp, readable display of code, JSON, headers, and cURL commands.
+  * **JSON Viewer Optimization**: Optimized performance and styling for large JSON request/response bodies.
+  * **Safe Element Lookups**: Resolved `Bad state: No element` crashes by introducing safe `firstWhereOrNull` extension across streams.
+  * **Enhanced Floating Overlay**: Smooth draggable inspector bubble with edge-snapping, boundary constraints, and fluid animations.
+* **Platform & Dependency Updates**:
+  * Upgraded dependencies: `dio: '>=5.1.1'`, `http: '>=1.1.0 <2.0.0'`, `share_plus: '>=11.0.0'`, `rxdart: '>=0.27.1'`.
+  * Migrated iOS example project from CocoaPods to **Swift Package Manager (SPM)**.
+  * Added repository-level `analysis_options.yaml` with `flutter_lints: ^5.0.0` and strict type checks.
+  * Expanded test suite with comprehensive unit and widget tests (`alice_extensions_test`, `alice_inspector_test`, `alice_stats_test`, `theme_test`).
 
-## 2.1.0-beta.1
-* **Breaking Changes**: Major refactoring of setup process. Introduced `AliceInspector` widget for simplified integration, replacing manual navigator key setup. Removed dependency on `OverlaySupport` package.
-* **Implementation Changes**: Refactored core components for better modularity. Updated JSON viewer with performance optimizations and UI improvements. Enhanced floating inspector button with better positioning and animations.
-* **Improvements**: Added support for multiple Dio instances in `AliceInspector`. Improved error handling and logging. Updated dependencies for better compatibility. Enhanced documentation with video demo and clearer installation guides.
-
-## 2.1.0
-* Added JetBrains Mono font asset for improved code display
-* Improved iOS build configuration and project settings
-* Refactored core components: renamed debug_pop_up.dart to alice_inspector.dart, alice_conversion_helper.dart to alice_convert_helper.dart, alice_base_call_details_widget.dart to alice_base_mixin.dart
-* Added alice_theme.dart for centralized theme management
-* Enhanced UI widgets and pages for better user experience
-* Updated pubspec.yaml with new dependencies and configurations
-* Minor bug fixes and code optimizations
+## 2.0.1
+* Bump version and minor bug fixes.
 
 ## 2.0.0
 * Major version upgrade with breaking changes

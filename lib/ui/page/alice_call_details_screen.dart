@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -126,6 +127,8 @@ class _AliceCallDetailsScreenState extends State<AliceCallDetailsScreen> {
     BuildContext btnContext,
     AliceHttpCall currentCall,
   ) async {
+    log(currentCall.getCurlCommand(), name: 'CURL');
+
     Rect? sharePositionOrigin;
     final box = btnContext.findRenderObject() as RenderBox?;
     if (box != null && box.hasSize) {

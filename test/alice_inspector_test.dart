@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_alice/core/alice_inspector.dart';
-import 'package:flutter_alice/core/expandable_fab.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
